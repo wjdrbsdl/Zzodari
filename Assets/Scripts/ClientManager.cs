@@ -7,14 +7,22 @@ using UnityEngine.UI;
 
 public class ClientManager : MonoBehaviour
 {
+    public static ClientManager instance;
     public InputField inputText;
     public LobbyClient lobClient; //생성된 녀석
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public void OnClickConnect()
     {
         string ip = inputText.text;
         //올바른 ip인지 체크 후
         if (IsValidForm(ip) == true)
         {
+            inputText.text = "";
             Action callBack = () => 
             {
                 Debug.Log("유니티 콜백받음");
@@ -63,6 +71,25 @@ public class ClientManager : MonoBehaviour
             {
                 return false;
             }
+        }
+        return true;
+    }
+
+    public void OnClickInput()
+    {
+        inputStr = inputText.text;
+        inputText.text = "";
+    }
+
+    string inputStr = "";
+
+    public bool GetInputText(out string text)
+    {
+        text = inputStr;
+        inputStr = "";
+        if(text == "")
+        {
+            return false;
         }
         return true;
     }

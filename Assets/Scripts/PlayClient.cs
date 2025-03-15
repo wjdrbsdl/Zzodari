@@ -57,7 +57,7 @@ public class PlayClient : MonoBehaviour
         IPAddress ipAddress = new IPAddress(ip);
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
         clientSocket.BeginConnect(endPoint, CallBackConnect, clientSocket);
-       // EnterMessege();
+        EnterMessege();
         //Update();
     }
 
@@ -146,7 +146,10 @@ public class PlayClient : MonoBehaviour
             while (true)
             {
                 // Console.WriteLine("플클 와일문");
-                string messege = Console.ReadLine();
+                if( ClientManager.instance.GetInputText(out string messege) == false)
+                {
+                    continue;
+                }
 
                 if (isGameStart == true)
                 {
@@ -235,7 +238,10 @@ public class PlayClient : MonoBehaviour
             while (true)
             {
                 //제출할 카드 입력
-                string cardStr = Console.ReadLine();
+                if (ClientManager.instance.GetInputText(out string cardStr) == false)
+                {
+                    continue;
+                }
                 selecetCardList = new();
                 if (isGameStart == false)
                 {
