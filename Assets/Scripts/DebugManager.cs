@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class DebugManager : MonoBehaviour
 {
     public static DebugManager instance;
     public TMP_Text tmpText;
+    public Scrollbar vertiaclScroll;
     void Start()
     {
         instance = this;
@@ -27,7 +29,8 @@ public class DebugManager : MonoBehaviour
         {
             tmpText.text += (msg + "\n");
             Rect rect = tmpText.rectTransform.rect;
-            tmpText.rectTransform.sizeDelta = new Vector2(tmpText.rectTransform.sizeDelta.x, rect.height + 45f);
+            tmpText.rectTransform.sizeDelta = new Vector2(tmpText.rectTransform.sizeDelta.x, rect.height + 36f);
+            vertiaclScroll.value = 0;
         }
     }
 }
