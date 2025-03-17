@@ -26,7 +26,6 @@ public class PlayClient : MonoBehaviour
     public string state = "";
     public List<CardData> haveCardList; //내가 들고 있는 카드
     public List<CardData> giveCardList; //전에 내가 냈던 카드
-    public List<CardData> selecetCardList; //이번턴에 내가 선택한 카드
     public List<CardData> putDownList; //바닥에 깔린 카드
     public bool isMyTurn = false;
     public bool isGameStart = false;
@@ -41,18 +40,11 @@ public class PlayClient : MonoBehaviour
         port = _port;
         haveCardList = new();
         giveCardList = new();
-        selecetCardList = new();
-    }
-
-    private void Start()
-    {
-        callBackQue = new();
     }
 
     #region 연결 수신
     public void Connect()
     {
-        Debug.Log("컨넥");
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = new IPAddress(ip);
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
@@ -66,7 +58,7 @@ public class PlayClient : MonoBehaviour
         //연결 되었으면 자료 받을 준비, 상태 준비
         try
         {
-           ColorConsole.Default("게임 클라 연결 콜백");
+            ColorConsole.Default("게임 클라 연결 콜백");
             byte[] buff = new byte[100];
             clientSocket.BeginReceive(buff, 0, buff.Length, 0, CallBackReceive, buff);
             ReqRegisterClientID();
@@ -74,7 +66,7 @@ public class PlayClient : MonoBehaviour
 
         catch
         {
-            ColorConsole.Default("방 접속 실패 재 접속시도");
+            ColorConsole.Default("플레이 클라 방 접속 실패 재 접속시도");
             Connect();
         }
     }
@@ -91,11 +83,12 @@ public class PlayClient : MonoBehaviour
             ReqRoomType reqType = (ReqRoomType)receiveBuff[0];
             HandleReceiveData(reqType, validData);
 
-            clientSocket.BeginReceive(receiveBuff, 0, receiveBuff.Length, 0, CallBackReceive, receiveBuff);
+            if (clientSocket.Connected)
+                clientSocket.BeginReceive(receiveBuff, 0, receiveBuff.Length, 0, CallBackReceive, receiveBuff);
         }
         catch
         {
-            ColorConsole.Default("클라 리십 실패");
+            ColorConsole.Default("플레이 클라 리십 실패");
         }
     }
     #endregion
@@ -106,7 +99,6 @@ public class PlayClient : MonoBehaviour
     {
         //보유 카드는 통신응답에서 진행
         giveCardList = new();
-        selecetCardList = new();
         putDownList = new();
         gameTurn = 0;
         isMyTurn = false;
@@ -117,7 +109,6 @@ public class PlayClient : MonoBehaviour
     {
         ColorConsole.Default("스테이지 리셋");
         giveCardList = new();
-        selecetCardList = new();
         putDownList = new();
         gameTurn = 0;
         isMyTurn = false;
@@ -131,6 +122,8 @@ public class PlayClient : MonoBehaviour
         EnterMessege();
     }
 
+
+    InputSelectCard cardSelector;
     private void EnterMessege()
     {
         //채팅 기능 한번만 오픈되도록
@@ -146,15 +139,13 @@ public class PlayClient : MonoBehaviour
             while (true)
             {
                 // Console.WriteLine("플클 와일문");
-                if( ClientManager.instance.GetInputText(out string messege) == false)
-                {
-                    continue;
-                }
+                string messege = Console.ReadLine();
 
                 if (isGameStart == true)
                 {
                     //TestMixture();
-                    SelectPutCards();
+                    cardSelector = new InputSelectCard(this, haveCardList);
+                    cardSelector.Update();
                     break;
                 }
 
@@ -174,147 +165,39 @@ public class PlayClient : MonoBehaviour
                 ReqChat(chatMeseege);
             }
         });
-       
-    }
-
-    private void TestMixture()
-    {
-        ColorConsole.Default("제출할 카드를 골라 주세요 1,2,3,4");
-        while (true)
-        {
-            string card = Console.ReadLine();
-            selecetCardList = new();
-
-            card = card.Replace(" ", "");//공백제거
-            string[] selectCards = card.Split(","); //콤마로 구별
-            int validCount = 0;
-            for (int i = 0; i < selectCards.Length; i++)
-            {
-                char cardClass = selectCards[i][0];
-                CardClass selectClass = CardClass.Spade;
-                if (cardClass == 'd')
-                {
-                    selectClass = CardClass.Dia;
-                }
-                else if (cardClass == 'h')
-                {
-                    selectClass = CardClass.Heart;
-                }
-                else if (cardClass == 'c')
-                {
-                    selectClass = CardClass.Clover;
-                }
-                string cardNum = selectCards[i].Substring(1);
-                if (int.TryParse(cardNum, out int parseCardNum) && 0 <= parseCardNum && parseCardNum <= 13)
-                {
-                    CardData newCard = new CardData(selectClass, parseCardNum);
-                    selecetCardList.Add(newCard);
-                }
-            }
-
-            CardRule cardRule = new CardRule();
-            TMixture mixtureValue = new TMixture();
-            if (cardRule.IsVarid(selecetCardList, out mixtureValue) == true)
-            {
-                CheckSelectCard();
-                {
-                    putDownList.Clear();
-                    for (int i = 0; i < selecetCardList.Count; i++)
-                    {
-                        putDownList.Add(selecetCardList[i]);
-                    }
-
-                }
-
-            }
-        }
-    }
-
-    private void SelectPutCards()
-    {
-        ColorConsole.Default("제출할 카드를 골라 주세요 1,2,3,4");
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                //제출할 카드 입력
-                if (ClientManager.instance.GetInputText(out string cardStr) == false)
-                {
-                    continue;
-                }
-                selecetCardList = new();
-                if (isGameStart == false)
-                {
-                    break;
-                }
-
-                if (isMyTurn == false)
-                {
-                    ColorConsole.Default("자기 차례가 아닙니다.");
-                    continue;
-                }
-
-                //입력 유효 체크
-                if (CheckValidInput(cardStr) == false)
-                {
-
-                    continue;
-                }
-
-                //낼 수 있는 카드 인지 체크
-                if (CheckSelectCard())
-                {
-                    //낼 수 있으면 제출
-                    ReqPutDownCard(selecetCardList);
-                }
-
-            }
-        });
 
     }
 
-    private bool CheckValidInput(string cardStr)
+
+    public bool PutDownCards(List<CardData> _selectCards)
     {
-        //잘 골랐는지 체크
-        cardStr = cardStr.Replace(" ", "");//공백제거
-        string[] selectCards = cardStr.Split(","); //콤마로 구별
-        int validCount = 0;
-        for (int i = 0; i < selectCards.Length; i++)
+        if (isGameStart == false)
         {
-            if (Int32.TryParse(selectCards[i], out int selectCard) && (selectCard == 22 || 0 <= selectCard && selectCard < haveCardList.Count))
-            {
-                if (selectCard == 22)
-                {
-                    ColorConsole.Default("패스");
-                    validCount++;
-                    break; ;
-                }
-
-                ColorConsole.Default($"{haveCardList[selectCard].cardClass}:{haveCardList[selectCard].num} 카드 선택");
-                selecetCardList.Add(haveCardList[selectCard]);
-                validCount++;
-            }
-            else
-            {
-                ColorConsole.Default("유효 숫자가 아닙니다.");
-                break;
-            }
-
-        }
-
-        if (validCount != selectCards.Length)
-        {
-            //잘못 입력된게 있으면 실패
             return false;
         }
-        return true;
+
+        if (isMyTurn == false)
+        {
+            ColorConsole.Default("자기 차례가 아닙니다.");
+            return false;
+        }
+        //낼 수 있는 카드 인지 체크
+        if (CheckSelectCard(_selectCards))
+        {
+            //낼 수 있으면 제출
+            SetMyTurn(false); //내턴 넘김으로 수정
+            ReqPutDownCard(_selectCards);
+            return true;
+        }
+        return false;
+
     }
 
-    private bool CheckSelectCard()
+    private bool CheckSelectCard(List<CardData> _selectCards)
     {
         CardRule cardRule = new CardRule();
         TMixture selectCardValue = new TMixture();
-        if (cardRule.IsVarid(selecetCardList, out selectCardValue) == false)
+        if (cardRule.IsVarid(_selectCards, out selectCardValue) == false)
         {
             ColorConsole.Default("유효한 조합이 아닙니다.");
             return false;
@@ -326,7 +209,7 @@ public class PlayClient : MonoBehaviour
         if (gameTurn == 1)
         {
             //첫번째 턴이면 보유한 카드에 스페이드 3 있어야 가능 한걸로 
-            foreach (CardData card in selecetCardList)
+            foreach (CardData card in _selectCards)
             {
                 if (card.Compare(CardData.minClass, CardData.minRealValue) == 0)
                 {
@@ -340,7 +223,7 @@ public class PlayClient : MonoBehaviour
         //처음이 아니면 내가 낸건지 체크 - 내가 낸거면 자유롭게 내기 가능
         if (CheckAllPass())
         {
-            if (selecetCardList.Count == 0)
+            if (_selectCards.Count == 0)
             {
                 ColorConsole.Default("올 패스 받은 상태에서 내가 패스는 불가");
                 return false;
@@ -407,6 +290,11 @@ public class PlayClient : MonoBehaviour
 
     }
 
+    private void SetMyTurn(bool _turn)
+    {
+        isMyTurn = _turn;
+    }
+
     #region 카드 리스트 관리
     private void ResetGiveCard()
     {
@@ -466,7 +354,7 @@ public class PlayClient : MonoBehaviour
         {
             SetNewGame();
             ResGameStart(_validData);
-            
+
         }
         else if (_reqType == ReqRoomType.PutDownCard)
         {
@@ -491,6 +379,7 @@ public class PlayClient : MonoBehaviour
         {
             ResGameOver(_validData);
             SetGameOver();
+            cardSelector.isPlaying = false;
 
         }
     }
@@ -518,7 +407,7 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData((CardClass)_resDate[i], _resDate[i + 1]);
             haveCardList.Add(card);
         }
-      
+
         ConsoleMyCardList();
     }
 
@@ -566,6 +455,10 @@ public class PlayClient : MonoBehaviour
         ColorConsole.Default("클라가 나가기 요청");
         byte[] reqRoomOut = new byte[] { (byte)ReqRoomType.RoomOut, (byte)id };
         clientSocket.Send(reqRoomOut);
+
+        clientSocket.Close();
+        clientSocket.Dispose();
+
         LobbyClient client = new LobbyClient();
         client.ReConnect();
     }
@@ -741,14 +634,5 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
     #endregion
-
-    Queue<Action> callBackQue = new();
-    private void Update()
-    {
-        if(callBackQue.TryDequeue(out Action callBack))
-        {
-            callBack.Invoke();
-        }
-    }
 }
 
