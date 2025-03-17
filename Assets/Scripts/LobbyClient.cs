@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using testTcp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyClient : MonoBehaviour
 {
@@ -166,11 +167,10 @@ public class LobbyClient : MonoBehaviour
         ColorConsole.Default("플레이어 참가 클라이언트 생성");
         Action makeCallBack = () =>
         {
-            PlayClient playerClient = Instantiate(PrefabManager.instance.playClient);
-            playerClient.ip = ip;
-            playerClient.id = id;
-            playerClient.port = portNum;
-            playerClient.Connect();
+            PlayClient.ip = ip;
+            PlayClient.id = id;
+            PlayClient.port = portNum;
+            SceneManager.LoadScene("PlayScene");
         };
 
         callBackQue.Enqueue(makeCallBack);
@@ -235,5 +235,10 @@ public class LobbyClient : MonoBehaviour
         {
             callBack.Invoke();
         }
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("로비 클라이언트 제거");
     }
 }

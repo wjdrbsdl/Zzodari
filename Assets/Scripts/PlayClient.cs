@@ -19,9 +19,9 @@ public class PlayClient : MonoBehaviour
 {
     #region 변수
     public Socket clientSocket;
-    public int port;
-    public byte[] ip;
-    public int id;
+    public static int port;
+    public static byte[] ip;
+    public static int id;
     public MeetState meetState = MeetState.Lobby;
     public string state = "";
     public List<CardData> haveCardList; //내가 들고 있는 카드
@@ -43,6 +43,14 @@ public class PlayClient : MonoBehaviour
     }
 
     #region 연결 수신
+
+    private void Start()
+    {
+        haveCardList = new();
+        giveCardList = new();
+        Connect();
+    }
+
     public void Connect()
     {
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -75,7 +83,7 @@ public class PlayClient : MonoBehaviour
     {
         try
         {
-            // Console.WriteLine("클라 리십 콜백");
+            Debug.Log("플클라 리십 콜백");
             byte[] receiveBuff = _result.AsyncState as byte[];
             int received = clientSocket.EndReceive(_result);
             byte[] validData = new byte[received];
@@ -98,8 +106,8 @@ public class PlayClient : MonoBehaviour
     private void SetNewGame()
     {
         //보유 카드는 통신응답에서 진행
-        giveCardList = new();
-        putDownList = new();
+        giveCardList.Clear();
+        putDownList.Clear();
         gameTurn = 0;
         isMyTurn = false;
         isGameStart = true;
@@ -108,8 +116,8 @@ public class PlayClient : MonoBehaviour
     private void ResetStage()
     {
         ColorConsole.Default("스테이지 리셋");
-        giveCardList = new();
-        putDownList = new();
+        giveCardList.Clear();
+        putDownList.Clear();
         gameTurn = 0;
         isMyTurn = false;
     }
@@ -120,77 +128,6 @@ public class PlayClient : MonoBehaviour
         //채팅으로 온
         isChatOpen = false;
         EnterMessege();
-    }
-
-
-    InputSelectCard cardSelector;
-    private void EnterMessege()
-    {
-        //채팅 기능 한번만 오픈되도록
-        if (isChatOpen == true)
-        {
-            return;
-        }
-
-        isChatOpen = true;
-        ColorConsole.Default("플레이어 클라이언트 메시지를 입력하세요. 나가기 q");
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                // Console.WriteLine("플클 와일문");
-                string messege = Console.ReadLine();
-
-                if (isGameStart == true)
-                {
-                    //TestMixture();
-                    cardSelector = new InputSelectCard(this, haveCardList);
-                    cardSelector.Update();
-                    break;
-                }
-
-                if (messege == "q")
-                {
-                    ReqRoomOut();
-                    return;
-                }
-                else if (messege == "s")
-                {
-                    ReqGameStart();
-                    continue;
-                }
-
-                string chatMeseege = " " + messege;
-
-                ReqChat(chatMeseege);
-            }
-        });
-
-    }
-
-
-    public bool PutDownCards(List<CardData> _selectCards)
-    {
-        if (isGameStart == false)
-        {
-            return false;
-        }
-
-        if (isMyTurn == false)
-        {
-            ColorConsole.Default("자기 차례가 아닙니다.");
-            return false;
-        }
-        //낼 수 있는 카드 인지 체크
-        if (CheckSelectCard(_selectCards))
-        {
-            //낼 수 있으면 제출
-            SetMyTurn(false); //내턴 넘김으로 수정
-            ReqPutDownCard(_selectCards);
-            return true;
-        }
-        return false;
-
     }
 
     private bool CheckSelectCard(List<CardData> _selectCards)
@@ -344,6 +281,78 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
 
+    //인풋 파트 
+    public InputSelectCard cardSelector;
+    private void EnterMessege()
+    {
+        cardSelector.SetHaveCard(haveCardList);
+        return;
+        //채팅 기능 한번만 오픈되도록
+        if (isChatOpen == true)
+        {
+            return;
+        }
+
+        isChatOpen = true;
+        ColorConsole.Default("플레이어 클라이언트 메시지를 입력하세요. 나가기 q");
+        Task.Run(() =>
+        {
+            while (true)
+            {
+                // Console.WriteLine("플클 와일문");
+                string messege = Console.ReadLine();
+
+                if (isGameStart == true)
+                {
+                    //TestMixture();
+
+                    break;
+                }
+
+                if (messege == "q")
+                {
+                    ReqRoomOut();
+                    return;
+                }
+                else if (messege == "s")
+                {
+                    ReqGameStart();
+                    continue;
+                }
+
+                string chatMeseege = " " + messege;
+
+                ReqChat(chatMeseege);
+            }
+        });
+
+    }
+
+    public bool PutDownCards(List<CardData> _selectCards)
+    {
+        if (isGameStart == false)
+        {
+            return false;
+        }
+
+        if (isMyTurn == false)
+        {
+            ColorConsole.Default("자기 차례가 아닙니다.");
+            return false;
+        }
+        //낼 수 있는 카드 인지 체크
+        if (CheckSelectCard(_selectCards))
+        {
+            //낼 수 있으면 제출
+            SetMyTurn(false); //내턴 넘김으로 수정
+            ReqPutDownCard(_selectCards);
+            return true;
+        }
+        return false;
+
+    }
+
+
     private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
     {
         if (_reqType == ReqRoomType.Chat)
@@ -400,7 +409,7 @@ public class PlayClient : MonoBehaviour
          * [1] 카드 장수
          * [2] 번부터 2개씩 카드가 생성
          */
-        haveCardList = new();
+        haveCardList.Clear();
         for (int i = 2; i < _resDate.Length; i += 2)
         {
             //i번째는 카드 무늬, i+1에는 카드 넘버가 있음
@@ -634,5 +643,12 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
     #endregion
+
+    private void OnDisable()
+    {
+        Debug.Log("유니티에서 끌때 소켓 종료");
+        clientSocket.Close();
+        clientSocket.Dispose();
+    }
 }
 
