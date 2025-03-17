@@ -40,12 +40,14 @@ public class PlayClient : MonoBehaviour
         port = _port;
         haveCardList = new();
         giveCardList = new();
+        putDownList = new();
     }
 
     #region 연결 수신
 
     private void Start()
     {
+        putDownList = new();
         haveCardList = new();
         giveCardList = new();
         Connect();
