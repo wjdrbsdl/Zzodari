@@ -30,7 +30,7 @@ public class PlayClient : MonoBehaviour
     public bool isMyTurn = false;
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
-
+    
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -424,11 +424,11 @@ public class PlayClient : MonoBehaviour
 
     private void ConsoleMyCardList()
     {
-        for (int i = 0; i < haveCardList.Count; i++)
+        Action action = () =>
         {
-            //i번째는 카드 무늬, i+1에는 카드 넘버가 있음
-            ColorConsole.Default($"보유 카드 [{i}]{haveCardList[i].cardClass}:{haveCardList[i].num}");
-        }
+            CardManager.intance.MakeCard(haveCardList);
+        };
+        CardManager.intance.callBack = action;
     }
 
     #endregion
