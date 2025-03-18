@@ -355,6 +355,12 @@ public class PlayClient : MonoBehaviour
     }
 
 
+    public bool PutDownPass()
+    {
+        //빈거 넘김
+       return PutDownCards(new List<CardData>());
+    }
+
     private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
     {
         if (_reqType == ReqRoomType.Chat)
