@@ -426,7 +426,7 @@ public class PlayClient : MonoBehaviour
     {
         Action action = () =>
         {
-            CardManager.intance.MakeCard(haveCardList);
+            CardManager.intance.SetHaveCard(haveCardList);
         };
         CardManager.intance.callBack = action;
     }

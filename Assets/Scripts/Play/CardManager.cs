@@ -9,10 +9,15 @@ public class CardManager : MonoBehaviour
 
     public Transform cardHands;
     public CardObject cardSample;
+    public CardObject[] cards;
 
     void Awake()
     {
         intance = this;
+    }
+    private void Start()
+    {
+        MakeCardObject();
     }
 
     public Action callBack;
@@ -26,18 +31,32 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void MakeCard(List<CardData> _haveCardList)
+    private void MakeCardObject()
     {
-        CardObject[] cardObjects = cardHands.GetComponentsInChildren<CardObject>();
-        for (int i = 0; i < _haveCardList.Count - cardObjects.Length; i++)
+        cards = new CardObject[13];
+        //카드 최대 수치는 13장으로 정해져있음. 고로 만들어놓기
+        for (int i = 0; i < 13; i++)
         {
             CardObject newObj = Instantiate(cardSample);
             newObj.transform.SetParent(cardHands);
+            newObj.gameObject.SetActive(false);
+            cards[i] = newObj;
         }
-        cardObjects = cardHands.GetComponentsInChildren<CardObject>();
+        
+    }
+
+    public void SetHaveCard(List<CardData> _haveCardList)
+    {
+        //있는 만큼 켜고 세팅
         for (int i = 0; i < _haveCardList.Count; i++)
         {
-            cardObjects[i].SetCardData(_haveCardList[i]);
+            cards[i].SetCardData(_haveCardList[i]);
+            cards[i].gameObject.SetActive(true);
+        }
+        //나머진 끔
+        for (int i = _haveCardList.Count; i < 13; i++)
+        {
+            cards[i].gameObject.SetActive(false);
         }
         
     }
