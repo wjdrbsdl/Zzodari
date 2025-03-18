@@ -427,7 +427,7 @@ public class PlayClient : MonoBehaviour
         for (int i = 0; i < haveCardList.Count; i++)
         {
             //i번째는 카드 무늬, i+1에는 카드 넘버가 있음
-            ColorConsole.Default($"보유 카드 {haveCardList[i].cardClass} : {haveCardList[i].num}");
+            ColorConsole.Default($"보유 카드 [{i}]{haveCardList[i].cardClass}:{haveCardList[i].num}");
         }
     }
 
@@ -528,7 +528,6 @@ public class PlayClient : MonoBehaviour
         }
         //바닥에 깔린 카드 갱신
         ResetPutDownCard();
-        ColorConsole.Default(_data[1] + " 유저가 제출한 카드");
         for (int i = 3; i < _data.Length; i += 2)
         {
             CardClass cardClass = (CardClass)_data[i];
@@ -536,6 +535,9 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData(cardClass, num); //카드 생성
             AddPutDownCard(card);
         }
+        CardRule rule = new CardRule();
+        rule.CheckValidRule(putDownList, out TMixture _mixture);
+        ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
 
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
