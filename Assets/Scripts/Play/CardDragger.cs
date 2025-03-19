@@ -8,6 +8,7 @@ public class CardDragger : MonoBehaviour
     public CardManager m_cardManager;
     public CardObject m_dragObject;
     public bool isDragging = false;
+    public LayerMask m_cardLayer;
     // Update is called once per frame
     void Update()
     {
@@ -27,7 +28,7 @@ public class CardDragger : MonoBehaviour
             mousePosition.z = 0;
 
             // 2D 레이를 쏩니다
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, m_cardLayer);
             if (hit.collider != null)
             {
                 if(hit.collider.name == "Test")

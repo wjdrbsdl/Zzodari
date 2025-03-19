@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1647565228510898764}
   - component: {fileID: 1647565228510898765}
   - component: {fileID: 1779294923631478053}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CardObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,6 +134,8 @@ MonoBehaviour:
   m_cardNum: {fileID: 1647565229357521367}
   m_arrangePos: {x: 0, y: 0, z: 0}
   m_moveSpeed: 3
+  m_isCurSelect: 0
+  m_isDragging: 0
 --- !u!61 &1779294923631478053
 BoxCollider2D:
   m_ObjectHideFlags: 0
