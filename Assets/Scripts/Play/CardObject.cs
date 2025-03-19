@@ -11,6 +11,8 @@ public class CardObject : MonoBehaviour
     public CardData m_cardData;
     public Vector3 m_arrangePos; //월드상 지정된 좌표 
     public float m_moveSpeed = 3f;
+    public bool m_isCurSelect = false; //지금 선택된 카드인가
+    public bool m_isDragging = false;
 
     public void SetCardData(CardData _cardData)
     {
@@ -31,6 +33,12 @@ public class CardObject : MonoBehaviour
 
     private void Move()
     {
+        if(m_isDragging == true)
+        {
+            //플레이어에 의해서 드래깅중이면 끌려가기
+            return;
+        }
+
         if(m_arrangePos == Vector3.zero)
         {
             return;
