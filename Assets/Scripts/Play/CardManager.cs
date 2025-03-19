@@ -7,6 +7,7 @@ public class CardManager : MonoBehaviour
 {
     public static CardManager intance;
 
+    public ArrangeCardObj m_arrangeCard;
     public Transform cardHands;
     public CardObject cardSample;
     public CardObject[] cards;
@@ -58,6 +59,8 @@ public class CardManager : MonoBehaviour
         {
             cards[i].gameObject.SetActive(false);
         }
-        
+
+        CardObject[] activeCards = cardHands.GetComponentsInChildren<CardObject>();
+        m_arrangeCard.ArrangePosition(activeCards);
     }
 }
