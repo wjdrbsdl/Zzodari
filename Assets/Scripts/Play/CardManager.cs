@@ -7,16 +7,18 @@ public class CardManager : MonoBehaviour
 {
     public static CardManager intance;
 
+    public PlayClient m_pClient;
     public ArrangeCardObj m_arrangeHandCard;
     public ArrangeCardObj m_arrangeSelectCard;
     public Transform cardHands;
     public CardObject cardSample;
     public CardObject[] cards;
 
-    public List<CardData> m_haveCardList = new List<CardData>();
-    public List<CardData> m_handCardList = new List<CardData>();
-    public List<CardData> m_selectList = new List<CardData>();
+    public GameObject m_selectZoneObj;
 
+    public List<CardData> m_haveCardList = new List<CardData>();
+
+    #region
     void Awake()
     {
         intance = this;
@@ -25,7 +27,7 @@ public class CardManager : MonoBehaviour
     {
         MakeCardObject();
     }
-
+    #endregion
     public Action callBack;
 
     private void Update()
@@ -51,25 +53,34 @@ public class CardManager : MonoBehaviour
         
     }
 
+    //처음 가졌을때?
     public void SetHaveCard(List<CardData> _haveCardList)
     {
         m_haveCardList = _haveCardList;
         //있는 만큼 켜고 세팅
-        for (int i = 0; i < _haveCardList.Count; i++)
+        UpdateCards();
+    }
+
+    public void UpdateCards()
+    {
+        //데이터상 보유카드 변경되었을때
+        for (int i = 0; i < m_haveCardList.Count; i++)
         {
-            cards[i].SetCardData(_haveCardList[i]);
+            cards[i].SetCardData(m_haveCardList[i]);
             cards[i].gameObject.SetActive(true);
         }
         //나머진 끔
-        for (int i = _haveCardList.Count; i < 13; i++)
+        for (int i = m_haveCardList.Count; i < 13; i++)
         {
             cards[i].gameObject.SetActive(false);
         }
 
         CardObject[] activeCards = cardHands.GetComponentsInChildren<CardObject>();
         m_arrangeHandCard.SetCardObjects(activeCards);
+        m_arrangeSelectCard.ResetList();
     }
 
+    #region 드래그 반응
     public void EndDrag(CardObject _object, bool _isSelectZone)
     {
         Debug.Log("카드를 선택존에 놓았는가" + _isSelectZone);
@@ -103,5 +114,11 @@ public class CardManager : MonoBehaviour
         m_arrangeSelectCard.RemoveCardObject(_object);
         m_arrangeHandCard.AddCardObject(_object);
         _object.m_isCurSelect = false;
+    }
+    #endregion
+
+    public void OnClickPutDown()
+    {
+       bool put = m_pClient.PutDownCards(m_arrangeSelectCard.GetCardDataList());
     }
 }
