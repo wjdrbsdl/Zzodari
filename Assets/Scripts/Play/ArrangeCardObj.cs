@@ -1,13 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
+
 
 public class ArrangeCardObj : MonoBehaviour
 {
     public Transform m_centerTrans; //±‚¡ÿ¡° 
     public float m_xGap = 2f;
     public List<CardObject> arrangeList = new();
+
+    public void ResetList()
+    {
+        arrangeList.Clear();
+    }
 
     public void SetCardObjects(CardObject[] _cardObjects)
     {
@@ -50,4 +54,13 @@ public class ArrangeCardObj : MonoBehaviour
         ArrangePosition();
     }
 
+    public List<CardData> GetCardDataList()
+    {
+        List<CardData> list = new();
+        for (int i = 0; i < arrangeList.Count; i++)
+        {
+            list.Add(arrangeList[i].m_cardData);
+        }
+        return list;
+    }
 }
