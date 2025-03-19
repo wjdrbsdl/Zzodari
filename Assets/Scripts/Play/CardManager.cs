@@ -76,8 +76,9 @@ public class CardManager : MonoBehaviour
         }
 
         CardObject[] activeCards = cardHands.GetComponentsInChildren<CardObject>();
-        m_arrangeHandCard.SetCardObjects(activeCards);
         m_arrangeSelectCard.ResetList();
+        m_arrangeHandCard.ResetList();
+        m_arrangeHandCard.SetCardObjects(activeCards);
     }
 
     #region 드래그 반응

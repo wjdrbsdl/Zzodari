@@ -36,6 +36,10 @@ public class ArrangeCardObj : MonoBehaviour
         arrangePos.x += startX;
         for (int i = 0; i < arrangeList.Count; i++)
         {
+            if (arrangeList[i].gameObject.activeSelf == false)
+            {
+                continue;
+            }
             arrangeList[i].SetArrangePos(arrangePos);
             arrangePos.x += m_xGap;
         }

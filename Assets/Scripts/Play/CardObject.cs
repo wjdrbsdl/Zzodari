@@ -19,6 +19,8 @@ public class CardObject : MonoBehaviour
         m_cardData = _cardData;
         m_cardClassRender.sprite = AssetManager.intance.GetClass(_cardData.cardClass);
         m_cardNum.sprite = AssetManager.intance.GetNumber(_cardData.num);
+        m_isCurSelect = false;
+        m_isDragging = false;
     }
 
     public void SetArrangePos(Vector3 _pos)

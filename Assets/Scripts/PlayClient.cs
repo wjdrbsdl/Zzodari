@@ -425,14 +425,23 @@ public class PlayClient : MonoBehaviour
             haveCardList.Add(card);
         }
 
-        ConsoleMyCardList();
+        SetMyCardList();
     }
 
-    private void ConsoleMyCardList()
+    private void SetMyCardList()
     {
         Action action = () =>
         {
             CardManager.intance.SetHaveCard(haveCardList);
+        };
+        CardManager.intance.callBack = action;
+    }
+
+    private void ResetMyCardList()
+    {
+        Action action = () =>
+        {
+            CardManager.intance.UpdateCards();
         };
         CardManager.intance.callBack = action;
     }
@@ -550,7 +559,7 @@ public class PlayClient : MonoBehaviour
         {
             RemoveHaveCard(putDownList);
             RecordGiveCard(putDownList);
-            ConsoleMyCardList();
+            ResetMyCardList();
         }
 
     }
