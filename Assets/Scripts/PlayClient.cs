@@ -114,10 +114,51 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default("플레이 클라 리십 실패");
         }
     }
+
+    private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
+    {
+        if (_reqType == ReqRoomType.Chat)
+        {
+            ResChat(_validData);
+        }
+        else if (_reqType == ReqRoomType.Start)
+        {
+            SetNewGame();
+            ResGameStart(_validData);
+
+        }
+        else if (_reqType == ReqRoomType.PutDownCard)
+        {
+            ResPutDownCard(_validData);
+        }
+        else if (_reqType == ReqRoomType.ArrangeTurn)
+        {
+            ResTurnPlayer(_validData);
+        }
+        else if (_reqType == ReqRoomType.PartyData)
+        {
+            //idRegister에 반환되는 타입.
+            ResRegisterClientIDToPartyID(_validData);
+        }
+        else if (_reqType == ReqRoomType.StageOver)
+        {
+            ResStageOver(_validData);
+            ReqStageReady();
+
+        }
+        else if (_reqType == ReqRoomType.GameOver)
+        {
+            ResGameOver(_validData);
+            SetGameOver();
+            cardSelector.isPlaying = false;
+
+        }
+    }
     #endregion
 
     #region 로직 파트
     bool isChatOpen = false;
+    #region 게임 세팅
     private void SetNewGame()
     {
         //보유 카드는 통신응답에서 진행
@@ -143,6 +184,46 @@ public class PlayClient : MonoBehaviour
         //채팅으로 온
         isChatOpen = false;
         EnterMessege();
+    }
+    #endregion
+
+    #region 카드 내기
+    //인풋 파트 
+    public InputSelectCard cardSelector;
+    private void EnterMessege()
+    {
+        cardSelector.SetHaveCard(haveCardList);
+       
+    }
+
+    public bool PutDownCards(List<CardData> _selectCards)
+    {
+        if (isGameStart == false)
+        {
+            return false;
+        }
+
+        if (isMyTurn == false)
+        {
+            ColorConsole.Default("자기 차례가 아닙니다.");
+            return false;
+        }
+        //낼 수 있는 카드 인지 체크
+        if (CheckSelectCard(_selectCards))
+        {
+            //낼 수 있으면 제출
+            SetMyTurn(false); //내턴 넘김으로 수정
+            ReqPutDownCard(_selectCards);
+            return true;
+        }
+        return false;
+
+    }
+
+    public bool PutDownPass()
+    {
+        //빈거 넘김
+        return PutDownCards(new List<CardData>());
     }
 
     private bool CheckSelectCard(List<CardData> _selectCards)
@@ -246,6 +327,7 @@ public class PlayClient : MonoBehaviour
     {
         isMyTurn = _turn;
     }
+    #endregion 
 
     #region 카드 리스트 관리
     private void ResetGiveCard()
@@ -295,125 +377,10 @@ public class PlayClient : MonoBehaviour
         gameTurn++;
     }
     #endregion
-    //인풋 파트 
-    public InputSelectCard cardSelector;
-    private void EnterMessege()
-    {
-        cardSelector.SetHaveCard(haveCardList);
-        return;
-        //채팅 기능 한번만 오픈되도록
-        if (isChatOpen == true)
-        {
-            return;
-        }
-
-        isChatOpen = true;
-        ColorConsole.Default("플레이어 클라이언트 메시지를 입력하세요. 나가기 q");
-        Task.Run(() =>
-        {
-            while (true)
-            {
-                // Console.WriteLine("플클 와일문");
-                string messege = Console.ReadLine();
-
-                if (isGameStart == true)
-                {
-                    //TestMixture();
-
-                    break;
-                }
-
-                if (messege == "q")
-                {
-                    ReqRoomOut();
-                    return;
-                }
-                else if (messege == "s")
-                {
-                    ReqGameStart();
-                    continue;
-                }
-
-                string chatMeseege = " " + messege;
-
-                ReqChat(chatMeseege);
-            }
-        });
-
-    }
-
-    public bool PutDownCards(List<CardData> _selectCards)
-    {
-        if (isGameStart == false)
-        {
-            return false;
-        }
-
-        if (isMyTurn == false)
-        {
-            ColorConsole.Default("자기 차례가 아닙니다.");
-            return false;
-        }
-        //낼 수 있는 카드 인지 체크
-        if (CheckSelectCard(_selectCards))
-        {
-            //낼 수 있으면 제출
-            SetMyTurn(false); //내턴 넘김으로 수정
-            ReqPutDownCard(_selectCards);
-            return true;
-        }
-        return false;
-
-    }
-
-
-    public bool PutDownPass()
-    {
-        //빈거 넘김
-        return PutDownCards(new List<CardData>());
-    }
-
-    private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
-    {
-        if (_reqType == ReqRoomType.Chat)
-        {
-            ResChat(_validData);
-        }
-        else if (_reqType == ReqRoomType.Start)
-        {
-            SetNewGame();
-            ResGameStart(_validData);
-
-        }
-        else if (_reqType == ReqRoomType.PutDownCard)
-        {
-            ResPutDownCard(_validData);
-        }
-        else if (_reqType == ReqRoomType.ArrangeTurn)
-        {
-            ResTurnPlayer(_validData);
-        }
-        else if (_reqType == ReqRoomType.PartyData)
-        {
-            //idRegister에 반환되는 타입.
-            ResRegisterClientIDToPartyID(_validData);
-        }
-        else if (_reqType == ReqRoomType.StageOver)
-        {
-            ResStageOver(_validData);
-            ReqStageReady();
-
-        }
-        else if (_reqType == ReqRoomType.GameOver)
-        {
-            ResGameOver(_validData);
-            SetGameOver();
-            cardSelector.isPlaying = false;
-
-        }
-    }
-
+ 
     #region 통신 파트
+
+
     #region 게임 시작
 
     private void SendMessege(byte[] _sendData)
