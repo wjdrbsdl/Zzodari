@@ -16,7 +16,7 @@ public class ColorConsole
 
     public static void SystemDebug(string _messege)
     {
-        DebugManager.instance.EnqueSystemMsg(_messege);
+       DebugManager.instance.EnqueSystemMsg(_messege);
     }
 
     public static void ConsoleColor(string _messege)

@@ -92,6 +92,10 @@ public class LobbyClient : MonoBehaviour
                 recvIdx += recv;
                 rest -= recv;
                 recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
+                if(recv == 0)
+                {
+                    break;
+                }
             } while (rest >= 1);
 
 

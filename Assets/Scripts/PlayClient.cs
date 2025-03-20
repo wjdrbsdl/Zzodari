@@ -100,6 +100,10 @@ public class PlayClient : MonoBehaviour
                 recvIdx += recv;
                 rest -= recv;
                 recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
+                if(recv == 0)
+                {
+                    break;
+                }
             } while (rest >= 1);
 
             ReqRoomType reqType = (ReqRoomType)recvData[0];
