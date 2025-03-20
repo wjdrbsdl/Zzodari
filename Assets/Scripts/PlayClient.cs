@@ -69,7 +69,7 @@ public class PlayClient : MonoBehaviour
         try
         {
             ColorConsole.Default("게임 클라 연결 콜백");
-            byte[] buff = new byte[100];
+            byte[] buff = new byte[2];
             clientSocket.BeginReceive(buff, 0, buff.Length, 0, CallBackReceive, buff);
             ReqRegisterClientID();
         }
@@ -85,16 +85,30 @@ public class PlayClient : MonoBehaviour
     {
         try
         {
-            Debug.Log("플클라 리십 콜백");
-            byte[] receiveBuff = _result.AsyncState as byte[];
-            int received = clientSocket.EndReceive(_result);
-            byte[] validData = new byte[received];
-            Array.Copy(receiveBuff, validData, received);
-            ReqRoomType reqType = (ReqRoomType)receiveBuff[0];
-            HandleReceiveData(reqType, validData);
+            byte[] msgLengthBuff = _result.AsyncState as byte[]; //받을그릇을 2개로 받기 - 메시지 길이 정의
+            ushort msgLength = BitConverter.ToUInt16(msgLengthBuff);
+
+            byte[] recvBuffer = new byte[msgLength];
+            byte[] recvData = new byte[msgLength];
+            int recv = 0;
+            int recvIdx = 0;
+            int rest = msgLength;
+            do
+            {
+                recv = clientSocket.Receive(recvBuffer);
+                Buffer.BlockCopy(recvBuffer, 0, recvData, recvIdx, recv);
+                recvIdx += recv;
+                rest -= recv;
+                recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
+            } while (rest >= 1);
+
+
+            ReqRoomType reqType = (ReqRoomType)recvData[0];
+            ColorConsole.SystemDebug(reqType + "받은 길이 "+ recvData.Length.ToString());
+            HandleReceiveData(reqType, recvData);
 
             if (clientSocket.Connected)
-                clientSocket.BeginReceive(receiveBuff, 0, receiveBuff.Length, 0, CallBackReceive, receiveBuff);
+                clientSocket.BeginReceive(msgLengthBuff, 0, msgLengthBuff.Length, 0, CallBackReceive, msgLengthBuff);
         }
         catch
         {
@@ -572,6 +586,7 @@ public class PlayClient : MonoBehaviour
          * [0] 응답코드 ArrangeTurn
          * [1] 차례 ID
          */
+        ColorConsole.Default("턴 지정 들어옴 " + _data[1] + " 내 아이디 " + id);
         isMyTurn = id == _data[1];
         if (isMyTurn)
         {
