@@ -102,7 +102,6 @@ public class PlayClient : MonoBehaviour
                 recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
             } while (rest >= 1);
 
-
             ReqRoomType reqType = (ReqRoomType)recvData[0];
             ColorConsole.SystemDebug(reqType + "받은 길이 "+ recvData.Length.ToString());
             HandleReceiveData(reqType, recvData);
@@ -296,7 +295,6 @@ public class PlayClient : MonoBehaviour
         gameTurn++;
     }
     #endregion
-
     //인풋 파트 
     public InputSelectCard cardSelector;
     private void EnterMessege()
@@ -372,7 +370,7 @@ public class PlayClient : MonoBehaviour
     public bool PutDownPass()
     {
         //빈거 넘김
-       return PutDownCards(new List<CardData>());
+        return PutDownCards(new List<CardData>());
     }
 
     private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
@@ -417,10 +415,34 @@ public class PlayClient : MonoBehaviour
 
     #region 통신 파트
     #region 게임 시작
+
+    private void SendMessege(byte[] _sendData)
+    {
+        //헤더작업 용량 길이 붙여주기 
+        Console.WriteLine("플클에서 요청 보냄 " + (ReqRoomType)_sendData[0]);
+        ushort msgLength = (ushort)_sendData.Length;
+        byte[] msgLengthBuff = new byte[2];
+        msgLengthBuff = BitConverter.GetBytes(msgLength);
+
+        byte[] originPacket = new byte[msgLengthBuff.Length + msgLength];
+        Buffer.BlockCopy(msgLengthBuff, 0, originPacket, 0, msgLengthBuff.Length); //패킷 0부터 메시지 길이 버퍼 만큼 복사
+        Buffer.BlockCopy(_sendData, 0, originPacket, msgLengthBuff.Length, msgLength); //패킷 메시지길이 버퍼 길이 부터, 메시지 복사
+
+        int rest = (msgLength + msgLengthBuff.Length);
+        int send = 0;
+        do
+        {
+            byte[] sendPacket = new byte[rest];
+            Buffer.BlockCopy(originPacket, originPacket.Length - rest, sendPacket, 0, rest);
+            send = clientSocket.Send(sendPacket);
+            rest -= send;
+        } while (rest >= 1);
+    }
+
     private void ReqGameStart()
     {
         byte[] reqStart = { (byte)ReqRoomType.Start };
-        clientSocket.Send(reqStart);
+        SendMessege(reqStart);
     }
 
     private void ResGameStart(byte[] _resDate)
@@ -449,7 +471,7 @@ public class PlayClient : MonoBehaviour
             CardManager.intance.SetHaveCard(haveCardList);
         };
         CardManager.intance.callBack = action;
-    }
+        }
 
     private void ResetMyCardList()
     {
@@ -466,7 +488,7 @@ public class PlayClient : MonoBehaviour
     public void ReqRegisterClientID()
     {
         byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)id };
-        clientSocket.Send(reqID);
+        SendMessege(reqID);
     }
 
     public void ResRegisterClientIDToPartyID(byte[] _data)
@@ -494,7 +516,7 @@ public class PlayClient : MonoBehaviour
     {
         ColorConsole.Default("클라가 나가기 요청");
         byte[] reqRoomOut = new byte[] { (byte)ReqRoomType.RoomOut, (byte)id };
-        clientSocket.Send(reqRoomOut);
+        SendMessege(reqRoomOut);
 
         clientSocket.Close();
         clientSocket.Dispose();
@@ -529,7 +551,7 @@ public class PlayClient : MonoBehaviour
             reqCardList.Add((byte)_cardDataList[i].num);
         }
         byte[] reqData = reqCardList.ToArray();
-        clientSocket.Send(reqData);
+        SendMessege(reqData);
     }
 
     private void ResPutDownCard(byte[] _data)
@@ -627,7 +649,7 @@ public class PlayClient : MonoBehaviour
          * [1] 내 아이디
          */
         byte[] stageReadyDate = new byte[] { (byte)ReqRoomType.StageReady, (byte)id };
-        clientSocket.Send(stageReadyDate);
+        SendMessege(stageReadyDate);
     }
 
     private void ResGameOver(byte[] _data)
