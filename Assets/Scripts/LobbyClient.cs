@@ -40,8 +40,7 @@ public class LobbyClient : MonoBehaviour
         LobbyServer.ServerIp = ipAddress; //들어갔던 서버 기록
         ClientLogIn.ServerIp = ipAddress.GetAddressBytes(); //게임 서버 ip 저장. 
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-        byte[] buff = new byte[100];
-        clientSocket.BeginConnect(endPoint, CallBackConnect, buff);
+        clientSocket.BeginConnect(endPoint, CallBackConnect, null);
         // Update();
     }
 
@@ -114,7 +113,7 @@ public class LobbyClient : MonoBehaviour
         }
         catch
         {
-            Connect();
+            Debug.Log("유니티 로비 연결 실패에서 재연결 시도");
         }
     }
 
@@ -283,5 +282,11 @@ public class LobbyClient : MonoBehaviour
     private void OnDisable()
     {
         Debug.Log("로비 클라이언트 제거");
+        if (clientSocket.Connected) {
+           ReqDisConnect();
+           clientSocket.Close();
+           clientSocket.Dispose();
+        }
+        
     }
 }
