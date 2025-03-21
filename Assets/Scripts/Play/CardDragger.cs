@@ -21,7 +21,6 @@ public class CardDragger : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Debug.Log("마우스 클릭 됨");
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             // z축 값은 0으로 설정 (2D 환경에서는 보통 z축을 0으로 고정)
@@ -42,7 +41,6 @@ public class CardDragger : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            Debug.Log("마우스 누르는 중");
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0; //스크린상에서 z좌표를 0
             mousePosition.y -= 0.2f; //드래그 오브젝트 위치가 조금 아래로 내려가도록
@@ -66,7 +64,6 @@ public class CardDragger : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            Debug.Log("마우스 뗌");
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             isDragging = false;
             // z축 값은 0으로 설정 (2D 환경에서는 보통 z축을 0으로 고정)
