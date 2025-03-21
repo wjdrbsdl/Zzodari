@@ -10,7 +10,7 @@ using System.IO;
 
 public enum ReqLobbyType
 {
-    RoomMake, Close, RoomState, RoomUserCount, ClientNumber
+    RoomMake= 1, Close, RoomState, RoomUserCount, ClientNumber
 }
 
 public enum MeetState
