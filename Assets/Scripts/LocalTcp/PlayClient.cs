@@ -410,7 +410,7 @@ public class PlayClient : MonoBehaviour
         } while (rest >= 1);
     }
 
-    private void ReqGameStart()
+    public void ReqGameStart()
     {
         byte[] reqStart = { (byte)ReqRoomType.Start };
         SendMessege(reqStart);
