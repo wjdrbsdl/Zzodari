@@ -485,7 +485,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 229159319519d69408dd92c244ebc0d9, type: 3}
+  m_Script: {fileID: 11500000, guid: a4519551e4a9b414b9f86a4621249813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &725900252
@@ -1236,6 +1236,7 @@ GameObject:
   - component: {fileID: 1036583778}
   - component: {fileID: 1036583777}
   - component: {fileID: 1036583776}
+  - component: {fileID: 1036583779}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1309,6 +1310,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1036583779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036583775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1053497005
 GameObject:
   m_ObjectHideFlags: 0
@@ -2360,7 +2394,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1135991882}
   m_HandleRect: {fileID: 1135991881}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2710,7 +2744,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1935055359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b16980ded1ac2d4c946324174c10602, type: 3}
+  m_Script: {fileID: 11500000, guid: c468003f4ec64ec49966d9e00b08b74a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_cardManager: {fileID: 2045521613}
