@@ -9,7 +9,8 @@ public class ClientManager : MonoBehaviour
 {
     public static ClientManager instance;
     public InputField inputText;
-    public LobbyClient lobClient; //积己等 赤籍
+    public UniteLobClient lobClient; //积己等 赤籍
+    //public LobbyClient lobClient;
 
     private void Awake()
     {
@@ -30,7 +31,8 @@ public class ClientManager : MonoBehaviour
                 GameObject gameObject = new GameObject();
                 gameObject.name = "抛胶飘";
             };
-            lobClient = Instantiate(PrefabManager.instance.lobClient);
+            //lobClient = Instantiate(PrefabManager.instance.lobClient);
+            lobClient = Instantiate(PrefabManager.instance.uniteLobClient);
             lobClient.ip = ip;
             lobClient.id = 1;
             lobClient.Connect();

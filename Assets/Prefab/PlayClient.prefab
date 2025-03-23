@@ -42,17 +42,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2161124416478474466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 229159319519d69408dd92c244ebc0d9, type: 3}
+  m_Script: {fileID: 11500000, guid: a4519551e4a9b414b9f86a4621249813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 0
-  ip: 
-  id: 0
   meetState: 0
   state: 
   isMyTurn: 0
   isGameStart: 0
   gameTurn: 0
+  cardSelector: {fileID: 0}
 --- !u!1 &8787881228546087298
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,3 +97,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pClient: {fileID: 4481698900359929379}
   isPlaying: 0
+  inputText: {fileID: 0}

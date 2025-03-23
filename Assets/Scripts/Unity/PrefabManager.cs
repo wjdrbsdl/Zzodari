@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PrefabManager : MonoBehaviour
 {
+    public UniteLobClient uniteLobClient;
     public LobbyClient lobClient;
     public PlayClient playClient;
     public static PrefabManager instance;
