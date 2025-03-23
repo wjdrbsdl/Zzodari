@@ -7,19 +7,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace testTcp
-{
     public enum ReqRoomType
     {
-        Ready, Start, RoomOut, Chat, 
+        Ready, Start, RoomOut, Chat,
         IDRegister, PartyData,
         ShuffleCard, PutDownCard,
         ArrangeTurn,
-        StageReady, StageOver, GameOver
-
-
+        StageReady, StageOver, GameOver,
+        ReqGameOver
     }
-
     public class PlayServer
     {
         public List<ClaInfo> roomUser = new();
@@ -565,4 +561,4 @@ namespace testTcp
         #endregion
     }
 
-}
+
