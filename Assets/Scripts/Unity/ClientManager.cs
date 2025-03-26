@@ -68,6 +68,14 @@ public class ClientManager : MonoBehaviour
         }
     }
 
+    public void OnClickRoomJoin(string _roomName)
+    {
+        if (lobClient != null)
+        {
+            lobClient.ReqRoomJoin(_roomName);
+        }
+    }
+
     public void OnClickReqRoomList()
     {
         lobClient.ReqRoomList(); //클 매니저 버튼으로 호출

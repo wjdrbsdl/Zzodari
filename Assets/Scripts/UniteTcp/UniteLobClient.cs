@@ -155,7 +155,7 @@ public class UniteLobClient : MonoBehaviour
     }
 
     #region 방 생성 진입
-    private void ReqRoomJoin(string _roomName = "테스트 방 이름")
+    public void ReqRoomJoin(string _roomName = "테스트 방 이름")
     {
         
         ColorConsole.Default("로비에서 방 참가 신청");
