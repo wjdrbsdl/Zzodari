@@ -7,6 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using testTcp;
 
+
+public enum ReqLobbyType
+{
+    RoomMake = 1, Close, RoomState, RoomUserCount, ClientNumber, RoomMakeFail, RoomList
+}
+
 public class UniteServer
 {
     public static IPAddress ServerIp;
