@@ -8,11 +8,6 @@ using System.Threading.Tasks;
 using System.IO;
 
 
-public enum ReqLobbyType
-{
-    RoomMake= 1, Close, RoomState, RoomUserCount, ClientNumber
-}
-
 public enum MeetState
 {
     Lobby, Room, Game
