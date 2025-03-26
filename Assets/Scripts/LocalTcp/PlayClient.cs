@@ -30,7 +30,7 @@ public class PlayClient : MonoBehaviour
     public bool isMyTurn = false;
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
-    
+
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -42,9 +42,7 @@ public class PlayClient : MonoBehaviour
         giveCardList = new();
         putDownList = new();
     }
-
-    #region 연결 수신
-
+       
     private void Start()
     {
         putDownList = new();
@@ -53,14 +51,15 @@ public class PlayClient : MonoBehaviour
         Connect();
     }
 
+    #region 연결 수신
     public void Connect()
     {
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = new IPAddress(ip);
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
         clientSocket.BeginConnect(endPoint, CallBackConnect, clientSocket);
-        EnterMessege();
-        //Update();
+        SendHaveCard();
+
     }
 
     private void CallBackConnect(IAsyncResult _result)
@@ -100,8 +99,9 @@ public class PlayClient : MonoBehaviour
                 recvIdx += recv;
                 rest -= recv;
                 recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
-                if(recv == 0)
+                if (recv == 0)
                 {
+                    //만약 남은게있으면 어떡함?
                     break;
                 }
             } while (rest >= 1);
@@ -118,51 +118,10 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default("플레이 클라 리십 실패");
         }
     }
-
-    private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
-    {
-        if (_reqType == ReqRoomType.Chat)
-        {
-            ResChat(_validData);
-        }
-        else if (_reqType == ReqRoomType.Start)
-        {
-            SetNewGame();
-            ResGameStart(_validData);
-
-        }
-        else if (_reqType == ReqRoomType.PutDownCard)
-        {
-            ResPutDownCard(_validData);
-        }
-        else if (_reqType == ReqRoomType.ArrangeTurn)
-        {
-            ResTurnPlayer(_validData);
-        }
-        else if (_reqType == ReqRoomType.PartyData)
-        {
-            //idRegister에 반환되는 타입.
-            ResRegisterClientIDToPartyID(_validData);
-        }
-        else if (_reqType == ReqRoomType.StageOver)
-        {
-            ResStageOver(_validData);
-            ReqStageReady();
-
-        }
-        else if (_reqType == ReqRoomType.GameOver)
-        {
-            ResGameOver(_validData);
-            SetGameOver();
-            cardSelector.isPlaying = false;
-
-        }
-    }
     #endregion
 
     #region 로직 파트
     bool isChatOpen = false;
-    #region 게임 세팅
     private void SetNewGame()
     {
         //보유 카드는 통신응답에서 진행
@@ -187,17 +146,16 @@ public class PlayClient : MonoBehaviour
         isGameStart = false;
         //채팅으로 온
         isChatOpen = false;
-        EnterMessege();
+        SendHaveCard();
     }
-    #endregion
 
     #region 카드 내기
     //인풋 파트 
     public InputSelectCard cardSelector;
-    private void EnterMessege()
+    private void SendHaveCard()
     {
         cardSelector.SetHaveCard(haveCardList);
-       
+
     }
 
     public bool PutDownCards(List<CardData> _selectCards)
@@ -381,10 +339,51 @@ public class PlayClient : MonoBehaviour
         gameTurn++;
     }
     #endregion
- 
+
+    private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
+    {
+        if (_reqType == ReqRoomType.Chat)
+        {
+            ResChat(_validData);
+        }
+        else if (_reqType == ReqRoomType.ResRoomJoinFail)
+        {
+            ResRoomJoinFail();
+        }
+        else if (_reqType == ReqRoomType.Start)
+        {
+            SetNewGame();
+            ResGameStart(_validData);
+
+        }
+        else if (_reqType == ReqRoomType.PutDownCard)
+        {
+            ResPutDownCard(_validData);
+        }
+        else if (_reqType == ReqRoomType.ArrangeTurn)
+        {
+            ResTurnPlayer(_validData);
+        }
+        else if (_reqType == ReqRoomType.PartyData)
+        {
+            //idRegister에 반환되는 타입.
+            ResRegisterClientIDToPartyID(_validData);
+        }
+        else if (_reqType == ReqRoomType.StageOver)
+        {
+            ResStageOver(_validData);
+            ReqStageReady();
+
+        }
+        else if (_reqType == ReqRoomType.GameOver)
+        {
+            ResGameOver(_validData);
+            SetGameOver();
+            cardSelector.isPlaying = false;
+        }
+    }
+
     #region 통신 파트
-
-
     #region 게임 시작
 
     private void SendMessege(byte[] _sendData)
@@ -491,13 +490,19 @@ public class PlayClient : MonoBehaviour
         clientSocket.Close();
         clientSocket.Dispose();
 
-        LobbyClient client = new LobbyClient();
+        UniteLobClient client = new UniteLobClient();
         client.ReConnect();
     }
 
-    public void ResRoomOut()
+    public void ResRoomJoinFail()
     {
+        ColorConsole.Default("플레이 클라가 방 입장 못했음");
 
+        clientSocket.Close();
+        clientSocket.Dispose();
+
+        UniteLobClient client = new UniteLobClient();
+        client.ReConnect();
     }
     #endregion
 
@@ -589,6 +594,7 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
 
+    #region 판, 게임 종료
     private void ResStageOver(byte[] _data)
     {
         /*
@@ -636,6 +642,7 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default($"{_data[i]}의 벌점 :{_data[i + 1]}");
         }
     }
+    #endregion
 
     #region 채팅 
     private void ReqChat(string msg)
@@ -645,7 +652,7 @@ public class PlayClient : MonoBehaviour
         byte[] reqByte = chatCode.Concat(chatByte).ToArray();
         //  Console.WriteLine("클라 센드" + mainSock.Connected);
         if (clientSocket.Connected == true)
-            clientSocket.Send(reqByte);
+            SendMessege(reqByte);
     }
 
     private void ResChat(byte[] _receiveData)
