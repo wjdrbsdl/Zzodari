@@ -51,9 +51,16 @@ public class UniteLobClient : MonoBehaviour
         clientSocket.BeginConnect(endPoint, CallBackConnect, buff);
     }
 
+    int testCount = 10;
     public void OnClickReqRoomJoin()
     {
-        ReqRoomJoin();
+        string name = InputManager.instance.GetRoomName();
+        if(name == "")
+        {
+            name = "Test" + testCount.ToString();
+            testCount++;
+        }
+        ReqRoomJoin(name);
     }
 
     private void CallBackConnect(IAsyncResult _result)
@@ -152,11 +159,7 @@ public class UniteLobClient : MonoBehaviour
     {
         
         ColorConsole.Default("로비에서 방 참가 신청");
-        string roomName = inputText.text;
-        if(roomName == "")
-        {
-            roomName = _roomName;
-        }
+        string roomName = _roomName;
         byte[] roomByte = Encoding.Unicode.GetBytes(roomName);
         byte[] reqRoom = new byte[roomByte.Length + 1];
         Array.Copy(roomByte, 0, reqRoom, 1, roomByte.Length); //룸 네임 전체를 요청 바이트 1번째부터 복사시작
