@@ -511,6 +511,7 @@ public class PlayClient : MonoBehaviour
         {
             SceneManager.LoadScene("LobbyScene");
         };
+        ClientManager.IsRoomOut = true;
         CardManager.intance.callBack.Enqueue(outCallBack);
     }
 

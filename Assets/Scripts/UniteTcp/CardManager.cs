@@ -28,7 +28,7 @@ public class CardManager : MonoBehaviour
         MakeCardObject();
     }
     #endregion
-    public Queue<Action> callBack;
+    public Queue<Action> callBack = new();
 
     private void Update()
     {

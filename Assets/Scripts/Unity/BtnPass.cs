@@ -16,4 +16,9 @@ public class BtnPass : MonoBehaviour
     {
         m_pClient.ReqGameStart();
     }
+
+    public void OnClickQuitBtn()
+    {
+        m_pClient.ReqRoomOut();
+    }
 }

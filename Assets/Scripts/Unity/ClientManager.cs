@@ -7,19 +7,34 @@ using UnityEngine.UI;
 
 public class ClientManager : MonoBehaviour
 {
+    public static bool IsRoomOut = false;
     public static ClientManager instance;
     public InputField inputText;
     public UniteLobClient lobClient; //생성된 녀석
     //public LobbyClient lobClient;
 
+    public PanelObj connectPanel;
+    public PanelObj lobbyPanel;
+
     private void Awake()
     {
         instance = this;
+        ControlPanel(EPanelType.ConnectUI);
     }
 
     private void Start()
     {
         Debug.Log(UniteServer.ServerIp);
+        if(IsRoomOut && UniteServer.ServerIp != null)
+        {
+            //이미 접속했었던 상태에서 돌아왔다면
+            lobClient = Instantiate(PrefabManager.instance.uniteLobClient);
+            lobClient.ip = UniteServer.ServerIp.ToString();
+            lobClient.id = 1;
+            lobClient.Connect();
+            IsRoomOut = false;
+            ControlPanel(EPanelType.LobbyUI);
+        }
     }
 
     public void OnClickConnect()
@@ -41,7 +56,7 @@ public class ClientManager : MonoBehaviour
             lobClient.ip = ip;
             lobClient.id = 1;
             lobClient.Connect();
-
+            ControlPanel(EPanelType.LobbyUI);
         }
     }
 
@@ -52,6 +67,12 @@ public class ClientManager : MonoBehaviour
             lobClient.OnClickReqRoomJoin();
         }
     }
+
+    public void OnClickReqRoomList()
+    {
+        lobClient.ReqRoomList(); //클 매니저 버튼으로 호출
+    }
+
     private bool IsValidForm(string ip)
     {
         //ipv4 가정
@@ -82,12 +103,6 @@ public class ClientManager : MonoBehaviour
         return true;
     }
 
-    public void OnClickInput()
-    {
-        inputStr = inputText.text;
-        inputText.text = "";
-    }
-
     string inputStr = "";
 
     public bool GetInputText(out string text)
@@ -99,5 +114,11 @@ public class ClientManager : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    private void ControlPanel(EPanelType _onPanel)
+    {
+        connectPanel.OnOff(_onPanel);
+        lobbyPanel.OnOff(_onPanel);
     }
 }
