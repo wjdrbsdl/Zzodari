@@ -28,14 +28,13 @@ public class CardManager : MonoBehaviour
         MakeCardObject();
     }
     #endregion
-    public Action callBack;
+    public Queue<Action> callBack;
 
     private void Update()
     {
-        if(callBack!= null)
+        if(callBack.TryDequeue(out Action action))
         {
-            callBack();
-            callBack = null;
+            action.Invoke();
         }
     }
 

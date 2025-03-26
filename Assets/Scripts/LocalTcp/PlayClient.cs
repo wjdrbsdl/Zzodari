@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using testTcp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class PlayerData
 {
     public int ID;
@@ -439,7 +440,7 @@ public class PlayClient : MonoBehaviour
         {
             CardManager.intance.SetHaveCard(haveCardList);
         };
-        CardManager.intance.callBack = action;
+        CardManager.intance.callBack.Enqueue(action);
         }
 
     private void ResetMyCardList()
@@ -448,7 +449,7 @@ public class PlayClient : MonoBehaviour
         {
             CardManager.intance.UpdateCards();
         };
-        CardManager.intance.callBack = action;
+        CardManager.intance.callBack.Enqueue(action);
     }
 
     #endregion
@@ -490,8 +491,7 @@ public class PlayClient : MonoBehaviour
         clientSocket.Close();
         clientSocket.Dispose();
 
-        UniteLobClient client = new UniteLobClient();
-        client.ReConnect();
+        SendOutCallBack();
     }
 
     public void ResRoomJoinFail()
@@ -501,9 +501,19 @@ public class PlayClient : MonoBehaviour
         clientSocket.Close();
         clientSocket.Dispose();
 
-        UniteLobClient client = new UniteLobClient();
-        client.ReConnect();
+        SendOutCallBack();
     }
+
+
+    private void SendOutCallBack()
+    {
+        Action outCallBack = () =>
+        {
+            SceneManager.LoadScene("LobbyScene");
+        };
+        CardManager.intance.callBack.Enqueue(outCallBack);
+    }
+
     #endregion
 
     #region 카드 제출

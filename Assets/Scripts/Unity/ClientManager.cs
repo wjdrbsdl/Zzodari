@@ -17,6 +17,11 @@ public class ClientManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        Debug.Log(UniteServer.ServerIp);
+    }
+
     public void OnClickConnect()
     {
         string ip = inputText.text;
