@@ -47,15 +47,6 @@ public class CardDragger : MonoBehaviour
             if (isDragging)
                 m_dragObject.transform.position = mousePosition;
 
-            // z축 값은 0으로 설정 (2D 환경에서는 보통 z축을 0으로 고정)
-
-
-            // 2D 레이를 쏩니다
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            if (hit.collider != null)
-            {
-                Debug.Log(hit.collider.name);
-            }
         }
     }
 
