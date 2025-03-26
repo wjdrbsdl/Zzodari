@@ -11,6 +11,7 @@ public class DebugManager : MonoBehaviour
     public TMP_Text preText;
     public TMP_Text curText;
     public Scrollbar vertiaclScroll;
+    public GameObject debugScroll;
     void Start()
     {
         instance = this;
@@ -44,5 +45,10 @@ public class DebugManager : MonoBehaviour
             preText.text = curText.text;
             curText.text = (systeMsg);
         }
+    }
+
+    public void OnOff()
+    {
+        debugScroll.SetActive(!debugScroll.activeSelf);
     }
 }

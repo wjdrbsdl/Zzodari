@@ -223,7 +223,7 @@ public class UniteLobClient : MonoBehaviour
         return;
     }
 
-    private void ReqRoomList()
+    public void ReqRoomList()
     {
         byte[] reqRoomList = new byte[] { (byte)ReqLobbyType.RoomList };
         SendMessege(reqRoomList);
@@ -251,14 +251,19 @@ public class UniteLobClient : MonoBehaviour
         }
 
         int offSet = 2;
+        List<RoomData> roomList = new(); //유니티
         for (int i = 0; i < _recvData[1]; i++)
         {
             byte[] roomDataByte = new byte[_recvData[offSet]];
             Buffer.BlockCopy(_recvData, offSet, roomDataByte, 0, _recvData[offSet]);
             RoomData room = new RoomData(roomDataByte);
             offSet += _recvData[offSet];
+            roomList.Add(room);
             ColorConsole.Default(room.roomName + "방 존재");
         }
+
+        //유니티
+        RoomListMaker.instance.roomDataQueue.Enqueue(roomList);
     }
     #endregion
 
