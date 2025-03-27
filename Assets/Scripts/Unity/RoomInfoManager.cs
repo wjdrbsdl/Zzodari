@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class RoomInfoManager : MonoBehaviour
 {
+    public static RoomInfoManager instance;
+
     public TMP_Text m_roomNameText; //방 제목
     public TMP_Text m_partyText; //참가원
     public TMP_Text m_turnText; //지금 누구차레
@@ -13,14 +15,40 @@ public class RoomInfoManager : MonoBehaviour
 
     public PlayClient m_client;
 
+    public Queue<ReqRoomType> reqTypeQueue = new(); //플레이클라이언트에서 어떤 핸들 작업 했는지
+
     private void Awake()
     {
-        m_client.myAction = Test;
+        instance = this;
     }
 
-    private void Test()
+    public void EnqueueCode(ReqRoomType _code)
     {
-        m_turnText.text = "테스트 적용";
-        m_turnText.gameObject.SetActive(false);
+        reqTypeQueue.Enqueue(_code);
+    }
+
+    private void Update()
+    {
+        if(reqTypeQueue.TryDequeue(out ReqRoomType _result))
+        {
+            switch (_result)
+            {
+                case ReqRoomType.RoomName:
+                    m_roomNameText.text = "방이름 "+ m_client.inGameData.roomName;
+                    break;
+                case ReqRoomType.PartyData:
+                    ShowPartyId();
+                    break;
+            }
+        }
+    }
+
+    private void ShowPartyId()
+    {
+        m_partyText.text = "";
+        for (int i = 0; i < m_client.inGameData.userCount; i++)
+        {
+            m_partyText.text = m_client.inGameData.userIds[i] + " ";
+        }
     }
 }
