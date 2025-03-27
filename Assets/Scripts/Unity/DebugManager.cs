@@ -12,10 +12,18 @@ public class DebugManager : MonoBehaviour
     public TMP_Text curText;
     public Scrollbar vertiaclScroll;
     public GameObject debugScroll;
+    public bool systemDebug = false;
+    public bool msgDebug = false;
     void Start()
     {
         instance = this;
         tmpText.text = "";
+
+        //디버그창 활성화
+        preText.gameObject.SetActive(systemDebug);
+        curText.gameObject.SetActive(systemDebug);
+        debugScroll.gameObject.SetActive(msgDebug);
+
     }
 
     Queue<string> messegeQueue = new();
@@ -29,18 +37,18 @@ public class DebugManager : MonoBehaviour
     {
         systemQueue.Enqueue(msg);
     }
-  
+
     // Update is called once per frame
     void Update()
     {
-        if(messegeQueue.TryDequeue(out string msg))
+        if (messegeQueue.TryDequeue(out string msg) && msgDebug)
         {
             tmpText.text += (msg + "\n");
             Rect rect = tmpText.rectTransform.rect;
             tmpText.rectTransform.sizeDelta = new Vector2(tmpText.rectTransform.sizeDelta.x, rect.height + 36f);
             vertiaclScroll.value = 0;
         }
-        if (systemQueue.TryDequeue(out string systeMsg))
+        if (systemQueue.TryDequeue(out string systeMsg) && systemDebug)
         {
             preText.text = curText.text;
             curText.text = (systeMsg);

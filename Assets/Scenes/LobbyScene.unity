@@ -169,7 +169,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 157535637}
-  - component: {fileID: 157535639}
   - component: {fileID: 157535638}
   m_Layer: 5
   m_Name: RoomList
@@ -228,26 +227,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 5}
   m_Constraint: 1
   m_ConstraintCount: 1
---- !u!114 &157535639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 157535636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c2623fa5d9bcab4e85c1bda47878c51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_roomDataUIs:
-  - {fileID: 6952178174132522768}
-  - {fileID: 957648711}
-  - {fileID: 993691376}
-  - {fileID: 179636839}
-  - {fileID: 1575744846}
-  - {fileID: 1547420416}
-  m_page: 0
 --- !u!1001 &179636837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -654,6 +633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 475544664}
   - component: {fileID: 475544665}
+  - component: {fileID: 475544666}
   m_Layer: 5
   m_Name: LobbyPanel
   m_TagString: Untagged
@@ -696,6 +676,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_panelType: 2
   m_window: {fileID: 2134949945}
+--- !u!114 &475544666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475544663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c2623fa5d9bcab4e85c1bda47878c51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_roomDataUIs:
+  - {fileID: 6952178174132522768}
+  - {fileID: 957648711}
+  - {fileID: 993691376}
+  - {fileID: 179636839}
+  - {fileID: 1575744846}
+  - {fileID: 1547420416}
+  m_page: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3187,7 +3187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0071979826}
+  m_AnchoredPosition: {x: 0, y: -0.007016073}
   m_SizeDelta: {x: 0, y: 35}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1723037025
