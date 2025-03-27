@@ -10,6 +10,17 @@ public class RoomInfoManager : MonoBehaviour
     public TMP_Text m_partyText; //참가원
     public TMP_Text m_turnText; //지금 누구차레
     public TMP_Text m_preCard; //지금 놓여있는 카드
-  
 
+    public PlayClient m_client;
+
+    private void Awake()
+    {
+        m_client.myAction = Test;
+    }
+
+    private void Test()
+    {
+        m_turnText.text = "테스트 적용";
+        m_turnText.gameObject.SetActive(false);
+    }
 }

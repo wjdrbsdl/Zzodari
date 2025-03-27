@@ -3396,6 +3396,7 @@ MonoBehaviour:
   m_partyText: {fileID: 1024685123}
   m_turnText: {fileID: 1167546065}
   m_preCard: {fileID: 366641178}
+  m_client: {fileID: 486984122}
 --- !u!1 &1820549112
 GameObject:
   m_ObjectHideFlags: 0

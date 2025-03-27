@@ -31,7 +31,7 @@ public class PlayClient : MonoBehaviour
     public bool isMyTurn = false;
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
-
+    public InGameData inGameData = new InGameData();
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -376,6 +376,10 @@ public class PlayClient : MonoBehaviour
             ReqStageReady();
 
         }
+        else if(_reqType == ReqRoomType.RoomData)
+        {
+            ResRoomData(_validData);
+        }
         else if (_reqType == ReqRoomType.GameOver)
         {
             ResGameOver(_validData);
@@ -461,6 +465,12 @@ public class PlayClient : MonoBehaviour
         SendMessege(reqID);
     }
 
+    public void ResRoomData(byte[] _data)
+    {
+        RoomData room = new RoomData(_data);
+        inGameData.roomName = room.roomName;
+    }
+
     public void ResRegisterClientIDToPartyID(byte[] _data)
     {
         //자기 id를 알려주면 다른 모든 참가 아이디를 반환받음
@@ -473,10 +483,14 @@ public class PlayClient : MonoBehaviour
 
         for (int i = 3; i < _data.Length; i += _data[2])
         {
+            int userIdx = 0;
             for (int infoIndex = i; infoIndex < i + _data[2]; infoIndex++)
             {
                 ColorConsole.Default(_data[infoIndex] + "번 참가");
+                inGameData.userIds[userIdx] = _data[infoIndex].ToString();
+                userIdx++;
             }
+            inGameData.userCount = userIdx;
         }
     }
     #endregion
