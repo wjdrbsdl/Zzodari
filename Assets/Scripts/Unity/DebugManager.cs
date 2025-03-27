@@ -20,9 +20,12 @@ public class DebugManager : MonoBehaviour
         tmpText.text = "";
 
         //디버그창 활성화
+        if(preText != null)
         preText.gameObject.SetActive(systemDebug);
-        curText.gameObject.SetActive(systemDebug);
-        debugScroll.gameObject.SetActive(msgDebug);
+        if (curText!= null)
+            curText.gameObject.SetActive(systemDebug);
+        if (debugScroll != null)
+            debugScroll.gameObject.SetActive(msgDebug);
 
     }
 
@@ -57,6 +60,7 @@ public class DebugManager : MonoBehaviour
 
     public void OnOff()
     {
+        msgDebug = !debugScroll.activeSelf;
         debugScroll.SetActive(!debugScroll.activeSelf);
     }
 }
