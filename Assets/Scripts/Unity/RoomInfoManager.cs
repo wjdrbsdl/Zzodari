@@ -12,6 +12,7 @@ public class RoomInfoManager : MonoBehaviour
     public TMP_Text m_partyText; //참가원
     public TMP_Text m_turnText; //지금 누구차레
     public TMP_Text m_preCard; //지금 놓여있는 카드
+    public TMP_Text m_myIdText;
 
     public PlayClient m_client;
 
@@ -44,6 +45,9 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PutDownCard:
                     m_preCard.text = "전 카드 :" + m_client.inGameData.preCard;
+                    break;
+                case ReqRoomType.IDRegister:
+                    m_myIdText.text = "내 아이디 : " + m_client.inGameData.myId;
                     break;
             }
         }

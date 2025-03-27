@@ -8,6 +8,7 @@ public class InGameData
     public string preCard; //전에 낸 카드
 
     public string roomName; //방 이름
+    public string myId;
 
     public void SetRoomName(string _name)
     {
@@ -33,6 +34,12 @@ public class InGameData
     {
         preCard = _preCard;
         Enqueue(ReqRoomType.PutDownCard);
+    }
+
+    public void SetMyId(string _myId)
+    {
+        myId = _myId;
+        Enqueue(ReqRoomType.IDRegister);
     }
 
     private void Enqueue(ReqRoomType _code)

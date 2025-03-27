@@ -334,6 +334,12 @@ public class PlayClient : MonoBehaviour
             }
         }
     }
+
+    public void SortCardList()
+    {
+        haveCardList.Sort();
+        ResetMyCardList();
+    }
     #endregion
 
     private void CountTurn()
@@ -416,6 +422,10 @@ public class PlayClient : MonoBehaviour
 
     public void ReqGameStart()
     {
+        //시작한 상태면 못하게
+        if (isGameStart)
+            return;
+
         byte[] reqStart = { (byte)ReqRoomType.Start };
         SendMessege(reqStart);
     }
@@ -464,6 +474,7 @@ public class PlayClient : MonoBehaviour
     {
         byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)id };
         SendMessege(reqID);
+        inGameData.SetMyId(id.ToString());
     }
 
     public void ResRoomName(byte[] _data)
