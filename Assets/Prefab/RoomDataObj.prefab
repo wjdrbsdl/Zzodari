@@ -281,8 +281,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4054742482198833477}
-        m_TargetAssemblyTypeName: RoomInfoUI, Assembly-CSharp
+      - m_Target: {fileID: 326311200539316272}
+        m_TargetAssemblyTypeName: RoomDataUI, Assembly-CSharp
         m_MethodName: OnClickRoomJoin
         m_Mode: 1
         m_Arguments:
@@ -302,7 +302,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7404140133591800602}
-  - component: {fileID: 4054742482198833477}
+  - component: {fileID: 326311200539316272}
   m_Layer: 5
   m_Name: RoomDataObj
   m_TagString: Untagged
@@ -331,7 +331,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4054742482198833477
+--- !u!114 &326311200539316272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,11 +340,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6907636083987157835}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4af3290db45e14cac3844eca65026a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fc6beb6fb45e2b40a515ba94408f312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_roomName: {fileID: 8958182150561812453}
-  m_count: {fileID: 1904538756285713712}
+  m_nameText: {fileID: 8958182150561812453}
+  m_countText: {fileID: 1904538756285713712}
 --- !u!1 &7794324936659919640
 GameObject:
   m_ObjectHideFlags: 0

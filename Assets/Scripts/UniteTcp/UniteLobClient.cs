@@ -247,6 +247,7 @@ public class UniteLobClient : MonoBehaviour
 
         if (roomCount == 0)
         {
+            RoomListMaker.instance.roomDataQueue.Enqueue(new List<RoomData>());
             return;
         }
 
