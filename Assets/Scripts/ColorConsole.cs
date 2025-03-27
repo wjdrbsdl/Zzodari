@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 
 public class ColorConsole
 {
@@ -12,6 +13,11 @@ public class ColorConsole
     {
         DebugManager.instance.EnqueMessege(_messege);
         //Console.WriteLine(_messege);
+    }
+
+    public static void RuleWarning(string _msg)
+    {
+        DebugManager.instance.EnqueRuleMessege(_msg);
     }
 
     public static void SystemDebug(string _messege)

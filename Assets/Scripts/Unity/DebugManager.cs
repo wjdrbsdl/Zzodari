@@ -10,6 +10,7 @@ public class DebugManager : MonoBehaviour
     public TMP_Text tmpText;
     public TMP_Text preText;
     public TMP_Text curText;
+    public TMP_Text warningText;
     public Scrollbar vertiaclScroll;
     public GameObject debugScroll;
     public bool systemDebug = false;
@@ -20,14 +21,30 @@ public class DebugManager : MonoBehaviour
         tmpText.text = "";
 
         //디버그창 활성화
-        if(preText != null)
-        preText.gameObject.SetActive(systemDebug);
-        if (curText!= null)
+        if (preText != null)
+        {
+            preText.gameObject.SetActive(systemDebug);
+        }
+        if (curText != null)
+        {
             curText.gameObject.SetActive(systemDebug);
+        }
         if (debugScroll != null)
+        {
             debugScroll.gameObject.SetActive(msgDebug);
-
+        }
+        if (warningText != null)
+        {
+            warningText.gameObject.SetActive(false);
+        }
     }
+
+    Queue<string> ruleWarningQueue = new();
+    public void EnqueRuleMessege(string msg)
+    {
+        ruleWarningQueue.Enqueue(msg);
+    }
+
 
     Queue<string> messegeQueue = new();
     public void EnqueMessege(string msg)
@@ -42,6 +59,9 @@ public class DebugManager : MonoBehaviour
     }
 
     // Update is called once per frame
+    float warningTime = 1.5f;
+    float warningRemainTime = 0f;
+    bool warningOn = false;
     void Update()
     {
         if (messegeQueue.TryDequeue(out string msg) && msgDebug)
@@ -55,6 +75,27 @@ public class DebugManager : MonoBehaviour
         {
             preText.text = curText.text;
             curText.text = (systeMsg);
+        }
+        if (ruleWarningQueue.TryDequeue(out string warningMsg))
+        {
+            warningText.text = warningMsg;
+            warningRemainTime = warningTime;
+            warningOn = true;
+            warningText.gameObject.SetActive(true);
+        }
+        WarningOnOff();
+    }
+
+    private void WarningOnOff()
+    {
+        if (warningOn == false)
+            return;
+
+        warningRemainTime -= Time.deltaTime;
+        if (warningRemainTime <= 0)
+        {
+            warningText.gameObject.SetActive(false);
+            warningOn = false;
         }
     }
 

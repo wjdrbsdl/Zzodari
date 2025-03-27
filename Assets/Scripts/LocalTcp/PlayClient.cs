@@ -197,7 +197,7 @@ public class PlayClient : MonoBehaviour
         TMixture selectCardValue = new TMixture();
         if (cardRule.IsVarid(_selectCards, out selectCardValue) == false)
         {
-            ColorConsole.Default("유효한 조합이 아닙니다.");
+            ColorConsole.RuleWarning("유효한 조합이 아닙니다.");
             return false;
         }
 
@@ -214,7 +214,7 @@ public class PlayClient : MonoBehaviour
                     return true;
                 }
             }
-            ColorConsole.Default($"첫 시작은 {CardData.minClass}{CardData.minRealValue}을 포함해야함");
+            ColorConsole.RuleWarning($"첫 시작은 {CardData.minClass}{CardData.minRealValue}을 포함해야 합니다.");
             return false;
         }
 
@@ -223,7 +223,7 @@ public class PlayClient : MonoBehaviour
         {
             if (_selectCards.Count == 0)
             {
-                ColorConsole.Default("올 패스 받은 상태에서 내가 패스는 불가");
+                ColorConsole.RuleWarning("올 패스 받았습니다. 자유롭게 낼 수 있되 패스는 불가 합니다.");
                 return false;
             }
             return true;
@@ -245,14 +245,14 @@ public class PlayClient : MonoBehaviour
         //비교 안되는 타입이면 (앞에 낸것과 다른 유형이면) 실패
         if (cardRule.TryCompare(putDownValue, selectCardValue, out int compareValue) == false)
         {
-            ColorConsole.Default("이전과 다른 타입이라 잘못된 제출");
+            ColorConsole.RuleWarning("다른 유형의 조합입니다.");
             return false;
         }
         //compareValue는 이전꺼에서 현재껄 뺀거 - 즉 양수면 전께 큰거 
         if (compareValue > 0)
         {
             //이전것보다 작아도 실패
-            ColorConsole.Default("전 보다 작다");
+            ColorConsole.RuleWarning("전 보다 작습니다.");
             return false;
         }
 
