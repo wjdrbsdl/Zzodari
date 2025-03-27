@@ -49,6 +49,7 @@ public class PlayClient : MonoBehaviour
         putDownList = new();
         haveCardList = new();
         giveCardList = new();
+        inGameData = new InGameData();
         Connect();
     }
 
@@ -467,7 +468,9 @@ public class PlayClient : MonoBehaviour
 
     public void ResRoomName(byte[] _data)
     {
-        string roomName = Encoding.Unicode.GetString(_data);
+        byte[] nameByte = new byte[_data.Length - 1];
+        Buffer.BlockCopy(_data, 1, nameByte, 0, nameByte.Length);
+        string roomName = Encoding.Unicode.GetString(nameByte);
         inGameData.SetRoomName(roomName);
 
     }
