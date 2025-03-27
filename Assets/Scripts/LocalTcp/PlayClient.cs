@@ -132,6 +132,7 @@ public class PlayClient : MonoBehaviour
         gameTurn = 0;
         isMyTurn = false;
         isGameStart = true;
+        inGameData.ResetBadPoint();
     }
 
     private void ResetStage()
@@ -654,6 +655,7 @@ public class PlayClient : MonoBehaviour
             }
         }
         ColorConsole.Default($"실제 남은 수 {haveCardList.Count} 전달 받은 수 {resRestCard}");
+        inGameData.PlusBadPoint(resRestCard);
         ResetStage();
     }
 

@@ -3428,7 +3428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_centerTrans: {fileID: 1396036519}
-  m_xGap: 0.7
+  m_xGap: 1
   arrangeList: []
 --- !u!4 &1635533835
 Transform:

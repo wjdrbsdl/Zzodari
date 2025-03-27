@@ -13,6 +13,7 @@ public class RoomInfoManager : MonoBehaviour
     public TMP_Text m_turnText; //지금 누구차레
     public TMP_Text m_preCard; //지금 놓여있는 카드
     public TMP_Text m_myIdText;
+    public TMP_Text m_badPoint;
 
     public PlayClient m_client;
 
@@ -21,6 +22,7 @@ public class RoomInfoManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        m_badPoint.text = "0";
     }
 
     public void EnqueueCode(ReqRoomType _code)
@@ -48,6 +50,12 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.IDRegister:
                     m_myIdText.text = "내 아이디 : " + m_client.inGameData.myId;
+                    break;
+                case ReqRoomType.Start:
+                    m_badPoint.text = "벌점 : " + m_client.inGameData.badPoint.ToString();
+                    break;
+                case ReqRoomType.StageOver:
+                    m_badPoint.text = "벌점 : " + m_client.inGameData.badPoint.ToString();
                     break;
             }
         }

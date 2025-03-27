@@ -10,6 +10,8 @@ public class InGameData
     public string roomName; //방 이름
     public string myId;
 
+    public int badPoint;
+
     public void SetRoomName(string _name)
     {
         //플클에서 ResRoonName에서 진행
@@ -40,6 +42,18 @@ public class InGameData
     {
         myId = _myId;
         Enqueue(ReqRoomType.IDRegister);
+    }
+
+    public void PlusBadPoint(int _point)
+    {
+        badPoint += _point;
+        Enqueue(ReqRoomType.StageOver);
+    }
+
+    public void ResetBadPoint()
+    {
+        badPoint = 0;
+        Enqueue(ReqRoomType.Start);
     }
 
     private void Enqueue(ReqRoomType _code)
