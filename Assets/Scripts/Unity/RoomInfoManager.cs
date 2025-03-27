@@ -36,7 +36,7 @@ public class RoomInfoManager : MonoBehaviour
         return $"<color=green>{_string}</color>";
     }
 
-    float showTime = 2.2f;
+    float showTime = 4.5f;
     float restTime = 0f;
     bool isShow = false;
     private void Update()
@@ -65,6 +65,7 @@ public class RoomInfoManager : MonoBehaviour
                         }
                         else if (m_client.inGameData.allPass)
                         {
+                            m_preCard.text = InputColor("전 카드 :") + "올 패쓰!";
                             m_helpText.text = "원하는 조합으로 낼 수 있습니다.";
                         }
                         else
