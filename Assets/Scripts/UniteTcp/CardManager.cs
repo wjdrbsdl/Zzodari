@@ -121,4 +121,9 @@ public class CardManager : MonoBehaviour
     {
        bool put = m_pClient.PutDownCards(m_arrangeSelectCard.GetCardDataList());
     }
+
+    public void OnClickSort()
+    {
+        m_pClient.SortCardList();
+    }
 }
