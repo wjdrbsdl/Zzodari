@@ -14,7 +14,9 @@ public enum ReqRoomType
     ShuffleCard, PutDownCard,
     ArrangeTurn,
     StageReady, StageOver, GameOver,
-    ReqGameOver, ResRoomJoinFail
+    ReqGameOver, ResRoomJoinFail,
+    Draw
+
 
 }
 public class PlayServer

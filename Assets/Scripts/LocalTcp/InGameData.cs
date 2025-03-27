@@ -67,6 +67,11 @@ public class InGameData
         allPass = _isPass;
     }
 
+    public void PutDown()
+    {
+        Enqueue(ReqRoomType.Draw);
+    }
+
     private void Enqueue(ReqRoomType _code)
     {
         RoomInfoManager.instance.EnqueueCode(_code);

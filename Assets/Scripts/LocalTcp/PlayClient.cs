@@ -568,6 +568,7 @@ public class PlayClient : MonoBehaviour
         }
         byte[] reqData = reqCardList.ToArray();
         SendMessege(reqData);
+        inGameData.PutDown();
     }
 
     private void ResPutDownCard(byte[] _data)
