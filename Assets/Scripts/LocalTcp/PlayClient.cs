@@ -484,18 +484,17 @@ public class PlayClient : MonoBehaviour
           * [2] 각 파티원 정보 길이 --일단 id만 받음
           * [3] 0번 파티원부터 정보 입력
           */
-
+        int userIdx = 0;
         for (int i = 3; i < _data.Length; i += _data[2])
         {
-            int userIdx = 0;
             for (int infoIndex = i; infoIndex < i + _data[2]; infoIndex++)
             {
                 ColorConsole.Default(_data[infoIndex] + "번 참가");
                 inGameData.userIds[userIdx] = _data[infoIndex].ToString();
                 userIdx++;
             }
-            inGameData.SetUserCount( userIdx);
         }
+        inGameData.SetUserCount(userIdx);
     }
     #endregion
 
@@ -593,7 +592,7 @@ public class PlayClient : MonoBehaviour
         CardRule rule = new CardRule();
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-
+        inGameData.SetPreCard( _mixture.GetCardValue());
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
@@ -619,6 +618,7 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default("내 차례");
             CheckAllPass();
         }
+        inGameData.SetCurTurnId(_data[1].ToString());
         CountTurn(); //턴을 지정하는건 새로운 턴이 된거
     }
     #endregion

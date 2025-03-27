@@ -39,16 +39,22 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.PartyData:
                     ShowPartyId();
                     break;
+                case ReqRoomType.ArrangeTurn:
+                    m_turnText.text = "현재 차례 :" + m_client.inGameData.curId;
+                    break;
+                case ReqRoomType.PutDownCard:
+                    m_preCard.text = "전 카드 :" + m_client.inGameData.preCard;
+                    break;
             }
         }
     }
 
     private void ShowPartyId()
     {
-        m_partyText.text = "";
+        m_partyText.text = "참가자 ";
         for (int i = 0; i < m_client.inGameData.userCount; i++)
         {
-            m_partyText.text = m_client.inGameData.userIds[i] + " ";
+            m_partyText.text += m_client.inGameData.userIds[i] + " ";
         }
     }
 }

@@ -251,6 +251,11 @@ public struct TMixture
     public int mainRealValue; //기준 가치
     public int cardCount; //사용에 쓰인 카드 수 
 
+    public string GetCardValue()
+    {
+        return mixture + "_" + mainCardClass + "_" + mainRealValue.ToString();
+    }
+
     public static int Compare(TMixture _one, TMixture _two)
     {
         //비교 가능한 것들만 들어올것
