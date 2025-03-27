@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 public enum ReqRoomType
 {
     Ready, Start, RoomOut, Chat,
-    IDRegister, PartyData, RoomData,
+    IDRegister, PartyData, RoomName,
     ShuffleCard, PutDownCard,
     ArrangeTurn,
     StageReady, StageOver, GameOver,

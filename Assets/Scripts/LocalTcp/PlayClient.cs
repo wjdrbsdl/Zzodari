@@ -376,9 +376,9 @@ public class PlayClient : MonoBehaviour
             ReqStageReady();
 
         }
-        else if(_reqType == ReqRoomType.RoomData)
+        else if(_reqType == ReqRoomType.RoomName)
         {
-            ResRoomData(_validData);
+            ResRoomName(_validData);
         }
         else if (_reqType == ReqRoomType.GameOver)
         {
@@ -465,10 +465,11 @@ public class PlayClient : MonoBehaviour
         SendMessege(reqID);
     }
 
-    public void ResRoomData(byte[] _data)
+    public void ResRoomName(byte[] _data)
     {
-        RoomData room = new RoomData(_data);
-        inGameData.roomName = room.roomName;
+        string roomName = Encoding.Unicode.GetString(_data);
+        inGameData.SetRoomName(roomName);
+
     }
 
     public void ResRegisterClientIDToPartyID(byte[] _data)
@@ -490,7 +491,7 @@ public class PlayClient : MonoBehaviour
                 inGameData.userIds[userIdx] = _data[infoIndex].ToString();
                 userIdx++;
             }
-            inGameData.userCount = userIdx;
+            inGameData.SetUserCount( userIdx);
         }
     }
     #endregion
