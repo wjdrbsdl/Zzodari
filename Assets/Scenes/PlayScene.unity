@@ -204,10 +204,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 14cc6f4470f3343599bc0ea4023e44e1, type: 3}
   - {fileID: 21300000, guid: 1938b46afe3a146e196dd84d369e0bfe, type: 3}
   m_cardClasses:
-  - {fileID: 21300000, guid: 2d5ae00e840a149128f18aa1572445d3, type: 3}
-  - {fileID: 21300000, guid: 065f85f834b404b5a83125783a732edc, type: 3}
-  - {fileID: 21300000, guid: 105ab36f34d4241f1846c061cd7e5b3b, type: 3}
-  - {fileID: 21300000, guid: 6538eb2824efb4beead8c6d3e0251dcb, type: 3}
+  - {fileID: 21300000, guid: be716b067fefe9246a2d1bd82ccf7d29, type: 3}
+  - {fileID: 21300000, guid: 03a358ce150030c44afda58de7fdedab, type: 3}
+  - {fileID: 21300000, guid: 4a2c2ae64db70524a98a835c246554ff, type: 3}
+  - {fileID: 21300000, guid: 91677fad0ee5d244a8facdc896365392, type: 3}
 --- !u!4 &83151967
 Transform:
   m_ObjectHideFlags: 0
