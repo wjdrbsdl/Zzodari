@@ -14,6 +14,7 @@ public class RoomInfoManager : MonoBehaviour
     public TMP_Text m_preCard; //지금 놓여있는 카드
     public TMP_Text m_myIdText;
     public TMP_Text m_badPoint;
+    public TMP_Text m_helpText;
 
     public PlayClient m_client;
 
@@ -30,40 +31,82 @@ public class RoomInfoManager : MonoBehaviour
         reqTypeQueue.Enqueue(_code);
     }
 
+    private string InputColor(string _string)
+    {
+        return $"<color=green>{_string}</color>";
+    }
+
+    float showTime = 2.2f;
+    float restTime = 0f;
+    bool isShow = false;
     private void Update()
     {
         if(reqTypeQueue.TryDequeue(out ReqRoomType _result))
         {
+            m_helpText.gameObject.SetActive(false);
             switch (_result)
             {
                 case ReqRoomType.RoomName:
-                    m_roomNameText.text = "방이름 "+ m_client.inGameData.roomName;
+                    m_roomNameText.text = InputColor("방이름 ") + m_client.inGameData.roomName;
                     break;
                 case ReqRoomType.PartyData:
                     ShowPartyId();
                     break;
                 case ReqRoomType.ArrangeTurn:
-                    m_turnText.text = "현재 차례 :" + m_client.inGameData.curId;
+                    m_turnText.text = InputColor("현재 차례 :") + m_client.inGameData.curId;
+                    isShow = true;
+                    restTime = showTime;
+                    if (m_client.inGameData.curId == m_client.inGameData.myId)
+                    {
+                        m_helpText.gameObject.SetActive(true);
+                        if(m_client.inGameData.curTurn == 1)
+                        {
+                            m_helpText.text = "클로버 3을 포함 원하는 조합으로 낼 수 있습니다.";
+                        }
+                        else if (m_client.inGameData.allPass)
+                        {
+                            m_helpText.text = "원하는 조합으로 낼 수 있습니다.";
+                        }
+                        else
+                        {
+                            m_helpText.text = m_client.inGameData.preCardCount + "장 조합 낼 수 있습니다.";
+                        }
+                    }
                     break;
                 case ReqRoomType.PutDownCard:
-                    m_preCard.text = "전 카드 :" + m_client.inGameData.preCard;
+                    m_preCard.text = InputColor("전 카드 :") + m_client.inGameData.preCard;
                     break;
                 case ReqRoomType.IDRegister:
-                    m_myIdText.text = "내 아이디 : " + m_client.inGameData.myId;
+                    m_myIdText.text = InputColor("내 아이디 : ") + m_client.inGameData.myId;
                     break;
                 case ReqRoomType.Start:
-                    m_badPoint.text = "벌점 : " + m_client.inGameData.badPoint.ToString();
+                    m_badPoint.text = InputColor("벌점 : ") + m_client.inGameData.badPoint.ToString();
                     break;
                 case ReqRoomType.StageOver:
-                    m_badPoint.text = "벌점 : " + m_client.inGameData.badPoint.ToString();
+                    m_badPoint.text = InputColor("벌점 : ") + m_client.inGameData.badPoint.ToString();
                     break;
             }
+        }
+
+        CountGuide();
+    }
+
+    private void CountGuide()
+    {
+        if (isShow == false)
+            return;
+
+        restTime -= Time.deltaTime;
+        if (restTime < 0)
+        {
+            m_helpText.gameObject.SetActive(false);
+            isShow = false;
         }
     }
 
     private void ShowPartyId()
     {
-        m_partyText.text = "참가자 ";
+        m_partyText.text = InputColor("참가자 ");
         for (int i = 0; i < m_client.inGameData.userCount; i++)
         {
             m_partyText.text += m_client.inGameData.userIds[i] + " ";

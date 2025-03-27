@@ -262,6 +262,7 @@ public class PlayClient : MonoBehaviour
 
     private bool CheckAllPass()
     {
+        inGameData.SetAllPass(false);
         if (putDownList.Count == 0)
         {
             return false;
@@ -278,7 +279,7 @@ public class PlayClient : MonoBehaviour
             {
                 //하나라도 내가 냈던거랑 같으면 내가 냈던거
                 ColorConsole.Default("올 패스 받았음");
-
+                inGameData.SetAllPass(true);
                 return true;
             }
             return false;
@@ -604,7 +605,7 @@ public class PlayClient : MonoBehaviour
         CardRule rule = new CardRule();
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-        inGameData.SetPreCard( _mixture.GetCardValue());
+        inGameData.SetPreCard( _mixture.GetCardValue(), _mixture.cardCount);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
@@ -630,8 +631,9 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default("내 차례");
             CheckAllPass();
         }
-        inGameData.SetCurTurnId(_data[1].ToString());
+        
         CountTurn(); //턴을 지정하는건 새로운 턴이 된거
+        inGameData.SetCurTurnInfo(_data[1].ToString(), gameTurn);
     }
     #endregion
 

@@ -6,11 +6,15 @@ public class InGameData
 
     public string curId; //현재 유저
     public string preCard; //전에 낸 카드
+    public int preCardCount;
 
     public string roomName; //방 이름
     public string myId;
 
     public int badPoint;
+    public bool allPass = false;
+
+    public int curTurn;
 
     public void SetRoomName(string _name)
     {
@@ -26,15 +30,17 @@ public class InGameData
         Enqueue(ReqRoomType.PartyData);
     }
 
-    public void SetCurTurnId(string _curId)
+    public void SetCurTurnInfo(string _curId, int _curTurn)
     {
         curId = _curId;
+        curTurn = _curTurn;
         Enqueue(ReqRoomType.ArrangeTurn);
     }
 
-    public void SetPreCard(string _preCard)
+    public void SetPreCard(string _preCard, int _cardCount)
     {
         preCard = _preCard;
+        preCardCount = _cardCount;
         Enqueue(ReqRoomType.PutDownCard);
     }
 
@@ -54,6 +60,11 @@ public class InGameData
     {
         badPoint = 0;
         Enqueue(ReqRoomType.Start);
+    }
+
+    public void SetAllPass(bool _isPass)
+    {
+        allPass = _isPass;
     }
 
     private void Enqueue(ReqRoomType _code)
