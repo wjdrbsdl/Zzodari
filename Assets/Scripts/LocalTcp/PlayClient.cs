@@ -170,7 +170,7 @@ public class PlayClient : MonoBehaviour
 
         if (isMyTurn == false)
         {
-            ColorConsole.Default("자기 차례가 아닙니다.");
+            ColorConsole.RuleWarning("자기 차례가 아닙니다.");
             return false;
         }
         //낼 수 있는 카드 인지 체크
