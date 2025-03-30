@@ -18,4 +18,9 @@ public class InputManager : MonoBehaviour
     {
         return m_inputText.text;
     }
+
+    public void SetInputTest(string _text)
+    {
+        m_inputText.text = _text;
+    }
 }
