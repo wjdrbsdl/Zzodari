@@ -78,7 +78,7 @@ public class UniteLobClient : MonoBehaviour
         catch
         {
             ColorConsole.Default("로비에서 재 연결 시도");
-            Connect();
+            clientSocket.Close();
         }
     }
 
