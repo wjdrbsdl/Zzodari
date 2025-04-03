@@ -40,13 +40,14 @@ public class IPParsing : MonoBehaviour
 
     public void Awake()
     {
+        if(UniteServer.ServerIp == null)
         ParseSheetData();
     }
 
     public void Start()
     {
-        Debug.Log("IP »Æ¿Œ");
-        StartCoroutine(ParsingPublicIP());
+        if (UniteServer.ServerIp == null)
+            StartCoroutine(ParsingPublicIP());
     }
 
     private IEnumerator ParsingPublicIP()
