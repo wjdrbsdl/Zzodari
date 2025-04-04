@@ -15,7 +15,7 @@ public class CardManager : MonoBehaviour
     public CardObject[] cards;
 
     public GameObject m_selectZoneObj;
-
+    public GameObject m_guideText; // 드래그해서 끌어라는 가이드 문구
     public List<CardData> m_haveCardList = new List<CardData>();
 
     #region
@@ -78,6 +78,7 @@ public class CardManager : MonoBehaviour
         m_arrangeSelectCard.ResetList();
         m_arrangeHandCard.ResetList();
         m_arrangeHandCard.SetCardObjects(activeCards);
+        ShowGuidText();
     }
 
     #region 드래그 반응
@@ -99,6 +100,9 @@ public class CardManager : MonoBehaviour
         {
             DragSelectToHand(_object);
         }
+
+        ShowGuidText();
+       
     }
 
     private void DragHandToSelect(CardObject _object)
@@ -125,5 +129,11 @@ public class CardManager : MonoBehaviour
     public void OnClickSort()
     {
         m_pClient.SortCardList();
+    }
+
+    private void ShowGuidText()
+    {
+        bool noSelcted = (m_arrangeSelectCard.GetCardDataList().Count == 0);
+        m_guideText.SetActive(noSelcted);
     }
 }
