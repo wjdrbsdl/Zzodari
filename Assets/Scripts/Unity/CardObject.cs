@@ -8,6 +8,8 @@ public class CardObject : MonoBehaviour
 {
     public SpriteRenderer m_cardClassRender;
     public SpriteRenderer m_cardNum;
+    public GameObject m_effectPrefab;
+    public Transform m_effectTransform;
     public CardData m_cardData;
     public Vector3 m_arrangePos; //월드상 지정된 좌표 
     public float m_moveSpeed = 3f;
@@ -38,6 +40,7 @@ public class CardObject : MonoBehaviour
         if(m_isDragging == true)
         {
             //플레이어에 의해서 드래깅중이면 끌려가기
+            MakeEffect();
             return;
         }
 
@@ -48,5 +51,17 @@ public class CardObject : MonoBehaviour
 
         Vector3 direct = m_arrangePos - transform.position;
         transform.Translate(direct * m_moveSpeed * Time.deltaTime);
+    }
+
+    float ratio = 2f;
+    private float rest = 0f;
+    private void MakeEffect()
+    {
+        rest -= Time.deltaTime;
+        if(rest < 0)
+        {
+            Instantiate(m_effectPrefab, m_effectTransform);
+            rest = ratio;
+        }
     }
 }
