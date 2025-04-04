@@ -33,7 +33,6 @@ public class ClientManager : MonoBehaviour
             lobClient.id = 1;
             lobClient.Connect();
             IsRoomOut = false;
-            ControlPanel(EPanelType.LobbyUI);
         }
     }
 
@@ -56,7 +55,7 @@ public class ClientManager : MonoBehaviour
             lobClient.ip = ip;
             lobClient.id = 1;
             lobClient.Connect();
-            ControlPanel(EPanelType.LobbyUI);
+         
         }
     }
 
@@ -128,5 +127,31 @@ public class ClientManager : MonoBehaviour
     {
         connectPanel.OnOff(_onPanel);
         lobbyPanel.OnOff(_onPanel);
+    }
+
+    public void ConnectResult(bool _isConnect)
+    {
+        if (_isConnect)
+        {
+            ControlPanel(EPanelType.LobbyUI);
+        }
+        else
+        {
+            ControlPanel(EPanelType.ConnectUI);
+        }
+    }
+
+    Queue<Action> callBackQue = new();
+    private void Update()
+    {
+        if (callBackQue.TryDequeue(out Action callBack))
+        {
+            callBack.Invoke();
+        }
+    }
+
+    public void EnqueAction(Action _action)
+    {
+        callBackQue.Enqueue(_action);
     }
 }

@@ -33,7 +33,6 @@ public class UniteLobClient : MonoBehaviour
 
     public void Connect()
     {
-        callBackQue = new();
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = IPAddress.Parse(ip);
         UniteServer.ServerIp = ipAddress; //들어갔던 서버 기록
@@ -74,10 +73,14 @@ public class UniteLobClient : MonoBehaviour
             ReqClientNumber();
             //
             ReqRoomList();
+
+            ClientManager.instance.EnqueAction(() => ClientManager.instance.ConnectResult(true));
+            
         }
         catch
         {
-            ColorConsole.Default("로비에서 재 연결 시도");
+            ClientManager.instance.EnqueAction(() => ClientManager.instance.ConnectResult(false));
+            ColorConsole.Default("컨넥 콜백 실패");
             clientSocket.Close();
         }
     }
@@ -105,7 +108,7 @@ public class UniteLobClient : MonoBehaviour
                 recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
                 if (recv == 0)
                 {
-                    //만약 남은게있으면 어떡함?
+                    ColorConsole.Default("받은거 0 ");
                     break;
                 }
             } while (rest >= 1);
@@ -150,7 +153,8 @@ public class UniteLobClient : MonoBehaviour
         }
         catch
         {
-            Connect();
+            ColorConsole.Default("리십 콜백 실패");
+            //  Connect();
         }
     }
 
@@ -165,15 +169,6 @@ public class UniteLobClient : MonoBehaviour
         Array.Copy(roomByte, 0, reqRoom, 1, roomByte.Length); //룸 네임 전체를 요청 바이트 1번째부터 복사시작
         reqRoom[0] = (byte)ReqLobbyType.RoomMake;
         SendMessege(reqRoom);
-    }
-
-    Queue<Action> callBackQue = new();
-    private void Update()
-    {
-        if (callBackQue.TryDequeue(out Action callBack))
-        {
-            callBack.Invoke();
-        }
     }
 
     private void ResRoomJoin(byte[] _receiveData)
@@ -212,7 +207,7 @@ public class UniteLobClient : MonoBehaviour
             PlayClient.port = portNum;
             SceneManager.LoadScene("PlayScene");
         };
-        callBackQue.Enqueue(makePlayClientCallback);
+        ClientManager.instance.EnqueAction(makePlayClientCallback);
         meetState = MeetState.Room;
     }
 
