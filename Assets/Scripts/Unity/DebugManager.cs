@@ -64,12 +64,16 @@ public class DebugManager : MonoBehaviour
     bool warningOn = false;
     void Update()
     {
-        if (messegeQueue.TryDequeue(out string msg) && msgDebug)
+        if (messegeQueue.TryDequeue(out string msg))
         {
-            tmpText.text += (msg + "\n");
-            Rect rect = tmpText.rectTransform.rect;
-            tmpText.rectTransform.sizeDelta = new Vector2(tmpText.rectTransform.sizeDelta.x, rect.height + 36f);
-            vertiaclScroll.value = 0;
+            if (msgDebug)
+            {
+                tmpText.text += (msg + "\n");
+                Rect rect = tmpText.rectTransform.rect;
+                tmpText.rectTransform.sizeDelta = new Vector2(tmpText.rectTransform.sizeDelta.x, rect.height + 36f);
+                vertiaclScroll.value = 0;
+            }
+            Debug.Log(msg);
         }
         if (systemQueue.TryDequeue(out string systeMsg) && systemDebug)
         {

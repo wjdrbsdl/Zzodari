@@ -4156,7 +4156,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 454.21814, y: 35}
+  m_SizeDelta: {x: 317.68, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1507417397
 MonoBehaviour:
@@ -6220,6 +6220,7 @@ MonoBehaviour:
   cardSample: {fileID: 1647565228510898765, guid: 3e35b9d63122b304b8072a3f0221cae7, type: 3}
   cards: []
   m_selectZoneObj: {fileID: 968636063}
+  m_guideText: {fileID: 1507417395}
 --- !u!4 &2045521614
 Transform:
   m_ObjectHideFlags: 0
