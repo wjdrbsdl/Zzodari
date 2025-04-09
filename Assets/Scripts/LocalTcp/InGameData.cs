@@ -12,6 +12,7 @@ public class InGameData
     public string myId;
 
     public int badPoint;
+    public int myRank;
     public bool allPass = false;
 
     public int curTurn;
@@ -54,6 +55,13 @@ public class InGameData
     {
         badPoint += _point;
         Enqueue(ReqRoomType.StageOver);
+    }
+
+    public void FinalScore(int _point, int _rank)
+    {
+        badPoint = _point;
+        myRank = _rank;
+        Enqueue(ReqRoomType.GameOver);
     }
 
     public void ResetBadPoint()

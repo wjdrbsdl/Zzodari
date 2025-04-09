@@ -129,8 +129,14 @@ public class PlayClient : MonoBehaviour
         putDownList.Clear();
         gameTurn = 0;
         isMyTurn = false;
-        isGameStart = true;
-        inGameData.ResetBadPoint();
+
+        //스테이지 종료후 다시 시작하는 경우일땐 게임은 진행중임. 
+        if(isGameStart == false)
+        {
+            isGameStart = true;
+            inGameData.ResetBadPoint();
+        }
+        
     }
 
     private void ResetStage()
@@ -683,10 +689,24 @@ public class PlayClient : MonoBehaviour
         * [3] 유저 ID
         * [4] 유저 벌점
         */
+        int myBadPoint = 0;
+        int myRank = 1;
+        List<(int, int)> scoreList = new();
+        int rank = 1;
+
         for (int i = 3; i < _data.Length; i += _data[2])
         {
             ColorConsole.Default($"{_data[i]}의 벌점 :{_data[i + 1]}");
+            (int, int) idWithScore = (_data[i], _data[i + 1]);
+            scoreList.Add(idWithScore);
+            if (_data[i] == id)
+            {
+                myRank = rank;
+                myBadPoint = _data[i + 1];
+            }
+            rank++;
         }
+        inGameData.FinalScore(myBadPoint, myRank);
     }
     #endregion
 
