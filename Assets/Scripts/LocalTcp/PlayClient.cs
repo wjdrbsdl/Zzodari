@@ -642,7 +642,7 @@ public class PlayClient : MonoBehaviour
         }
         
         CountTurn(); //턴을 지정하는건 새로운 턴이 된거
-        inGameData.SetCurTurnInfo(_data[1].ToString(), gameTurn);
+        inGameData.SetCurTurnInfo(_data[1].ToString(), gameTurn, isMyTurn);
     }
     #endregion
 

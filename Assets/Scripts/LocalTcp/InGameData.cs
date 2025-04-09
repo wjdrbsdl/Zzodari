@@ -14,6 +14,7 @@ public class InGameData
     public int badPoint;
     public int myRank;
     public bool allPass = false;
+    public bool isMyTurn = false;
 
     public int curTurn;
 
@@ -31,10 +32,11 @@ public class InGameData
         Enqueue(ReqRoomType.PartyData);
     }
 
-    public void SetCurTurnInfo(string _curId, int _curTurn)
+    public void SetCurTurnInfo(string _curId, int _curTurn, bool _isMyTurn)
     {
         curId = _curId;
         curTurn = _curTurn;
+        isMyTurn = _isMyTurn;
         Enqueue(ReqRoomType.ArrangeTurn);
     }
 
