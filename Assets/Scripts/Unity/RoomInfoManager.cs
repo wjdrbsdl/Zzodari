@@ -86,6 +86,10 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.StageOver:
                     m_badPoint.text = InputColor("¹úÁ¡ : ") + m_client.inGameData.badPoint.ToString();
                     break;
+                case ReqRoomType.GameOver:
+                    m_badPoint.text = InputColor("¹úÁ¡ : ") + m_client.inGameData.badPoint.ToString();
+                    m_badPoint.text += InputColor(" ¼øÀ§ : ") + m_client.inGameData.myRank.ToString();
+                    break;
                 case ReqRoomType.Draw:
                     isShow = true;
                     restTime = showTime;
