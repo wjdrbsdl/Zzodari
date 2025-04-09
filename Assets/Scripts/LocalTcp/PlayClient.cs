@@ -586,6 +586,7 @@ public class PlayClient : MonoBehaviour
         {
             //이전에 냈던건 초기화
             ResetGiveCard();
+            SortCardList(); // 손패 정렬
         }
         if (_data[2] == 0)
         {
