@@ -2167,6 +2167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 968636065}
   - component: {fileID: 968636064}
+  - component: {fileID: 968636066}
   m_Layer: 7
   m_Name: SelectZone
   m_TagString: Untagged
@@ -2217,6 +2218,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &968636066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968636063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f499daf4332624ebdc8ddd39fa5b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTurnColor: {r: 0, g: 0, b: 0, a: 0}
+  otherTurnColor: {r: 0.3490566, g: 0.14324494, b: 0.14324494, a: 1}
+  m_sprite: {fileID: 1683168554}
 --- !u!1 &978379757
 GameObject:
   m_ObjectHideFlags: 0
@@ -4956,6 +4972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1683168553}
   - component: {fileID: 1683168554}
+  - component: {fileID: 1683168555}
   m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
@@ -5030,6 +5047,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1683168555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683168552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f499daf4332624ebdc8ddd39fa5b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTurnColor: {r: 0, g: 0, b: 0, a: 0}
+  otherTurnColor: {r: 1, g: 0, b: 0, a: 1}
+  m_sprite: {fileID: 1683168554}
 --- !u!1 &1690062004
 GameObject:
   m_ObjectHideFlags: 0
@@ -5443,7 +5475,7 @@ GameObject:
   - component: {fileID: 1756461710}
   - component: {fileID: 1756461711}
   m_Layer: 5
-  m_Name: RoomManager
+  m_Name: RoomInfoUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5495,6 +5527,7 @@ MonoBehaviour:
   m_myIdText: {fileID: 452042033}
   m_badPoint: {fileID: 701393722}
   m_helpText: {fileID: 1351857071}
+  m_selectzoneColor: {fileID: 968636066}
   m_client: {fileID: 486984122}
 --- !u!1 &1817615428
 GameObject:

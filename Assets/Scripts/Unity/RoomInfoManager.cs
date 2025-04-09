@@ -16,6 +16,7 @@ public class RoomInfoManager : MonoBehaviour
     public TMP_Text m_badPoint;
     public TMP_Text m_helpText;
 
+    public SelectZoneColorController m_selectzoneColor;
     public PlayClient m_client;
 
     public Queue<ReqRoomType> reqTypeQueue = new(); //플레이클라이언트에서 어떤 핸들 작업 했는지
@@ -54,6 +55,7 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.ArrangeTurn:
                     m_turnText.text = InputColor("현재 차례 :") + m_client.inGameData.curId;
+                    m_selectzoneColor.ChangeColor(m_client.inGameData.isMyTurn);
                     isShow = true;
                     restTime = showTime;
                     if (m_client.inGameData.curId == m_client.inGameData.myId)
