@@ -614,7 +614,7 @@ public class PlayClient : MonoBehaviour
         CardRule rule = new CardRule();
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-        inGameData.SetPreCard( _mixture.GetCardValue(), _mixture.cardCount);
+        inGameData.SetPreCard( _mixture.GetCardShowValue(), _mixture.cardCount);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
