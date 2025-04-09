@@ -4,8 +4,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using testTcp;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerData
@@ -140,8 +138,10 @@ public class PlayClient : MonoBehaviour
         ColorConsole.Default("스테이지 리셋");
         giveCardList.Clear();
         putDownList.Clear();
+        haveCardList.Clear();
         gameTurn = 0;
         isMyTurn = false;
+        SetMyCardList(); //유니티 -ResetStage에서 보유카드 클리어하고, 그상태로 UI 갱신
     }
 
     private void SetGameOver()
@@ -158,7 +158,6 @@ public class PlayClient : MonoBehaviour
     private void SendHaveCard()
     {
         cardSelector.SetHaveCard(haveCardList);
-
     }
 
     public bool PutDownCards(List<CardData> _selectCards)
@@ -382,6 +381,7 @@ public class PlayClient : MonoBehaviour
         else if (_reqType == ReqRoomType.StageOver)
         {
             ResStageOver(_validData);
+            ResetStage();
             ReqStageReady();
 
         }
@@ -392,6 +392,7 @@ public class PlayClient : MonoBehaviour
         else if (_reqType == ReqRoomType.GameOver)
         {
             ResGameOver(_validData);
+            ResetStage();
             SetGameOver();
             cardSelector.isPlaying = false;
         }
@@ -659,7 +660,6 @@ public class PlayClient : MonoBehaviour
         }
         ColorConsole.Default($"실제 남은 수 {haveCardList.Count} 전달 받은 수 {resRestCard}");
         inGameData.PlusBadPoint(resRestCard);
-        ResetStage();
     }
 
     private void ReqStageReady()
