@@ -40,7 +40,7 @@ public class CardObject : MonoBehaviour
         if(m_isDragging == true)
         {
             //플레이어에 의해서 드래깅중이면 끌려가기
-            MakeEffect();
+            //MakeEffect();
             return;
         }
 
