@@ -56,6 +56,7 @@ public class InGameData
         myId = _myId;
         PlayerData myData = new PlayerData();
         myData.ID = _myId;
+        myData.isMe = true;
         RecordId(_myId);
         Enqueue(ReqRoomType.IDRegister);
     }

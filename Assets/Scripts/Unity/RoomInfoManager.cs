@@ -2,18 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RoomInfoManager : MonoBehaviour
 {
     public static RoomInfoManager instance;
 
+    public UIRoomCharactor m_roomCharUI;
     public TMP_Text m_roomNameText; //방 제목
-    public TMP_Text m_partyText; //참가원
-    public TMP_Text m_turnText; //지금 누구차레
     public TMP_Text m_preCard; //지금 놓여있는 카드
-    public TMP_Text m_myIdText;
-    public TMP_Text m_badPoint;
     public TMP_Text m_helpText;
 
     public SelectZoneColorController m_selectzoneColor;
@@ -24,9 +20,12 @@ public class RoomInfoManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        m_badPoint.text = "0";
     }
 
+    private void Start()
+    {
+        m_roomCharUI.SetInGameData(m_client.inGameData);
+    }
     public void EnqueueCode(ReqRoomType _code)
     {
         reqTypeQueue.Enqueue(_code);
@@ -57,7 +56,7 @@ public class RoomInfoManager : MonoBehaviour
                     ShowPartyInfo(inGameData);
                     break;
                 case ReqRoomType.ArrangeTurn:
-                    m_turnText.text = InputColor("현재 차례 :") + inGameData.curId;
+                    ShowPartyInfo(inGameData);
                     m_selectzoneColor.ChangeColor(inGameData.isMyTurn);
                     isShow = true;
                     restTime = showTime;
@@ -84,12 +83,12 @@ public class RoomInfoManager : MonoBehaviour
                     
                     break;
                 case ReqRoomType.IDRegister:
-                    m_myIdText.text = InputColor("내 아이디 : ") + inGameData.myId;
+                    ShowPartyInfo(inGameData);
                     break;
              
                 case ReqRoomType.GameOver:
                     ShowPartyInfo(inGameData);
-                    m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
+                    //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
                     isShow = true;
@@ -118,13 +117,7 @@ public class RoomInfoManager : MonoBehaviour
 
     private void ShowPartyInfo(InGameData _gameData)
     {
-        m_partyText.text = InputColor("참가자 ");
-        List<PlayerData> pDataList = m_client.inGameData.m_partyList;
-        for (int i = 0; i < pDataList.Count; i++)
-        {
-            PlayerData pData = pDataList[i];
-            m_partyText.text += "아이디: "+ pData.ID + " 남은 카드 : " + pData.restCardCount + " 벌점 : " + pData.badPoint + "\n";
-        }
+        m_roomCharUI.Renew();
     }
 
     private void ShowPutDownCardInfo(InGameData _gameData)

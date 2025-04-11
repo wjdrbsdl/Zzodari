@@ -11,6 +11,7 @@ public class PlayerData
     public string ID;
     public int restCardCount;
     public int badPoint;
+    public bool isMe = false;
 }
 
 
