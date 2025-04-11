@@ -63,8 +63,13 @@ public class IPParsing : MonoBehaviour
             {
                 isFind = true;
                 Debug.Log(parseData.DbValueList[i][0] + " "+ parseData.DbValueList[i][1]);
-                InputManager.instance.SetInputTest(parseData.DbValueList[i][1]);
             }
+
+            if(parseData.DbValueList.Count>=1)
+             InputManager.instance.SetInputTest(parseData.DbValueList[0][1]);
+            if (parseData.DbValueList.Count >= 2)
+                TestAgora._token = parseData.DbValueList[1][1];
+
             if (limitTime < 0)
             {
                 haveTime = false;
