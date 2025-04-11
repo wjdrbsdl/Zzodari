@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerData
 {
-    public int ID;
+    public string ID;
     public int restCardCount;
     public int badPoint;
 }
@@ -454,7 +454,7 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData((CardClass)_resDate[i], _resDate[i + 1]);
             haveCardList.Add(card);
         }
-
+        inGameData.ReSetRestCard();
         SetMyCardList();
     }
 
@@ -505,16 +505,19 @@ public class PlayClient : MonoBehaviour
           * [3] 0번 파티원부터 정보 입력
           */
         int userIdx = 0;
+        List<string> idList = new List<string>();
         for (int i = 3; i < _data.Length; i += _data[2])
         {
             for (int infoIndex = i; infoIndex < i + _data[2]; infoIndex++)
             {
-                ColorConsole.Default(_data[infoIndex] + "번 참가");
-                inGameData.userIds[userIdx] = _data[infoIndex].ToString();
+                string id = _data[infoIndex].ToString();
+                ColorConsole.Default(id + "번 참가");
+                inGameData.userIds[userIdx] = id;
+                idList.Add(id);
                 userIdx++;
             }
         }
-        inGameData.SetUserCount(userIdx);
+        inGameData.RecordIdList(idList);
     }
     #endregion
 
@@ -614,7 +617,8 @@ public class PlayClient : MonoBehaviour
         CardRule rule = new CardRule();
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-        inGameData.SetPreCard( _mixture.GetCardShowValue(), _mixture.cardCount);
+        string putPlayerID = _data[1].ToString(); //카드 낸사람
+        inGameData.SetPutDownCardInfo( _mixture.GetCardShowValue(), _mixture.cardCount, putPlayerID);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
@@ -658,15 +662,10 @@ public class PlayClient : MonoBehaviour
         int resRestCard = 0;
         for (int i = 2; i < _data.Length; i += 2)
         {
-            if (_data[i] == id)
-            {
-                //내가 남았다고 전달 받은 카드 수
-                resRestCard = _data[i + 1];
-                break;
-            }
+            string playerId = id.ToString();
+            inGameData.PlusBadPoints(playerId, _data[i + 1]);
         }
-        ColorConsole.Default($"실제 남은 수 {haveCardList.Count} 전달 받은 수 {resRestCard}");
-        inGameData.PlusBadPoint(resRestCard);
+        
     }
 
     private void ReqStageReady()
