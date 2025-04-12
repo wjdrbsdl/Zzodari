@@ -53,16 +53,15 @@ public class InGameData
     #region 플레이 데이터 생성 : 아이디 기록
     public void SetMyId(string _myId)
     {
-        myId = _myId;
-        PlayerData myData = new PlayerData();
-        myData.ID = _myId;
-        myData.isMe = true;
-        RecordId(_myId);
+        myId = _myId; //인게임에 별도로 내아이디 저장
+        RecordId(_myId); //인게임 관리 플레이어 데이터에 아이디 등록
+        GetMyData().isMe = true; //내아이디로 찾아온다음 그 데이터에 나란걸 표시.
         Enqueue(ReqRoomType.IDRegister);
     }
 
     private void RecordId(string _id)
-    {
+    { 
+        //추가하려는 아이디가 플레이 데이터 리스트에 없으면 새롭게 데이터를 만들어서 넣는 부분. 
         PlayerData idData = GetPlayData(_id);
         if (idData == null)
         {
