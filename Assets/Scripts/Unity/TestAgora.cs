@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Agora.Rtc;
-using Agora_RTC_Plugin.API_Example.Examples.Basic.JoinChannelAudio;
 
 public class TestAgora : MonoBehaviour
 {
