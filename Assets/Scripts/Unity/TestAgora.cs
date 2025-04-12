@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Agora.Rtc;
+using UnityEngine.Android;
+using System.Collections;
 
 public class TestAgora : MonoBehaviour
 {
@@ -13,6 +15,23 @@ public class TestAgora : MonoBehaviour
         SetupVideoSDKEngine();
         InitEventHandler();
         
+    }
+
+#if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    private ArrayList permissionList = new ArrayList() { Permission.Microphone };
+#endif
+
+    private void CheckPermissions()
+    {
+#if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+        foreach (string permission in permissionList)
+        {
+            if (!Permission.HasUserAuthorizedPermission(permission))
+            {
+                Permission.RequestUserPermission(permission);
+            }
+        }
+#endif
     }
 
     private void SetupVideoSDKEngine()
@@ -49,6 +68,8 @@ public class TestAgora : MonoBehaviour
         options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
         // Join the channel
         RtcEngine.JoinChannel(_token, _channelName, 0, options);
+        //
+        CheckPermissions();
     }
 
     public void Leave()
