@@ -24,7 +24,7 @@ public class RoomInfoManager : MonoBehaviour
 
     private void Start()
     {
-        m_roomCharUI.SetInGameData(m_client.inGameData);
+        m_roomCharUI.SetInGameData(m_client.GetInGameData());
     }
     public void EnqueueCode(ReqRoomType _code)
     {

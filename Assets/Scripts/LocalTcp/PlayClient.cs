@@ -30,7 +30,7 @@ public class PlayClient : MonoBehaviour
     public bool isMyTurn = false;
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
-    public InGameData inGameData = new InGameData();
+    public InGameData inGameData;
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -48,8 +48,18 @@ public class PlayClient : MonoBehaviour
         putDownList = new();
         haveCardList = new();
         giveCardList = new();
+        if(inGameData == null)
         inGameData = new InGameData();
         Connect();
+    }
+
+    public InGameData GetInGameData()
+    {
+        if(inGameData == null)
+        {
+            inGameData = new InGameData();
+        }
+        return inGameData;
     }
 
     #region 연결 수신
