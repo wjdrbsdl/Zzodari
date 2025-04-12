@@ -22,10 +22,6 @@ public class RoomInfoManager : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
-    {
-        m_roomCharUI.SetInGameData(m_client.GetInGameData());
-    }
     public void EnqueueCode(ReqRoomType _code)
     {
         reqTypeQueue.Enqueue(_code);
@@ -44,7 +40,7 @@ public class RoomInfoManager : MonoBehaviour
         if(reqTypeQueue.TryDequeue(out ReqRoomType _result))
         {
             m_helpText.gameObject.SetActive(false);
-            InGameData inGameData = m_client.inGameData;
+            InGameData inGameData = m_client.GetInGameData();
             switch (_result)
             {
                 case ReqRoomType.RoomName:
@@ -117,7 +113,7 @@ public class RoomInfoManager : MonoBehaviour
 
     private void ShowPartyInfo(InGameData _gameData)
     {
-        m_roomCharUI.Renew();
+        m_roomCharUI.Renew(_gameData);
     }
 
     private void ShowPutDownCardInfo(InGameData _gameData)
