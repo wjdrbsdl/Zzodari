@@ -31,7 +31,6 @@ public class PlayClient : MonoBehaviour
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
     public InGameData inGameData;
-    public TurnTimeCounter m_timeCounter;
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -346,6 +345,11 @@ public class PlayClient : MonoBehaviour
     {
         haveCardList.Sort();
         ResetMyCardList();
+    }
+
+    public List<CardData> GetHaveCardList()
+    {
+        return haveCardList;
     }
     #endregion
 
