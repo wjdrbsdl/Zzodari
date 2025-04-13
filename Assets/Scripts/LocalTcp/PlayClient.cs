@@ -131,7 +131,7 @@ public class PlayClient : MonoBehaviour
     #endregion
 
     #region 로직 파트
-    bool isChatOpen = false;
+
     private void SetNewGame()
     {
         //보유 카드는 통신응답에서 진행
@@ -163,8 +163,6 @@ public class PlayClient : MonoBehaviour
     private void SetGameOver()
     {
         isGameStart = false;
-        //채팅으로 온
-        isChatOpen = false;
     }
 
     #region 카드 내기
@@ -281,8 +279,7 @@ public class PlayClient : MonoBehaviour
         putDownList.Sort();
 
         //정렬해서 냈던 카드가 있으면 올 패스 된거.
-        for (int i = 0; i < giveCardList.Count; i++)
-        {
+        if (giveCardList.Count >= 1) { 
             if (giveCardList[0].CompareTo(putDownList[0]) == 0)
             {
                 //하나라도 내가 냈던거랑 같으면 내가 냈던거
@@ -661,7 +658,7 @@ public class PlayClient : MonoBehaviour
             * [2] 아이디
             * [3] 보유 카드 수 반복
             */
-        int resRestCard = 0;
+
         for (int i = 2; i < _data.Length; i += 2)
         {
             string playerId = id.ToString();

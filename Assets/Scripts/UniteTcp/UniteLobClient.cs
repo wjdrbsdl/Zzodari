@@ -192,8 +192,6 @@ public class UniteLobClient : MonoBehaviour
         string roomName = roomData.roomName;
         ColorConsole.Default(roomName + "방에서 내 순서 :" + roomData.curCount);
 
-        isLobby = false; //게임으로 이동
-
         ColorConsole.Default("로비 클라 디스컨넥");
         ReqDisConnect();
         clientSocket.Close();//기존 소켓은 끊고 해당 클래스는 지움 
@@ -306,6 +304,5 @@ public class UniteLobClient : MonoBehaviour
         } while (rest >= 1);
     }
 
-    bool isLobby = true;
 }
 
