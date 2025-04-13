@@ -31,6 +31,7 @@ public class PlayClient : MonoBehaviour
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
     public InGameData inGameData;
+    public TurnTimeCounter m_timeCounter;
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -69,8 +70,6 @@ public class PlayClient : MonoBehaviour
         IPAddress ipAddress = new IPAddress(ip);
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
         clientSocket.BeginConnect(endPoint, CallBackConnect, clientSocket);
-        SendHaveCard();
-
     }
 
     private void CallBackConnect(IAsyncResult _result)
@@ -166,16 +165,9 @@ public class PlayClient : MonoBehaviour
         isGameStart = false;
         //채팅으로 온
         isChatOpen = false;
-        SendHaveCard();
     }
 
     #region 카드 내기
-    //인풋 파트 
-    public InputSelectCard cardSelector;
-    private void SendHaveCard()
-    {
-        cardSelector.SetHaveCard(haveCardList);
-    }
 
     public bool PutDownCards(List<CardData> _selectCards)
     {
@@ -204,7 +196,7 @@ public class PlayClient : MonoBehaviour
     public bool PutDownPass()
     {
         //빈거 넘김
-        return PutDownCards(new List<CardData>());
+        return PutDownCards(new List<CardData>()); //패스버튼
     }
 
     private bool CheckSelectCard(List<CardData> _selectCards)
@@ -388,7 +380,7 @@ public class PlayClient : MonoBehaviour
         }
         else if (_reqType == ReqRoomType.ArrangeTurn)
         {
-            ResTurnPlayer(_validData);
+            ResTurnPlayer(_validData); //인게임데이터로 내턴인지, 누구턴인지 기록
         }
         else if (_reqType == ReqRoomType.PartyData)
         {
@@ -411,7 +403,6 @@ public class PlayClient : MonoBehaviour
             ResGameOver(_validData);
             ResetStage();
             SetGameOver();
-            cardSelector.isPlaying = false;
         }
     }
 

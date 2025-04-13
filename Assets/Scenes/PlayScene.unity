@@ -6124,6 +6124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_roomCharUI: {fileID: 8615532}
+  m_turnCounter: {fileID: 0}
   m_roomNameText: {fileID: 1101584478}
   m_preCard: {fileID: 366641178}
   m_helpText: {fileID: 1351857071}
