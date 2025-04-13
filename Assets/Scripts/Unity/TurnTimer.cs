@@ -41,7 +41,6 @@ public class TurnTimer : MonoBehaviour
         }
 
         restTime -= Time.deltaTime;
-        m_roomManager.m_roomNameText.text = restTime.ToString();
         if (restTime <= 0)
         {
             ExceedMyTurn();
