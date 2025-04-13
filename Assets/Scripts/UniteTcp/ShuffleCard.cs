@@ -6,7 +6,6 @@ public class ShuffleCard
 {
     public CardData[] Shuffle(CardData[] _cards)
     {
-        int mixCount = 50;
         Random ran = new Random();
         for (int i = 0; i < _cards.Length; i++)
         {
