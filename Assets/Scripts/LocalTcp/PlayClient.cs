@@ -679,7 +679,7 @@ public class PlayClient : MonoBehaviour
 
         for (int i = 2; i < _data.Length; i += 2)
         {
-            string playerId = id.ToString();
+            string playerId = _data[i].ToString();
             inGameData.PlusBadPoints(playerId, _data[i + 1]);
         }
         
