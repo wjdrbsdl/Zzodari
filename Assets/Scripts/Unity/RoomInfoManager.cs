@@ -13,7 +13,6 @@ public class RoomInfoManager : MonoBehaviour
     public TMP_Text m_helpText;
 
     public SelectZoneColorController m_selectzoneColor;
-    public TurnTimer m_turnTimer;
     public PlayClient m_client;
 
     public Queue<ReqRoomType> reqTypeQueue = new(); //플레이클라이언트에서 어떤 핸들 작업 했는지
@@ -89,7 +88,6 @@ public class RoomInfoManager : MonoBehaviour
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
-                    OffTimer();
                     isShow = true;
                     helpTextRestTime = helpTextTime;
                     m_helpText.gameObject.SetActive(true);
@@ -123,11 +121,6 @@ public class RoomInfoManager : MonoBehaviour
     {
         m_preCard.text = InputColor("전 카드 :") + _gameData.preCard; //어떤 카드 냈는지
         ShowPartyInfo(_gameData);
-    }
-
-    private void ShowTimer(InGameData _gameData)
-    {
-        m_turnTimer.CountMyTurn(this);
     }
 
     private void ShowUserTimer(InGameData _gameData)
