@@ -50,6 +50,7 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.Start:
                 case ReqRoomType.StageOver:
                     ShowPartyInfo(inGameData);
+                    StopUserTimer(inGameData);
                     break;
                 case ReqRoomType.ArrangeTurn:
                     ShowPartyInfo(inGameData);
@@ -85,6 +86,7 @@ public class RoomInfoManager : MonoBehaviour
              
                 case ReqRoomType.GameOver:
                     ShowPartyInfo(inGameData);
+                    StopUserTimer(inGameData);
                     //m_badPoint.text += InputColor(" ¼øÀ§ : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
@@ -126,6 +128,11 @@ public class RoomInfoManager : MonoBehaviour
     private void ShowUserTimer(InGameData _gameData)
     {
         m_roomCharUI.ReTimer(_gameData);
+    }
+
+    private void StopUserTimer(InGameData _gameData)
+    {
+        m_roomCharUI.StopTimer(_gameData);
     }
 
     public void TimerExceedCallBack()
