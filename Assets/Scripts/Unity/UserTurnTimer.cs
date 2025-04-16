@@ -8,6 +8,7 @@ public class UserTurnTimer : MonoBehaviour
     private float turnTime; //플레이어마다 다를수도
     public float restTime = 0f;
     public bool haveToCount = false; //카운팅 해야하는가
+    private bool isMe = false; //나인가
     public RoomInfoManager m_roomManager;
     private float defaultY; //초기 이미지 길이
     private float defaultX;
@@ -23,6 +24,7 @@ public class UserTurnTimer : MonoBehaviour
     public void StartTimer(PlayerData _playerData)
     {
         haveToCount = true;
+        isMe = _playerData.isMe; //나인지 할당
         turnTime = 10;
         restTime = turnTime;
     }
@@ -35,7 +37,11 @@ public class UserTurnTimer : MonoBehaviour
     private void ExceedTimer()
     {
         //턴 종료되었음을 전달 
-        m_roomManager?.TimerExceedCallBack();
+        if (isMe) //나의 턴 타이머가 종료 되었을때 룸매니저에게 콜백
+        {
+            m_roomManager?.TimerExceedCallBack();
+        }
+        
         ResetTimer();
     }
 
