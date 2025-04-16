@@ -128,11 +128,6 @@ public class RoomInfoManager : MonoBehaviour
         m_roomCharUI.ReTimer(_gameData);
     }
 
-    private void OffTimer()
-    {
-        m_turnTimer.EndMyTurn();
-    }
-
     public void TimerExceedCallBack()
     {
         //시간초과
