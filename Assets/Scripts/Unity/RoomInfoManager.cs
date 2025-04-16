@@ -57,7 +57,7 @@ public class RoomInfoManager : MonoBehaviour
                     m_selectzoneColor.ChangeColor(inGameData.isMyTurn);
                     isShow = true;
                     helpTextRestTime = helpTextTime;
-                    if (inGameData.curId == inGameData.myId)
+                    if (inGameData.curTurnId == inGameData.myId)
                     {
                         ShowTimer(inGameData);
                         m_helpText.gameObject.SetActive(true);
@@ -136,17 +136,10 @@ public class RoomInfoManager : MonoBehaviour
     }
 
     public void TimerExceedCallBack()
-    { 
+    {
         //시간초과
         //패스 누른 효과
-        if(m_client.PutDownPass() == false)
-        {
-            //만약 패스 불가라면 -> 올패스에서 자기차례
-            //제일 작은 카드 1장 내기
-            List<CardData> putList = new();
-            m_client.SortCardList(); //정렬 -> 최초 시작시에 자동으로 클로버 3내도록
-            putList.Add(m_client.GetHaveCardList()[0]);
-            m_client.PutDownCards(putList);
-        }
+        m_client.ExceedTimer();
+     
     }
 }

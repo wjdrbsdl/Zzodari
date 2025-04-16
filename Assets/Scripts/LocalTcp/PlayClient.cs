@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class PlayerData
 {
     public string ID;
@@ -353,6 +354,20 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
 
+    public void ExceedTimer()
+    {
+        //시간 초과 
+        if (PutDownPass() == false)
+        {
+            //만약 패스 불가라면 -> 올패스에서 자기차례
+            //제일 작은 카드 1장 내기
+            List<CardData> putList = new();
+            SortCardList(); //정렬 -> 최초 시작시에 자동으로 클로버 3내도록
+            putList.Add(GetHaveCardList()[0]);
+            PutDownCards(putList);
+        }
+    }
+
     private void CountTurn()
     {
         gameTurn++;
@@ -515,7 +530,6 @@ public class PlayClient : MonoBehaviour
             {
                 string id = _data[infoIndex].ToString();
                 ColorConsole.Default(id + "번 참가");
-                inGameData.userIds[userIdx] = id;
                 idList.Add(id);
                 userIdx++;
             }

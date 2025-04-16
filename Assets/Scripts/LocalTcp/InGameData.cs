@@ -6,7 +6,7 @@ public class InGameData
     public int userCount;
     public string[] userIds = new string[4]; //최대 4명
 
-    public string curId; //현재 유저
+    public string curTurnId; //현재 유저
     public string preCard; //전에 낸 카드
     public int preCardCount;
 
@@ -32,7 +32,7 @@ public class InGameData
 
     public void SetCurTurnInfo(string _curId, int _curTurn, bool _isMyTurn)
     {
-        curId = _curId;
+        curTurnId = _curId;
         curTurn = _curTurn;
         isMyTurn = _isMyTurn;
         Enqueue(ReqRoomType.ArrangeTurn);
