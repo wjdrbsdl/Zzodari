@@ -21,4 +21,21 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
+    public void ReTimer(InGameData _gameData)
+    {
+        string turnId = _gameData.curTurnId;
+        List<PlayerData> pDataList = _gameData.m_partyList;
+        for (int i = 0; i < pDataList.Count; i++)
+        {
+            if (pDataList[i].ID == turnId)
+            {
+                m_roomCharSlots[i].StartTimer();
+            }
+            else
+            {
+                m_roomCharSlots[i].StopTimer();
+            }
+        }
+    }
+
 }

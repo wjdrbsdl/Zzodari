@@ -958,10 +958,10 @@ RectTransform:
   m_Father: {fileID: 1756461710}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.599976, y: -130.4}
-  m_SizeDelta: {x: 454.21817, y: 35}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -227.10907, y: -46}
+  m_SizeDelta: {x: 454.21814, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &366641178
 MonoBehaviour:
@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 2.054657, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3205,6 +3205,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3094068581076936976, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
+      propertyPath: m_roomManager
+      value: 
+      objectReference: {fileID: 1756461711}
     - target: {fileID: 4062169320767570230, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3439,6 +3443,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3094068581076936976, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
+      propertyPath: m_roomManager
+      value: 
+      objectReference: {fileID: 1756461711}
     - target: {fileID: 4062169320767570230, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3917,6 +3925,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3094068581076936976, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
+      propertyPath: m_roomManager
+      value: 
+      objectReference: {fileID: 1756461711}
     - target: {fileID: 4062169320767570230, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6441,6 +6453,7 @@ MonoBehaviour:
   turnTime: 20
   restTime: 0
   isMyTurn: 0
+  haveToCount: 0
 --- !u!1001 &1868311295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6560,6 +6573,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3094068581076936976, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
+      propertyPath: m_roomManager
+      value: 
+      objectReference: {fileID: 1756461711}
     - target: {fileID: 4062169320767570230, guid: 12acfa044a43cf647ab9cc85488f2eff, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

@@ -54,12 +54,12 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.ArrangeTurn:
                     ShowPartyInfo(inGameData);
+                    ShowUserTimer(inGameData);
                     m_selectzoneColor.ChangeColor(inGameData.isMyTurn);
                     isShow = true;
                     helpTextRestTime = helpTextTime;
                     if (inGameData.curTurnId == inGameData.myId)
                     {
-                        ShowTimer(inGameData);
                         m_helpText.gameObject.SetActive(true);
                         if(inGameData.curTurn == 1)
                         {
@@ -128,6 +128,11 @@ public class RoomInfoManager : MonoBehaviour
     private void ShowTimer(InGameData _gameData)
     {
         m_turnTimer.CountMyTurn(this);
+    }
+
+    private void ShowUserTimer(InGameData _gameData)
+    {
+        m_roomCharUI.ReTimer(_gameData);
     }
 
     private void OffTimer()

@@ -14,6 +14,8 @@ public class RoomCharactorSlot : MonoBehaviour
     public TMP_Text m_charId;
     public TMP_Text m_badPoint;
     public TMP_Text m_restCardCount;
+    public UserTurnTimer m_userTimer;
+
     // Use this for initialization
     public void SetPlayerData(PlayerData _pData)
     {
@@ -57,5 +59,15 @@ public class RoomCharactorSlot : MonoBehaviour
         m_charId.text = "ID : "+_id;
         m_badPoint.text = "벌점 : "+ _badPoint;
         m_restCardCount.text = "남은 카드 : "+ _restCount;
+    }
+
+    public void StartTimer()
+    {
+        m_userTimer.StartTimer(m_playerData);
+    }
+
+    public void StopTimer()
+    {
+        m_userTimer.StopTimer();
     }
 }
