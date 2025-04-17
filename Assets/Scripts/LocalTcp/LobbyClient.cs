@@ -113,7 +113,7 @@ public class LobbyClient : MonoBehaviour
         }
         catch
         {
-            Debug.Log("유니티 로비 연결 실패에서 재연결 시도");
+         //   Debug.Log("유니티 로비 연결 실패에서 재연결 시도");
         }
     }
 
@@ -201,7 +201,7 @@ public class LobbyClient : MonoBehaviour
 
     private void ReqDisConnect()
     {
-        ColorConsole.Default("종료 요청");
+      //  ColorConsole.Default("종료 요청");
         byte[] reqClaDisconnect = new byte[] { (byte)ReqLobbyType.Close };
         SendMessege(reqClaDisconnect);
     }
@@ -280,7 +280,7 @@ public class LobbyClient : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log("로비 클라이언트 제거");
+        //Debug.Log("로비 클라이언트 제거");
         if (clientSocket.Connected) {
            ReqDisConnect();
            clientSocket.Close();

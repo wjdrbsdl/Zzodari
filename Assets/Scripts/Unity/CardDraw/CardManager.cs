@@ -84,7 +84,7 @@ public class CardManager : MonoBehaviour
     #region 드래그 반응
     public void EndDrag(CardObject _object, bool _isSelectZone)
     {
-        Debug.Log("카드를 선택존에 놓았는가" + _isSelectZone);
+        //Debug.Log("카드를 선택존에 놓았는가" + _isSelectZone);
         //카드 드래그를 끝냈을때, 끝낸 위치가 셀렉존인가. 
         if(_object.m_isCurSelect == _isSelectZone)
         {

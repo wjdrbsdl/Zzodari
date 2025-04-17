@@ -133,7 +133,7 @@ public class IPParsing : MonoBehaviour
 
                 string[] valueDivde = enterDivde[i].Trim().Split('\t'); //탭 - 열 분리 
 
-                Debug.Log(parseData + "행 사이즈" + valueDivde.Length);
+              //  Debug.Log(parseData + "행 사이즈" + valueDivde.Length);
                 dbValueList.Add(valueDivde);
             }
             //6. 파싱코드에 - 인덱스 매칭 코드와 실제 값들을 struct로 묶어서 dctionary에 저장 

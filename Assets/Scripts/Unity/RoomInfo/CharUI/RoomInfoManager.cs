@@ -153,7 +153,7 @@ public class RoomInfoManager : MonoBehaviour
 
     private void ReadyNextStage()
     {
-        Debug.Log("룸인포에서 준비 시작");
+      //  Debug.Log("룸인포에서 준비 시작");
         curWaitTime = waitTime;
         isWait = true;
     }

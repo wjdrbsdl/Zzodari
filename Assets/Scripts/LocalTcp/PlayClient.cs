@@ -693,7 +693,7 @@ public class PlayClient : MonoBehaviour
 
     public void WaitStageResultCallBack()
     {
-        Debug.Log("스테이지 준비 콜백");
+       // Debug.Log("스테이지 준비 콜백");
         ReqStageReady();
     }
 
@@ -773,7 +773,7 @@ public class PlayClient : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log("유니티에서 끌때 소켓 종료");
+      //  Debug.Log("유니티에서 끌때 소켓 종료");
         clientSocket.Close();
         clientSocket.Dispose();
     }

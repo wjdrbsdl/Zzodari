@@ -65,7 +65,7 @@ public class SpongeObj : MonoBehaviour
         float 반발력 = 압축 / springLength * springConstant; //압축된 비율에 스프링 상수가 파워
         float 여분 = _pressure - 반발력;
         curSpringLength -= 여분 * Time.deltaTime;
-        Debug.Log(여분 * Time.deltaTime + "만큼 압축시켰다.");
+      //  Debug.Log(여분 * Time.deltaTime + "만큼 압축시켰다.");
         //내 힘과 탄성력이 겹쳐지는 순간 쪼그라드는거 중단
 
         if (leftSide != null && leftSide != _from)

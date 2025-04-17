@@ -24,7 +24,7 @@ public class ClientManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(UniteServer.ServerIp);
+       // Debug.Log(UniteServer.ServerIp);
         if(IsRoomOut && UniteServer.ServerIp != null)
         {
             //이미 접속했었던 상태에서 돌아왔다면
