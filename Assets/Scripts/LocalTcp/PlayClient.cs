@@ -407,7 +407,7 @@ public class PlayClient : MonoBehaviour
         {
             ResStageOver(_validData);
             ResetStage();
-            ReqStageReady();
+            WaitStageResult();
 
         }
         else if(_reqType == ReqRoomType.RoomName)
@@ -683,6 +683,18 @@ public class PlayClient : MonoBehaviour
             inGameData.PlusBadPoints(playerId, _data[i + 1]);
         }
         
+    }
+
+    private void WaitStageResult()
+    {
+        //스테이지 종료후 뭔가 기다리기 
+        inGameData.StageReady();
+    }
+
+    public void WaitStageResultCallBack()
+    {
+        Debug.Log("스테이지 준비 콜백");
+        ReqStageReady();
     }
 
     private void ReqStageReady()

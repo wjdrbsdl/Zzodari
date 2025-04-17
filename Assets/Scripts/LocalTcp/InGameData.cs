@@ -133,6 +133,7 @@ public class InGameData
         //Enqueue(ReqRoomType.Start);//남은 카드 수갱신이 더 뒤에 일어나고 큐에 집어 넣으므로 거기서 같이 할꺼
 
     }
+
     public void ReSetRestCard()
     {
         //남은 카드 숫자 갱신 - 게임 시작할때 
@@ -151,6 +152,11 @@ public class InGameData
     public void PutDown()
     {
         Enqueue(ReqRoomType.Draw);
+    }
+
+    public void StageReady()
+    {
+        Enqueue(ReqRoomType.StageReady);
     }
 
     private void Enqueue(ReqRoomType _code)

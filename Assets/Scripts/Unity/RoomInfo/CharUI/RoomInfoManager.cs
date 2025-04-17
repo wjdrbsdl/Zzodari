@@ -56,6 +56,10 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.StageOver:
                     PlusBadPoint(inGameData);
                     break;
+                case ReqRoomType.StageReady:
+                    //스테이지 정리에 필요한 시간을 기다렸다가 콜백해줄곳
+                    ReadyNextStage();
+                    break;
                 case ReqRoomType.ArrangeTurn:
                     ShowPartyInfo(inGameData);
                     ShowUserTimer(inGameData);
@@ -104,6 +108,7 @@ public class RoomInfoManager : MonoBehaviour
         }
 
         CountGuideShowTime();
+        CheckStageReady();
     }
 
     private void CountGuideShowTime()
@@ -140,6 +145,35 @@ public class RoomInfoManager : MonoBehaviour
     {
         m_roomCharUI.ResetScore(_gameData);
     }
+
+    #region 스테이지 중간 정비시간
+    private float waitTime = 3f;
+    private float curWaitTime = 0f;
+    private bool isWait = false;
+
+    private void ReadyNextStage()
+    {
+        Debug.Log("룸인포에서 준비 시작");
+        curWaitTime = waitTime;
+        isWait = true;
+    }
+    private void CheckStageReady()
+    {
+        //어떻게 할진 모르겠으나 
+        //스테이지 종료후 뭐 콜백을 받던해서 준비가 다끝나면
+        if(isWait == false)
+        {
+            return;
+        }
+
+        curWaitTime -= Time.deltaTime;
+        if(curWaitTime < 0)
+        {
+            m_client.WaitStageResultCallBack();
+        }
+        isWait = false;
+    }
+    #endregion
 
     #region 타이머
     private void ShowUserTimer(InGameData _gameData)
