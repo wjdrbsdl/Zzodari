@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UserTurnTimer : MonoBehaviour
 {
-    private float turnTime; //플레이어마다 다를수도
+    public static float TurnTime; //플레이어마다 다를수도
     public float restTime = 0f;
     public bool haveToCount = false; //카운팅 해야하는가
     private bool isMe = false; //나인가
@@ -25,8 +25,7 @@ public class UserTurnTimer : MonoBehaviour
     {
         haveToCount = true;
         isMe = _playerData.isMe; //나인지 할당
-        turnTime = 10;
-        restTime = turnTime;
+        restTime = TurnTime;
     }
 
     public void StopTimer()
@@ -76,7 +75,7 @@ public class UserTurnTimer : MonoBehaviour
         {
             ratio = 0;
         }
-        timeLine.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(defaultX, ratio / turnTime * defaultY);
+        timeLine.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(defaultX, ratio / TurnTime * defaultY);
     }
 
     private void DrawLineZero()

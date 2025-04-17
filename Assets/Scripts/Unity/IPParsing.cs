@@ -66,9 +66,18 @@ public class IPParsing : MonoBehaviour
             }
 
             if(parseData.DbValueList.Count>=1)
-             InputManager.instance.SetInputTest(parseData.DbValueList[0][1]);
+            {
+                InputManager.instance.SetInputTest(parseData.DbValueList[0][1]);
+            }
             if (parseData.DbValueList.Count >= 2)
+            {
                 TestAgora._token = parseData.DbValueList[1][1];
+            }
+            if (parseData.DbValueList.Count >= 3)
+            {
+                //시간 타이머
+                UserTurnTimer.TurnTime = int.Parse(parseData.DbValueList[2][1]);
+            }
 
             if (limitTime < 0)
             {
