@@ -170,8 +170,9 @@ public class RoomInfoManager : MonoBehaviour
         if(curWaitTime < 0)
         {
             m_client.WaitStageResultCallBack();
-        }
+       
         isWait = false;
+        }
     }
     #endregion
 
