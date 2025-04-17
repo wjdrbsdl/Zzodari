@@ -114,6 +114,7 @@ public class InGameData
         {
             idData.badPoint += _point;
         }
+        Enqueue(ReqRoomType.StageOver);
     }
 
     public void FinalScore(int _point, int _rank)

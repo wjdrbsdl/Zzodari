@@ -42,6 +42,39 @@ public class RoomCharactorSlot : MonoBehaviour
         SetText(m_playerData.ID, m_playerData.badPoint.ToString(), m_playerData.restCardCount.ToString());
     }
 
+    public void ResetScore()
+    {
+        //0점 잡기
+        m_badPoint.text = 0.ToString();
+    }
+
+    IEnumerator curCoru = null;
+    public void ReScore(int _resetPoint)
+    {
+        int preScore = int.Parse(m_badPoint.text);
+        if(curCoru != null)
+        {
+            StopCoroutine(curCoru);
+        }
+        curCoru = CoReScore(preScore, _resetPoint);
+        StartCoroutine(curCoru);
+    }
+
+    IEnumerator CoReScore(int _start, int _end)
+    {
+        float time = 1f;
+        float curTime = 0f;
+        while (curTime < time)
+        {
+            curTime += Time.deltaTime;
+            int lerpValue = (int)Mathf.Lerp(_start, _end, curTime / time);
+            m_badPoint.text = lerpValue.ToString();
+            yield return null;
+        }
+
+        curCoru = null;
+    }
+
     private void SetColor()
     {
         if (m_playerData.isMe)
@@ -57,7 +90,7 @@ public class RoomCharactorSlot : MonoBehaviour
     private void SetText(string _id, string _badPoint, string _restCount)
     {
         m_charId.text = "ID : "+_id;
-        m_badPoint.text = "벌점 : "+ _badPoint;
+       // m_badPoint.text = "벌점 : "+ _badPoint;
         m_restCardCount.text = "남은 카드 : "+ _restCount;
     }
 

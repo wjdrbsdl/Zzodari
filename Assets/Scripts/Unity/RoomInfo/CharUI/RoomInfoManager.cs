@@ -48,9 +48,13 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PartyData:
                 case ReqRoomType.Start:
-                case ReqRoomType.StageOver:
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
+                    ResetScore(inGameData);
+                    break;
+
+                case ReqRoomType.StageOver:
+                    PlusBadPoint(inGameData);
                     break;
                 case ReqRoomType.ArrangeTurn:
                     ShowPartyInfo(inGameData);
@@ -87,6 +91,7 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.GameOver:
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
+                    PlusBadPoint(inGameData);
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
@@ -125,6 +130,18 @@ public class RoomInfoManager : MonoBehaviour
         ShowPartyInfo(_gameData);
     }
 
+    private void PlusBadPoint(InGameData _gameData)
+    {
+        //
+        m_roomCharUI.ReScore(_gameData);
+    }
+
+    private void ResetScore(InGameData _gameData)
+    {
+        m_roomCharUI.ResetScore(_gameData);
+    }
+
+    #region 타이머
     private void ShowUserTimer(InGameData _gameData)
     {
         m_roomCharUI.ReTimer(_gameData);
@@ -142,4 +159,5 @@ public class RoomInfoManager : MonoBehaviour
         m_client.ExceedTimer();
      
     }
+    #endregion
 }
