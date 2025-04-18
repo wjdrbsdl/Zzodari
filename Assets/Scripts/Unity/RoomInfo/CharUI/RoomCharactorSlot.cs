@@ -17,11 +17,6 @@ public class RoomCharactorSlot : MonoBehaviour
     public UserTurnTimer m_userTimer;
 
     // Use this for initialization
-    private void Start()
-    {
-        m_badPoint.text = 0.ToString();
-    }
-
     public void SetPlayerData(PlayerData _pData)
     {
         //매번 하는구만..
@@ -51,7 +46,11 @@ public class RoomCharactorSlot : MonoBehaviour
     IEnumerator curCoru = null;
     public void ReScore(int _resetPoint)
     {
-        int preScore = int.Parse(m_badPoint.text);
+       // Debug.Log("갱신할 점수 " + _resetPoint);
+        if(int.TryParse(m_badPoint.text, out int preScore) == false)
+        {
+            preScore = 0;
+        }
         if(curCoru != null)
         {
             StopCoroutine(curCoru);
