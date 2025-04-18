@@ -50,11 +50,11 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.Start:
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
-                    PlusBadPoint(inGameData);
+                    SetBadPoint(inGameData); //게임시작 후 갱신
                     break;
 
                 case ReqRoomType.StageOver:
-                    PlusBadPoint(inGameData);
+                    SetBadPoint(inGameData); //스테이지 종료 후
                     break;
                 case ReqRoomType.StageReady:
                     //스테이지 정리에 필요한 시간을 기다렸다가 콜백해줄곳
@@ -86,7 +86,6 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PutDownCard:
                     ShowPutDownCardInfo(inGameData);
-
                     break;
                 case ReqRoomType.IDRegister:
                     ShowPartyInfo(inGameData);
@@ -95,7 +94,7 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.GameOver:
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
-                    PlusBadPoint(inGameData);
+                    SetBadPoint(inGameData); //게임종료후
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
@@ -135,7 +134,7 @@ public class RoomInfoManager : MonoBehaviour
         ShowPartyInfo(_gameData);
     }
 
-    private void PlusBadPoint(InGameData _gameData)
+    private void SetBadPoint(InGameData _gameData)
     {
         //
         m_roomCharUI.ReScore(_gameData);
