@@ -62,7 +62,7 @@ public class IPParsing : MonoBehaviour
             for (int i = 0; i < parseData.DbValueList.Count; i++)
             {
                 isFind = true;
-                Debug.Log(parseData.DbValueList[i][0] + " "+ parseData.DbValueList[i][1]);
+               // Debug.Log(parseData.DbValueList[i][0] + " "+ parseData.DbValueList[i][1]);
             }
 
             if(parseData.DbValueList.Count>=1)

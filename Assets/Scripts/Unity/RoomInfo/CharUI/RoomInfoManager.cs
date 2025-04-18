@@ -37,7 +37,7 @@ public class RoomInfoManager : MonoBehaviour
     bool isShow = false;
     private void Update()
     {
-        if(reqTypeQueue.TryDequeue(out ReqRoomType _result))
+        if (reqTypeQueue.TryDequeue(out ReqRoomType _result))
         {
             m_helpText.gameObject.SetActive(false);
             InGameData inGameData = m_client.GetInGameData();
@@ -69,7 +69,7 @@ public class RoomInfoManager : MonoBehaviour
                     if (inGameData.curTurnId == inGameData.myId)
                     {
                         m_helpText.gameObject.SetActive(true);
-                        if(inGameData.curTurn == 1)
+                        if (inGameData.curTurn == 1)
                         {
                             m_helpText.text = "클로버 3을 포함 원하는 조합으로 낼 수 있습니다.";
                         }
@@ -86,12 +86,12 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PutDownCard:
                     ShowPutDownCardInfo(inGameData);
-                    
+
                     break;
                 case ReqRoomType.IDRegister:
                     ShowPartyInfo(inGameData);
                     break;
-             
+
                 case ReqRoomType.GameOver:
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
@@ -153,7 +153,7 @@ public class RoomInfoManager : MonoBehaviour
 
     private void ReadyNextStage()
     {
-      //  Debug.Log("룸인포에서 준비 시작");
+        //  Debug.Log("룸인포에서 준비 시작");
         curWaitTime = waitTime;
         isWait = true;
     }
@@ -161,17 +161,16 @@ public class RoomInfoManager : MonoBehaviour
     {
         //어떻게 할진 모르겠으나 
         //스테이지 종료후 뭐 콜백을 받던해서 준비가 다끝나면
-        if(isWait == false)
+        if (isWait == false)
         {
             return;
         }
 
         curWaitTime -= Time.deltaTime;
-        if(curWaitTime < 0)
+        if (curWaitTime < 0)
         {
             m_client.WaitStageResultCallBack();
-       
-        isWait = false;
+            isWait = false;
         }
     }
     #endregion
@@ -192,7 +191,7 @@ public class RoomInfoManager : MonoBehaviour
         //시간초과
         //패스 누른 효과
         m_client.ExceedTimer();
-     
+
     }
     #endregion
 }
