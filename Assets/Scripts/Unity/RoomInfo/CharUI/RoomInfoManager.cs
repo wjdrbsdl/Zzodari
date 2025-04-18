@@ -50,7 +50,7 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.Start:
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
-                    ResetScore(inGameData);
+                    PlusBadPoint(inGameData);
                     break;
 
                 case ReqRoomType.StageOver:
@@ -139,11 +139,6 @@ public class RoomInfoManager : MonoBehaviour
     {
         //
         m_roomCharUI.ReScore(_gameData);
-    }
-
-    private void ResetScore(InGameData _gameData)
-    {
-        m_roomCharUI.ResetScore(_gameData);
     }
 
     #region 스테이지 중간 정비시간

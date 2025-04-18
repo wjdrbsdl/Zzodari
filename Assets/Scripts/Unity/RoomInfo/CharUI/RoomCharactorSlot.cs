@@ -17,17 +17,23 @@ public class RoomCharactorSlot : MonoBehaviour
     public UserTurnTimer m_userTimer;
 
     // Use this for initialization
+    private void Start()
+    {
+        m_badPoint.text = 0.ToString();
+    }
+
     public void SetPlayerData(PlayerData _pData)
     {
+        //매번 하는구만..
         m_playerData = _pData;
-    }
+     }
 
     public void ResetPlayerData()
     {
         m_playerData = null;
         m_backGround.gameObject.SetActive(false);
-        SetText("", "", "");
-        
+        SetText("", "");
+        m_badPoint.text = "";
     }
 
     public void RenewPlayerData()
@@ -39,13 +45,7 @@ public class RoomCharactorSlot : MonoBehaviour
         }
         m_backGround.gameObject.SetActive(true);
         SetColor();
-        SetText(m_playerData.ID, m_playerData.badPoint.ToString(), m_playerData.restCardCount.ToString());
-    }
-
-    public void ResetScore()
-    {
-        //0점 잡기
-        m_badPoint.text = 0.ToString();
+        SetText(m_playerData.ID, m_playerData.restCardCount.ToString());
     }
 
     IEnumerator curCoru = null;
@@ -87,10 +87,10 @@ public class RoomCharactorSlot : MonoBehaviour
         }
     }
 
-    private void SetText(string _id, string _badPoint, string _restCount)
+    private void SetText(string _id, string _restCount)
     {
         m_charId.text = "ID : "+_id;
-       // m_badPoint.text = "벌점 : "+ _badPoint;
+
         m_restCardCount.text = "남은 카드 : "+ _restCount;
     }
 

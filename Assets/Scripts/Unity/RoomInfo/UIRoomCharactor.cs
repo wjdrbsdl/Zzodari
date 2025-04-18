@@ -20,15 +20,6 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
-    public void ResetScore(InGameData _gameData)
-    {
-        List<PlayerData> pDataList = _gameData.m_partyList;
-        for (int i = 0; i < pDataList.Count; i++)
-        {
-            m_roomCharSlots[i].ResetScore();
-        }
-    }
-
     public void ReScore(InGameData _gameData)
     {
         List<PlayerData> pDataList = _gameData.m_partyList;
