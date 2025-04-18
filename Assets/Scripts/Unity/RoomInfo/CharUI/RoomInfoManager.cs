@@ -52,6 +52,7 @@ public class RoomInfoManager : MonoBehaviour
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
                     SetBadPoint(inGameData); //게임시작 후 갱신
+                    OffRank(inGameData);
                     break;
 
                 case ReqRoomType.StageOver:
@@ -97,6 +98,7 @@ public class RoomInfoManager : MonoBehaviour
                     StopUserTimer(inGameData);
                     SetBadPoint(inGameData); //게임종료후
                     OffPutDownCardInfo();
+                    ShowRank(inGameData);
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
@@ -193,6 +195,18 @@ public class RoomInfoManager : MonoBehaviour
         //패스 누른 효과
         m_client.ExceedTimer();
 
+    }
+    #endregion
+
+    #region 랭크 여닫기
+    public void ShowRank(InGameData _gameData)
+    {
+        m_roomCharUI.ShowRank(_gameData);
+    }
+
+    public void OffRank(InGameData _gameData)
+    {
+        m_roomCharUI.OffRank(_gameData);
     }
     #endregion
 }

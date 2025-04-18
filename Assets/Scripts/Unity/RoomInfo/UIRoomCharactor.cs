@@ -29,6 +29,7 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
+    #region 타이머 조절하기
     public void ReTimer(InGameData _gameData)
     {
         string turnId = _gameData.curTurnId;
@@ -51,10 +52,29 @@ public class UIRoomCharactor : MonoBehaviour
         List<PlayerData> pDataList = _gameData.m_partyList;
         for (int i = 0; i < pDataList.Count; i++)
         {
-            
-            
-                m_roomCharSlots[i].StopTimer();
-            
+            m_roomCharSlots[i].StopTimer();
+        }
+    }
+    #endregion
+
+    public void ShowRank(InGameData _gameData)
+    {
+        string turnId = _gameData.curTurnId;
+        List<PlayerData> pDataList = _gameData.m_partyList;
+        for (int i = 0; i < pDataList.Count; i++)
+        {
+            m_roomCharSlots[i].SetRank();
+
+        }
+    }
+
+    public void OffRank(InGameData _gameData)
+    {
+        string turnId = _gameData.curTurnId;
+        List<PlayerData> pDataList = _gameData.m_partyList;
+        for (int i = 0; i < pDataList.Count; i++)
+        {
+            m_roomCharSlots[i].OffRank();
         }
     }
 

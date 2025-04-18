@@ -16,7 +16,11 @@ public class RoomCharactorSlot : MonoBehaviour
     public TMP_Text m_restCardCount;
     public UserTurnTimer m_userTimer;
 
+    public GameObject m_rankGo;
+    public TMP_Text m_rankText;
+
     // Use this for initialization
+    #region 데이터 세팅 및 갱신
     public void SetPlayerData(PlayerData _pData)
     {
         //매번 하는구만..
@@ -42,7 +46,9 @@ public class RoomCharactorSlot : MonoBehaviour
         SetColor();
         SetText(m_playerData.ID, m_playerData.restCardCount.ToString());
     }
+    #endregion
 
+    #region 점수
     IEnumerator curCoru = null;
     public void ReScore(int _resetPoint)
     {
@@ -73,7 +79,9 @@ public class RoomCharactorSlot : MonoBehaviour
 
         curCoru = null;
     }
+    #endregion
 
+    #region 기본 정보 와 색
     private void SetColor()
     {
         if (m_playerData.isMe)
@@ -92,7 +100,9 @@ public class RoomCharactorSlot : MonoBehaviour
 
         m_restCardCount.text = "남은 카드 : "+ _restCount;
     }
+    #endregion
 
+    #region 타이머
     public void StartTimer()
     {
         m_userTimer.StartTimer(m_playerData);
@@ -102,4 +112,18 @@ public class RoomCharactorSlot : MonoBehaviour
     {
         m_userTimer.StopTimer();
     }
+    #endregion
+
+    #region 랭크
+    public void OffRank()
+    {
+        m_rankGo.SetActive(false);
+    }
+
+    public void SetRank()
+    {
+        m_rankGo.SetActive(true);
+        m_rankText.text = m_playerData.rank.ToString();
+    }
+    #endregion
 }

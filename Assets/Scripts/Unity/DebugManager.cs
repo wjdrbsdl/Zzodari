@@ -8,8 +8,6 @@ public class DebugManager : MonoBehaviour
 {
     public static DebugManager instance;
     public TMP_Text tmpText;
-    public TMP_Text preText;
-    public TMP_Text curText;
     public TMP_Text warningText;
     public Scrollbar vertiaclScroll;
     public GameObject debugScroll;
@@ -21,14 +19,7 @@ public class DebugManager : MonoBehaviour
         tmpText.text = "";
 
         //디버그창 활성화
-        if (preText != null)
-        {
-            preText.gameObject.SetActive(systemDebug);
-        }
-        if (curText != null)
-        {
-            curText.gameObject.SetActive(systemDebug);
-        }
+
         if (debugScroll != null)
         {
             debugScroll.gameObject.SetActive(msgDebug);
@@ -74,11 +65,6 @@ public class DebugManager : MonoBehaviour
                 vertiaclScroll.value = 0;
             }
             //Debug.Log(msg);
-        }
-        if (systemQueue.TryDequeue(out string systeMsg) && systemDebug)
-        {
-            preText.text = curText.text;
-            curText.text = (systeMsg);
         }
         if (ruleWarningQueue.TryDequeue(out string warningMsg))
         {
