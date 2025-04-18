@@ -117,10 +117,18 @@ public class InGameData
         Enqueue(ReqRoomType.StageOver);
     }
 
-    public void FinalScore(int _point, int _rank)
+    public void FinalScore(string _id, int _point, int _rank)
     {
-        badPoint = _point;
+
+        PlayerData idData = GetPlayData(_id);
+        if (idData != null)
+        {
+            //최종 결산된 점수가 들어와서 = 로 대입만하면됨.
+            idData.badPoint = _point;
+        }
+        if(myId == _id)
         myRank = _rank;
+
         Enqueue(ReqRoomType.GameOver);
     }
 
