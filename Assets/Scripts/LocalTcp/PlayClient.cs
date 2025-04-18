@@ -717,8 +717,7 @@ public class PlayClient : MonoBehaviour
         * [3] 유저 ID
         * [4] 유저 벌점
         */
-        int myBadPoint = 0;
-        int myRank = 1;
+
         List<(int, int)> scoreList = new();
         int rank = 1;
 
@@ -727,14 +726,10 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default($"{_data[i]}의 벌점 :{_data[i + 1]}");
             (int, int) idWithScore = (_data[i], _data[i + 1]);
             scoreList.Add(idWithScore);
-            if (_data[i] == id)
-            {
-                myRank = rank;
-                myBadPoint = _data[i + 1];
-            }
+            inGameData.FinalScore(_data[i].ToString(), _data[i + 1], rank);
             rank++;
         }
-        inGameData.FinalScore(myBadPoint, myRank);
+     
     }
     #endregion
 
