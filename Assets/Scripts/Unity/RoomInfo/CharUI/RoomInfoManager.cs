@@ -48,6 +48,7 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PartyData:
                 case ReqRoomType.Start:
+                    OffPutDownCardInfo();
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
                     SetBadPoint(inGameData); //게임시작 후 갱신
@@ -95,6 +96,7 @@ public class RoomInfoManager : MonoBehaviour
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
                     SetBadPoint(inGameData); //게임종료후
+                    OffPutDownCardInfo();
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
                 case ReqRoomType.Draw:
@@ -132,6 +134,11 @@ public class RoomInfoManager : MonoBehaviour
     {
         m_preCard.text = InputColor("전 카드 :") + _gameData.preCard; //어떤 카드 냈는지
         ShowPartyInfo(_gameData);
+    }
+
+    private void OffPutDownCardInfo()
+    {
+        m_preCard.text = "";
     }
 
     private void SetBadPoint(InGameData _gameData)
