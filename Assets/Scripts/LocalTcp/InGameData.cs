@@ -20,7 +20,6 @@ public class InGameData
 
     public int curTurn;
 
-    public PlayerData m_myData;
     public List<PlayerData> m_partyList = new List<PlayerData>();
 
     public void SetRoomName(string _name)
@@ -125,9 +124,8 @@ public class InGameData
         {
             //최종 결산된 점수가 들어와서 = 로 대입만하면됨.
             idData.badPoint = _point;
+            idData.rank = _rank;
         }
-        if(myId == _id)
-        myRank = _rank;
 
         Enqueue(ReqRoomType.GameOver);
     }
