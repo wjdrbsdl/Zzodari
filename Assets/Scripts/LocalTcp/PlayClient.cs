@@ -44,20 +44,20 @@ public class PlayClient : MonoBehaviour
         giveCardList = new();
         putDownList = new();
     }
-       
+
     private void Start()
     {
         putDownList = new();
         haveCardList = new();
         giveCardList = new();
-        if(inGameData == null)
-        inGameData = new InGameData();
+        if (inGameData == null)
+            inGameData = new InGameData();
         Connect();
     }
 
     public InGameData GetInGameData()
     {
-        if(inGameData == null)
+        if (inGameData == null)
         {
             inGameData = new InGameData();
         }
@@ -118,7 +118,7 @@ public class PlayClient : MonoBehaviour
             } while (rest >= 1);
 
             ReqRoomType reqType = (ReqRoomType)recvData[0];
-            ColorConsole.SystemDebug(reqType + "받은 길이 "+ recvData.Length.ToString());
+            ColorConsole.SystemDebug(reqType + "받은 길이 " + recvData.Length.ToString());
             HandleReceiveData(reqType, recvData);
 
             if (clientSocket.Connected)
@@ -142,12 +142,12 @@ public class PlayClient : MonoBehaviour
         isMyTurn = false;
 
         //스테이지 종료후 다시 시작하는 경우일땐 게임은 진행중임. 
-        if(isGameStart == false)
+        if (isGameStart == false)
         {
             isGameStart = true;
             inGameData.ResetBadPoint();
         }
-        
+
     }
 
     private void ResetStage()
@@ -185,6 +185,7 @@ public class PlayClient : MonoBehaviour
         {
             //낼 수 있으면 제출
             SetMyTurn(false); //내턴 넘김으로 수정
+            ReqSelectCard(new List<CardData>()); //최종 제출시엔 선택칸은 비어있음.
             ReqPutDownCard(_selectCards);
             return true;
         }
@@ -195,6 +196,7 @@ public class PlayClient : MonoBehaviour
     public bool PutDownPass()
     {
         //빈거 넘김
+
         return PutDownCards(new List<CardData>()); //패스버튼
     }
 
@@ -280,7 +282,8 @@ public class PlayClient : MonoBehaviour
         putDownList.Sort();
 
         //정렬해서 냈던 카드가 있으면 올 패스 된거.
-        if (giveCardList.Count >= 1) { 
+        if (giveCardList.Count >= 1)
+        {
             if (giveCardList[0].CompareTo(putDownList[0]) == 0)
             {
                 //하나라도 내가 냈던거랑 같으면 내가 냈던거
@@ -346,7 +349,22 @@ public class PlayClient : MonoBehaviour
     public void SortCardList()
     {
         haveCardList.Sort();
-        ResetMyCardList();
+
+        Action action = () =>
+        {
+            CardManager.instance.ResetHandCards(); //내 카드 정렬할때 
+            if (isMyTurn)
+            {
+                CardManager.instance.ResetSelectCards(); // 내 차례라면 냈던 카드도 회수
+            }
+        };
+        CardManager.instance.callBack.Enqueue(action); //인큐
+
+        if (isMyTurn)
+        {
+            ReqSelectCard(new List<CardData>()); //정렬로 냈던 카드 다 회수한걸로 전달
+        }
+
     }
 
     public List<CardData> GetHaveCardList()
@@ -363,7 +381,7 @@ public class PlayClient : MonoBehaviour
             //만약 패스 불가라면 -> 올패스에서 자기차례
             //제일 작은 카드 1장 내기
             List<CardData> putList = new();
-            SortCardList(); //정렬 -> 최초 시작시에 자동으로 클로버 3내도록
+            SortCardList(); //첫턴에 시간초과시 가장 낮은 카드 제출 위해서
             putList.Add(GetHaveCardList()[0]);
             PutDownCards(putList);
         }
@@ -391,7 +409,7 @@ public class PlayClient : MonoBehaviour
             ResGameStart(_validData);
 
         }
-        else if(_reqType == ReqRoomType.SelectCard)
+        else if (_reqType == ReqRoomType.SelectCard)
         {
             ResSelectCard(_validData);
         }
@@ -415,7 +433,7 @@ public class PlayClient : MonoBehaviour
             WaitStageResult();
 
         }
-        else if(_reqType == ReqRoomType.RoomName)
+        else if (_reqType == ReqRoomType.RoomName)
         {
             ResRoomName(_validData);
         }
@@ -485,18 +503,19 @@ public class PlayClient : MonoBehaviour
     {
         Action action = () =>
         {
-            CardManager.intance.SetHaveCard(haveCardList);
+            CardManager.instance.SetHaveCard(haveCardList);
         };
-        CardManager.intance.callBack.Enqueue(action); // 내 카드리스트 세팅
-        }
+        CardManager.instance.callBack.Enqueue(action); // 내 카드리스트 세팅
+    }
 
-    private void ResetMyCardList()
+    private void ResetTurnCard()
     {
         Action action = () =>
         {
-            CardManager.intance.UpdateCards();
+            CardManager.instance.ResetSelectCards();//턴이 갱신되었을때
+            CardManager.instance.ResetHandCards(); //턴이 갱신되었을때
         };
-        CardManager.intance.callBack.Enqueue(action); // 내카드리스트 리셋
+        CardManager.instance.callBack.Enqueue(action); // 내카드리스트 리셋
     }
 
     #endregion
@@ -574,7 +593,7 @@ public class PlayClient : MonoBehaviour
             SceneManager.LoadScene("LobbyScene");
         };
         ClientManager.IsRoomOut = true;
-        CardManager.intance.callBack.Enqueue(outCallBack); //나가기
+        CardManager.instance.callBack.Enqueue(outCallBack); //나가기
     }
 
     #endregion
@@ -621,11 +640,17 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData(cardClass, num); //카드 생성
             selectCardList.Add(card);
         }
-        string putPlayerID = _data[1].ToString(); //카드 낸사람
-        Action action = ()=> CardManager.intance.SetSelectCard(putPlayerID, selectCardList);
-        CardManager.intance.callBack.Enqueue(action);
-        //본인이 낸거라면 본인 카드에서 제외
 
+
+        //본인이 낸거라면 본인 카드에서 제외
+        ResetSelectZone(_data[1].ToString(), selectCardList);
+    }
+
+    private void ResetSelectZone(string _id, List<CardData> _cardList)
+    {
+        string putPlayerID = _id; //카드 낸사람
+        Action action = () => CardManager.instance.ShowOtherCard(putPlayerID, _cardList);
+        CardManager.instance.callBack.Enqueue(action);
     }
 
     private void ReqPutDownCard(List<CardData> _cardDataList)
@@ -660,12 +685,13 @@ public class PlayClient : MonoBehaviour
         * [2] 낸 카드 숫자
         * [3] 카드 구성
         */
+ 
         //본인의 행위였다면
         if (_data[1] == id)
         {
             //이전에 냈던건 초기화
             ResetGiveCard();
-            SortCardList(); // 손패 정렬
+            // SortCardList(); // 손패 정렬
         }
         if (_data[2] == 0)
         {
@@ -673,6 +699,7 @@ public class PlayClient : MonoBehaviour
             //이전 카드 덮어 쓰지 않고
             //본인의 카드 제거나 이전 카드 기록 안함
             ColorConsole.Default("전 사람 패쓰했음");
+            ResetTurnCard();//패쓰 했을때 셀렉존 카드 갱신 위해서 
             return;
         }
         //바닥에 깔린 카드 갱신
@@ -688,15 +715,15 @@ public class PlayClient : MonoBehaviour
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
         string putPlayerID = _data[1].ToString(); //카드 낸사람
-        inGameData.SetPutDownCardInfo( _mixture.GetCardShowValue(), _mixture.cardCount, putPlayerID);
+        inGameData.SetPutDownCardInfo(_mixture.GetCardShowValue(), _mixture.cardCount, putPlayerID);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
+            //내가 카드를 낸경우
             RemoveHaveCard(putDownList);
             RecordGiveCard(putDownList);
-            ResetMyCardList();
         }
-
+        ResetTurnCard();
     }
     #endregion
 
@@ -714,7 +741,7 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default("내 차례");
             CheckAllPass();
         }
-        
+
         CountTurn(); //턴을 지정하는건 새로운 턴이 된거
         inGameData.SetCurTurnInfo(_data[1].ToString(), gameTurn, isMyTurn);
     }
@@ -735,7 +762,7 @@ public class PlayClient : MonoBehaviour
             string playerId = _data[i].ToString();
             inGameData.PlusBadPoints(playerId, _data[i + 1]);
         }
-        
+
     }
 
     private void WaitStageResult()
@@ -746,7 +773,7 @@ public class PlayClient : MonoBehaviour
 
     public void WaitStageResultCallBack()
     {
-       // Debug.Log("스테이지 준비 콜백");
+        // Debug.Log("스테이지 준비 콜백");
         ReqStageReady();
     }
 
@@ -782,7 +809,7 @@ public class PlayClient : MonoBehaviour
             inGameData.FinalScore(_data[i].ToString(), _data[i + 1], rank);
             rank++;
         }
-     
+
     }
     #endregion
 
@@ -821,7 +848,7 @@ public class PlayClient : MonoBehaviour
 
     private void OnDisable()
     {
-      //  Debug.Log("유니티에서 끌때 소켓 종료");
+        //  Debug.Log("유니티에서 끌때 소켓 종료");
         clientSocket.Close();
         clientSocket.Dispose();
     }
