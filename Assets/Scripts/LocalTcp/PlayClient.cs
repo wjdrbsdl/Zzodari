@@ -391,6 +391,10 @@ public class PlayClient : MonoBehaviour
             ResGameStart(_validData);
 
         }
+        else if(_reqType == ReqRoomType.SelectCard)
+        {
+            ResSelectCard(_validData);
+        }
         else if (_reqType == ReqRoomType.PutDownCard)
         {
             ResPutDownCard(_validData);
@@ -483,7 +487,7 @@ public class PlayClient : MonoBehaviour
         {
             CardManager.intance.SetHaveCard(haveCardList);
         };
-        CardManager.intance.callBack.Enqueue(action);
+        CardManager.intance.callBack.Enqueue(action); // 내 카드리스트 세팅
         }
 
     private void ResetMyCardList()
@@ -492,7 +496,7 @@ public class PlayClient : MonoBehaviour
         {
             CardManager.intance.UpdateCards();
         };
-        CardManager.intance.callBack.Enqueue(action);
+        CardManager.intance.callBack.Enqueue(action); // 내카드리스트 리셋
     }
 
     #endregion
@@ -570,12 +574,60 @@ public class PlayClient : MonoBehaviour
             SceneManager.LoadScene("LobbyScene");
         };
         ClientManager.IsRoomOut = true;
-        CardManager.intance.callBack.Enqueue(outCallBack);
+        CardManager.intance.callBack.Enqueue(outCallBack); //나가기
     }
 
     #endregion
 
     #region 카드 제출
+    public void ReqSelectCard(List<CardData> _cardDataList)
+    {
+        /*
+         * [0] 요청 코드 putdownCard
+         * [1] 플레이어 id
+         * [2] 낸 카드 숫자
+         * [3] 카드 구성
+         */
+        ColorConsole.Default("카드 제출 요청");
+        List<byte> reqCardList = new();
+        reqCardList.Add((byte)ReqRoomType.SelectCard);
+        reqCardList.Add((byte)id);
+        reqCardList.Add((byte)_cardDataList.Count);
+        for (int i = 0; i < _cardDataList.Count; i++)
+        {
+            reqCardList.Add((byte)_cardDataList[i].cardClass);
+            reqCardList.Add((byte)_cardDataList[i].num);
+        }
+        byte[] reqData = reqCardList.ToArray();
+        SendMessege(reqData);
+    }
+
+    private void ResSelectCard(byte[] _data)
+    {
+        //유저가 어떤 카드를 냈는지 전달
+        /*
+        * [0] 요청 코드 putdownCard
+        * [1] 플레이어 id
+        * [2] 낸 카드 숫자
+        * [3] 카드 구성
+        */
+        //자기가 낸 경우엔 응답 없음. 
+
+        List<CardData> selectCardList = new(); //제출된 카드리스트 정리
+        for (int i = 3; i < _data.Length; i += 2)
+        {
+            CardClass cardClass = (CardClass)_data[i];
+            int num = _data[i + 1];
+            CardData card = new CardData(cardClass, num); //카드 생성
+            selectCardList.Add(card);
+        }
+        string putPlayerID = _data[1].ToString(); //카드 낸사람
+        Action action = ()=> CardManager.intance.SetSelectCard(putPlayerID, selectCardList);
+        CardManager.intance.callBack.Enqueue(action);
+        //본인이 낸거라면 본인 카드에서 제외
+
+    }
+
     private void ReqPutDownCard(List<CardData> _cardDataList)
     {
         /*
