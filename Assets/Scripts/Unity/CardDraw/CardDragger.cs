@@ -51,6 +51,32 @@ public class CardDragger : MonoBehaviour
     }
 
     public LayerMask m_endMask;
+    public void ForceEndDrag()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        isDragging = false;
+        // z축 값은 0으로 설정 (2D 환경에서는 보통 z축을 0으로 고정)
+        mousePosition.z = 0;
+
+        // 2D 레이를 쏩니다
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, m_endMask);
+        bool isSelectZone = false;
+        if (hit.collider != null)
+        {
+            isSelectZone = true;
+        }
+
+        //드래그 중이던오브젝트가 있으면
+        if (m_dragObject != null)
+        {
+            //매니저에게 전달해주고
+            m_cardManager.EndDrag(m_dragObject, isSelectZone);
+            //드래그 정보는 초기화
+            m_dragObject.m_isDragging = false;
+            m_dragObject = null;
+        }
+    }
+
     private void EndDrag()
     {
         if (Input.GetKeyUp(KeyCode.Mouse0))
