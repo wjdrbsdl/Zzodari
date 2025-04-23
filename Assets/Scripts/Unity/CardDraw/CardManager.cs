@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    public static CardManager intance;
+    public static CardManager instance;
 
+    public CardDragger m_dragger;
     public PlayClient m_pClient;
     public ArrangeCardObj m_arrangeHandCard;
     public ArrangeCardObj m_arrangeSelectCard;
     public Transform cardHands;
     public CardObject cardSample;
-    public CardObject[] cards;
+    public CardObject[] handCards;
+    public CardObject[] otherCards; //셀렉 표기용 카드
+    public Transform otehrCardTransform;
 
     public GameObject m_selectZoneObj;
     public GameObject m_guideText; // 드래그해서 끌어라는 가이드 문구
@@ -21,11 +24,11 @@ public class CardManager : MonoBehaviour
     #region
     void Awake()
     {
-        intance = this;
+        instance = this;
     }
     private void Start()
     {
-        MakeMyCardObject();
+        MakeCardObject();
     }
     #endregion
     public Queue<Action> callBack = new();
@@ -38,9 +41,10 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void MakeMyCardObject()
+    private void MakeCardObject()
     {
-        cards = new CardObject[13];
+        handCards = new CardObject[13];
+        otherCards = new CardObject[13];
         //카드 최대 수치는 13장으로 정해져있음. 고로 만들어놓기
         for (int i = 0; i < 13; i++)
         {
@@ -48,14 +52,27 @@ public class CardManager : MonoBehaviour
             newObj.transform.SetParent(cardHands);
             newObj.gameObject.SetActive(false);
             newObj.m_isMine = true;
-            cards[i] = newObj;
+            handCards[i] = newObj;
+
+            CardObject otherObj = Instantiate(cardSample);
+            otherObj.transform.SetParent(otehrCardTransform);
+            otherObj.gameObject.SetActive(false);
+            otherObj.m_isMine = false;
+            otherCards[i] = otherObj;
         }
         
     }
 
-    public void SetSelectCard(string _id, List<CardData> _selectList)
+    public void ShowOtherCard(string _id, List<CardData> _selectList)
     {
         Debug.Log("카드 셀렉했다고 정보 들어옴");
+        m_dragger.ForceEndDrag(); //들고있던 남의 카드 있으면 강제 드랍 
+        m_arrangeSelectCard.ResetList();
+        for (int i = 0; i < _selectList.Count; i++)
+        {
+            otherCards[i].SetCardData(_selectList[i]);
+            m_arrangeSelectCard.AddCardObject(otherCards[i]);
+        }
     
     }
 
@@ -64,7 +81,8 @@ public class CardManager : MonoBehaviour
     {
         m_haveCardList = _haveCardList;
         //있는 만큼 켜고 세팅
-        UpdateCards();
+        ResetSelectCards();
+        ResetHandCards();
     }
 
     public void UpdateCards()
@@ -72,23 +90,51 @@ public class CardManager : MonoBehaviour
         //데이터상 보유카드 변경되었을때
         for (int i = 0; i < m_haveCardList.Count; i++)
         {
-            cards[i].SetCardData(m_haveCardList[i]);
-            cards[i].gameObject.SetActive(true);
+            handCards[i].SetCardData(m_haveCardList[i]);
+            handCards[i].gameObject.SetActive(true);
         }
         //나머진 끔
         for (int i = m_haveCardList.Count; i < 13; i++)
         {
-            cards[i].gameObject.SetActive(false);
+            handCards[i].gameObject.SetActive(false);
         }
 
         CardObject[] activeCards = cardHands.GetComponentsInChildren<CardObject>();
-        m_arrangeSelectCard.ResetList();
+        //내턴인경우에만 셀렉존에 있던 카드들도 정리 
+        if (m_pClient.isMyTurn)
+        {
+            m_arrangeSelectCard.ResetList();
+        }
+        
         m_arrangeHandCard.ResetList();
         m_arrangeHandCard.SetCardObjects(activeCards);
         ShowGuidText();
     }
 
+    public void ResetSelectCards()
+    {
+        m_arrangeSelectCard.ResetList();
+    }
+
+    public void ResetHandCards()
+    {
+        
+        m_arrangeHandCard.ResetList();
+        for (int i = 0; i < m_haveCardList.Count; i++)
+        {
+            handCards[i].SetCardData(m_haveCardList[i]);
+            m_arrangeHandCard.AddCardObject(handCards[i]);
+        }
+        ShowGuidText();
+    }
+
     #region 드래그 반응
+    public void ForceQuitDrag()
+    {
+        //강제로 드래그 종료시키기
+        m_dragger.ForceEndDrag();
+    }
+
     public void EndDrag(CardObject _object, bool _isSelectZone)
     {
         //Debug.Log("카드를 선택존에 놓았는가" + _isSelectZone);
@@ -135,6 +181,7 @@ public class CardManager : MonoBehaviour
     }
     #endregion
 
+    #region 버튼
     public void OnClickPutDown()
     {
        bool put = m_pClient.PutDownCards(m_arrangeSelectCard.GetCardDataList());
@@ -142,8 +189,9 @@ public class CardManager : MonoBehaviour
 
     public void OnClickSort()
     {
-        m_pClient.SortCardList();
+        m_pClient.SortCardList(); //손패 정렬하기 버튼 누른경우
     }
+    #endregion
 
     private void ShowGuidText()
     {
