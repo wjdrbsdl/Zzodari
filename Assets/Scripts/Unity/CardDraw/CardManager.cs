@@ -65,7 +65,7 @@ public class CardManager : MonoBehaviour
 
     public void ShowOtherCard(string _id, List<CardData> _selectList)
     {
-        Debug.Log("카드 셀렉했다고 정보 들어옴");
+        //Debug.Log("카드 셀렉했다고 정보 들어옴");
         m_dragger.ForceEndDrag(); //들고있던 남의 카드 있으면 강제 드랍 
         m_arrangeSelectCard.ResetList();
         for (int i = 0; i < _selectList.Count; i++)
@@ -83,32 +83,6 @@ public class CardManager : MonoBehaviour
         //있는 만큼 켜고 세팅
         ResetSelectCards();
         ResetHandCards();
-    }
-
-    public void UpdateCards()
-    {
-        //데이터상 보유카드 변경되었을때
-        for (int i = 0; i < m_haveCardList.Count; i++)
-        {
-            handCards[i].SetCardData(m_haveCardList[i]);
-            handCards[i].gameObject.SetActive(true);
-        }
-        //나머진 끔
-        for (int i = m_haveCardList.Count; i < 13; i++)
-        {
-            handCards[i].gameObject.SetActive(false);
-        }
-
-        CardObject[] activeCards = cardHands.GetComponentsInChildren<CardObject>();
-        //내턴인경우에만 셀렉존에 있던 카드들도 정리 
-        if (m_pClient.isMyTurn)
-        {
-            m_arrangeSelectCard.ResetList();
-        }
-        
-        m_arrangeHandCard.ResetList();
-        m_arrangeHandCard.SetCardObjects(activeCards);
-        ShowGuidText();
     }
 
     public void ResetSelectCards()
@@ -195,6 +169,13 @@ public class CardManager : MonoBehaviour
 
     private void ShowGuidText()
     {
+        if(m_pClient.isMyTurn == false)
+        {
+            //일단 내턴 아니면 끔 
+            m_guideText.SetActive(false);
+            return;
+        }
+
         bool noSelcted = (m_arrangeSelectCard.GetCardDataList().Count == 0);
         m_guideText.SetActive(noSelcted);
     }
