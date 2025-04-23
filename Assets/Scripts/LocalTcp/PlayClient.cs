@@ -352,11 +352,11 @@ public class PlayClient : MonoBehaviour
 
         Action action = () =>
         {
-            CardManager.instance.ResetHandCards(); //내 카드 정렬할때 
             if (isMyTurn)
             {
                 CardManager.instance.ResetSelectCards(); // 내 차례라면 냈던 카드도 회수
             }
+            CardManager.instance.ResetHandCards(); //내 카드 정렬할때 
         };
         CardManager.instance.callBack.Enqueue(action); //인큐
 
@@ -512,6 +512,8 @@ public class PlayClient : MonoBehaviour
     {
         Action action = () =>
         {
+            //순서를 맞춰야함 - 리셋하면서 obj 비활성화를 시키기 때문에 손먼저하고 
+            //카드를 해버리면 손에있던 obj가 비활성화됨
             CardManager.instance.ResetSelectCards();//턴이 갱신되었을때
             CardManager.instance.ResetHandCards(); //턴이 갱신되었을때
         };
