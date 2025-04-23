@@ -10,6 +10,10 @@ public class ArrangeCardObj : MonoBehaviour
 
     public void ResetList()
     {
+        for (int i = 0; i < arrangeList.Count; i++)
+        {
+            arrangeList[i].gameObject.SetActive(false);
+        }
         arrangeList.Clear();
     }
 
@@ -17,9 +21,8 @@ public class ArrangeCardObj : MonoBehaviour
     {
         for (int i = 0; i < _cardObjects.Length; i++)
         {
-            arrangeList.Add(_cardObjects[i]);
+            AddCardObject(_cardObjects[i]);
         }
-        ArrangePosition();
     }
 
     private void ArrangePosition()
@@ -49,12 +52,14 @@ public class ArrangeCardObj : MonoBehaviour
     public void AddCardObject(CardObject _object)
     {
         arrangeList.Add(_object);
+        _object.gameObject.SetActive(true);
         ArrangePosition();
     }
 
     public void RemoveCardObject(CardObject _object)
     {
         arrangeList.Remove(_object);
+        _object.gameObject.SetActive(false);
         ArrangePosition();
     }
 
