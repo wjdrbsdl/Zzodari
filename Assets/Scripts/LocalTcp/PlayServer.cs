@@ -11,7 +11,7 @@ public enum ReqRoomType
 {
     Ready, Start, RoomOut, Chat,
     IDRegister, PartyData, RoomName,
-    ShuffleCard, PutDownCard,
+    ShuffleCard, PutDownCard, SelectCard,
     ArrangeTurn,
     StageReady, StageOver, GameOver,
     ReqGameOver, ResRoomJoinFail,
