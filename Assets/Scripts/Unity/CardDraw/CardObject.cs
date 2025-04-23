@@ -15,6 +15,7 @@ public class CardObject : MonoBehaviour
     public float m_moveSpeed = 3f;
     public bool m_isCurSelect = false; //지금 선택된 카드인가
     public bool m_isDragging = false;
+    public bool m_isMine = false;
 
     public void SetCardData(CardData _cardData)
     {

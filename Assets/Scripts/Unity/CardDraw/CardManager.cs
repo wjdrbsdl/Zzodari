@@ -25,7 +25,7 @@ public class CardManager : MonoBehaviour
     }
     private void Start()
     {
-        MakeCardObject();
+        MakeMyCardObject();
     }
     #endregion
     public Queue<Action> callBack = new();
@@ -38,7 +38,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    private void MakeCardObject()
+    private void MakeMyCardObject()
     {
         cards = new CardObject[13];
         //카드 최대 수치는 13장으로 정해져있음. 고로 만들어놓기
@@ -47,9 +47,16 @@ public class CardManager : MonoBehaviour
             CardObject newObj = Instantiate(cardSample);
             newObj.transform.SetParent(cardHands);
             newObj.gameObject.SetActive(false);
+            newObj.m_isMine = true;
             cards[i] = newObj;
         }
         
+    }
+
+    public void SetSelectCard(string _id, List<CardData> _selectList)
+    {
+        Debug.Log("카드 셀렉했다고 정보 들어옴");
+    
     }
 
     //처음 가졌을때?
@@ -92,6 +99,13 @@ public class CardManager : MonoBehaviour
             return;
         }
 
+        //내차례가 아니면 못함
+        if (m_pClient.isMyTurn == false)
+        {
+            return;
+        }
+            
+
         if (_isSelectZone)
         {
             DragHandToSelect(_object);
@@ -100,7 +114,7 @@ public class CardManager : MonoBehaviour
         {
             DragSelectToHand(_object);
         }
-
+        m_pClient.ReqSelectCard(m_arrangeSelectCard.GetCardDataList());
         ShowGuidText();
        
     }
