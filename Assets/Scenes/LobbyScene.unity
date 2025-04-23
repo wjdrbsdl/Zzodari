@@ -576,7 +576,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 354223121}
-  - component: {fileID: 354223120}
   m_Layer: 0
   m_Name: "UI\uCC98\uB9AC\uAE30"
   m_TagString: Untagged
@@ -584,18 +583,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &354223120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 354223119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7f45bf4adbb4d04d9a73a3108ca945c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &354223121
 Transform:
   m_ObjectHideFlags: 0
@@ -1473,7 +1460,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 588247350}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999954
+  m_Size: 0.99760437
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3802,7 +3789,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.007024685}
+  m_AnchoredPosition: {x: 0, y: -0.0063932477}
   m_SizeDelta: {x: 0, y: 35}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1723037025
