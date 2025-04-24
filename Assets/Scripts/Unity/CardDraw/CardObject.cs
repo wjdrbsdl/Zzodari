@@ -54,15 +54,4 @@ public class CardObject : MonoBehaviour
         transform.Translate(direct * m_moveSpeed * Time.deltaTime);
     }
 
-    float ratio = 2f;
-    private float rest = 0f;
-    private void MakeEffect()
-    {
-        rest -= Time.deltaTime;
-        if(rest < 0)
-        {
-            Instantiate(m_effectPrefab, m_effectTransform);
-            rest = ratio;
-        }
-    }
 }
