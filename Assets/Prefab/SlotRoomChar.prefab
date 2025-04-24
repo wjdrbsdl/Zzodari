@@ -72,6 +72,9 @@ MonoBehaviour:
   m_rankGo: {fileID: 964722228098212492}
   m_passGo: {fileID: 5586640847561332224}
   m_rankText: {fileID: 297210111434157963}
+  m_iconImage: {fileID: 4451206555302394292}
+  hitSprite: {fileID: 21300000, guid: f0512a44576e0324ba6a41043988443a, type: 3}
+  passSprite: {fileID: 21300000, guid: 1e592c5a15f74fd4f9454b70d2d7ab9b, type: 3}
 --- !u!1 &229875442131061543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,7 +1189,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1e592c5a15f74fd4f9454b70d2d7ab9b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0512a44576e0324ba6a41043988443a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

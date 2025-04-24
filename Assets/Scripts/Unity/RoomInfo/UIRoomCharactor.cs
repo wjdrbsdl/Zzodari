@@ -88,7 +88,7 @@ public class UIRoomCharactor : MonoBehaviour
         {
             if (pDataList[i].ID == preTurnId)
             {
-                m_roomCharSlots[i].ShowPassIcon(preMixture);
+                m_roomCharSlots[i].ShowActIcon(preMixture);
                 break;
             }
            
