@@ -17,7 +17,7 @@ public class RoomCharactorSlot : MonoBehaviour
     public UserTurnTimer m_userTimer;
 
     public GameObject m_rankGo;
-    public GameObject m_passGo;
+    public GoOffTimer m_passGo;
     public TMP_Text m_rankText;
 
     // Use this for initialization
@@ -132,7 +132,7 @@ public class RoomCharactorSlot : MonoBehaviour
     {
         if (_mixtureType.Equals(EMixtureType.Pass))
         {
-            m_passGo.SetActive(true);
+            m_passGo.StartTimer();
         }
     }
 }
