@@ -165,6 +165,29 @@ public class InGameData
         Enqueue(ReqRoomType.StageReady);
     }
 
+    public void SetUserOrder(List<string> _orderList)
+    {
+        //정해진 순서대로 m_partyList의 순서를 바꾸면됨. 
+        //1. 첫번째는 무조건 자신을 넣고 ,
+        int myIndex = _orderList.IndexOf(myId); //순서에서 내 인덱스 순서를 찾고 
+        List<PlayerData> orderList = new();
+        orderList.Add(m_partyList[0]); 
+        for (int i = 1; i < m_partyList.Count; i++)
+        {
+            //나 다음의 아이디는 
+            int orderIndex = (myIndex + i) % m_partyList.Count; //뒤로 순환하므로 +i를 하고 넘어가면 0으로 돌아가도록 설정
+            PlayerData orderPlayer = GetPlayData(_orderList[orderIndex]); //아이디로 정보를 찾고
+            orderList.Add(orderPlayer);
+        }
+
+        //순서 적용된 orderList대로 내 파티 리스트를 재설정
+        for (int i = 0; i < m_partyList.Count; i++)
+        {
+            m_partyList[i] = orderList[i];
+        }
+
+    }
+
     private void Enqueue(ReqRoomType _code)
     {
         RoomInfoManager.instance.EnqueueCode(_code);
