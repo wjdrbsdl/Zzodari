@@ -26,6 +26,18 @@ public class CardObject : MonoBehaviour
         m_isDragging = false;
     }
 
+    Transform basePos;
+    public void SetBasePos(Transform _transform)
+    {
+        //기준 transform이 바뀌는거에 따라 추적하기 위해 transform으로 저장
+        basePos = _transform;
+    }
+    float m_startX;
+    public void SetStartX(float _x)
+    {
+        m_startX = _x;
+    }
+
     public void SetArrangePos(Vector3 _pos)
     {
         m_arrangePos = _pos;
@@ -50,8 +62,13 @@ public class CardObject : MonoBehaviour
             return;
         }
 
-        Vector3 direct = m_arrangePos - transform.position;
-        transform.Translate(direct * m_moveSpeed * Time.deltaTime);
+        //이전 고정된 tranform 용
+        //Vector3 direct = m_arrangePos - transform.position;
+        //transform.Translate(direct * m_moveSpeed * Time.deltaTime);
+
+        Vector3 testArragne = basePos.position + new Vector3( m_startX,0,0);
+        Vector3 testDirect = testArragne - transform.position;
+        transform.Translate(testDirect * m_moveSpeed * Time.deltaTime);
     }
 
 }
