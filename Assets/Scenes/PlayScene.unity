@@ -828,7 +828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -104.39996, y: 123}
+  m_AnchoredPosition: {x: -104.3999, y: 123}
   m_SizeDelta: {x: 99.5635, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &256720694
@@ -2427,6 +2427,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830027797}
+  - component: {fileID: 830027798}
   m_Layer: 0
   m_Name: CardCenterPosition
   m_TagString: Untagged
@@ -2449,6 +2450,21 @@ Transform:
   m_Father: {fileID: 2045521614}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &830027798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830027796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bacc35ed171d2654096b30c56387c014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_defaultX: 0
+  m_defaultY: 0
+  m_originPos: {x: 0, y: 0, z: 0}
 --- !u!1 &846848573
 GameObject:
   m_ObjectHideFlags: 0
@@ -3320,7 +3336,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 25
   field of view: 60
   orthographic: 1
   orthographic size: 5
