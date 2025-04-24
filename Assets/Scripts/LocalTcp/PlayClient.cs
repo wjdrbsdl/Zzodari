@@ -714,7 +714,8 @@ public class PlayClient : MonoBehaviour
         * [2] 낸 카드 숫자
         * [3] 카드 구성
         */
- 
+        CardRule rule = new CardRule();
+        string putPlayerID = _data[1].ToString(); //카드 낸사람
         //본인의 행위였다면
         if (_data[1] == id)
         {
@@ -729,6 +730,8 @@ public class PlayClient : MonoBehaviour
             //본인의 카드 제거나 이전 카드 기록 안함
             ColorConsole.Default("전 사람 패쓰했음");
             ResetTurnCard();//패쓰 했을때 셀렉존 카드 갱신 위해서 
+            rule.CheckValidRule(new List<CardData>(), out TMixture _passMixture);
+            inGameData.SetPutDownCardInfo(_passMixture, 0, putPlayerID);
             return;
         }
         //바닥에 깔린 카드 갱신
@@ -740,11 +743,10 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData(cardClass, num); //카드 생성
             AddPutDownCard(card);
         }
-        CardRule rule = new CardRule();
+       
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-        string putPlayerID = _data[1].ToString(); //카드 낸사람
-        inGameData.SetPutDownCardInfo(_mixture.GetCardShowValue(), _mixture.cardCount, putPlayerID);
+        inGameData.SetPutDownCardInfo(_mixture, _mixture.cardCount, putPlayerID);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
