@@ -13,6 +13,7 @@ public class DebugManager : MonoBehaviour
     public GameObject debugScroll;
     public bool systemDebug = false;
     public bool msgDebug = false;
+    public bool unityDebug = false;
     void Start()
     {
         instance = this;
@@ -64,7 +65,12 @@ public class DebugManager : MonoBehaviour
                 tmpText.rectTransform.sizeDelta = new Vector2(tmpText.rectTransform.sizeDelta.x, rect.height + 36f);
                 vertiaclScroll.value = 0;
             }
-            //Debug.Log(msg);
+
+            if (unityDebug)
+            {
+                Debug.Log(msg);
+            }
+            
         }
         if (ruleWarningQueue.TryDequeue(out string warningMsg))
         {
