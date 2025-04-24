@@ -130,6 +130,7 @@ public class RoomInfoManager : MonoBehaviour
     {
         m_preCard.text = InputColor("전 카드 :") + _gameData.finalCard; //어떤 카드 냈는지
         ShowPartyInfo(_gameData);
+        m_roomCharUI.ShowPutDownIcon(_gameData);
     }
 
     private void OffPutDownCardInfo()

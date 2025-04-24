@@ -78,4 +78,8 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
+    public void ShowPutDownIcon(InGameData _gameData)
+    {
+
+    }
 }
