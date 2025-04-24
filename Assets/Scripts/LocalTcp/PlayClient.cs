@@ -507,7 +507,7 @@ public class PlayClient : MonoBehaviour
     {
         Action action = () =>
         {
-            CardManager.instance.SetHaveCard(haveCardList);
+            CardManager.instance.SetHaveCard(haveCardList); //처음 내카드를 세팅하는곳
         };
         CardManager.instance.callBack.Enqueue(action); // 내 카드리스트 세팅
     }
