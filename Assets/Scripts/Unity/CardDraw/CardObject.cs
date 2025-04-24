@@ -56,12 +56,6 @@ public class CardObject : MonoBehaviour
             //MakeEffect();
             return;
         }
-
-        if(m_arrangePos == Vector3.zero)
-        {
-            return;
-        }
-
         //이전 고정된 tranform 용
         //Vector3 direct = m_arrangePos - transform.position;
         //transform.Translate(direct * m_moveSpeed * Time.deltaTime);

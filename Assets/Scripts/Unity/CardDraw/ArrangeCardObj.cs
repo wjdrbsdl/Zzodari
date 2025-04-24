@@ -37,7 +37,7 @@ public class ArrangeCardObj : MonoBehaviour
             {
                 continue;
             }
-            //arrangeList[i].SetArrangePos(arrangePos); //고정된 위치 - 이전
+           // arrangeList[i].SetArrangePos(arrangePos); //고정된 위치 - 이전
             arrangePos.x += m_xGap;
 
             arrangeList[i].SetBasePos(m_centerTrans); //변경되는 transform 추적용
