@@ -70,7 +70,7 @@ MonoBehaviour:
   m_restCardCount: {fileID: 2125224643681807589}
   m_userTimer: {fileID: 3094068581076936976}
   m_rankGo: {fileID: 964722228098212492}
-  m_passGo: {fileID: 6089853601855192604}
+  m_passGo: {fileID: 5586640847561332224}
   m_rankText: {fileID: 297210111434157963}
 --- !u!1 &229875442131061543
 GameObject:
