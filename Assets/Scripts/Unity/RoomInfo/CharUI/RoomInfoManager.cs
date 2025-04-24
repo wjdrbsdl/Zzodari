@@ -101,12 +101,6 @@ public class RoomInfoManager : MonoBehaviour
                     ShowRank(inGameData);
                     //m_badPoint.text += InputColor(" ¼øÀ§ : ") + inGameData.myRank.ToString();
                     break;
-                case ReqRoomType.Draw:
-                    isShow = true;
-                    helpTextRestTime = helpTextTime;
-                    m_helpText.gameObject.SetActive(true);
-                    m_helpText.text = "ÅÏ ³Ñ±è";
-                    break;
             }
         }
 
