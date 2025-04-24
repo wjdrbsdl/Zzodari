@@ -63,6 +63,7 @@ public class CardManager : MonoBehaviour
         
     }
 
+    //타인이 낸 카드를 보여줌. 
     public void ShowOtherCard(string _id, List<CardData> _selectList)
     {
         //Debug.Log("카드 셀렉했다고 정보 들어옴");
@@ -76,10 +77,14 @@ public class CardManager : MonoBehaviour
     
     }
 
-    //처음 가졌을때?
+    //처음 가졌을때
     public void SetHaveCard(List<CardData> _haveCardList)
     {
         m_haveCardList = _haveCardList;
+        for (int i = 0; i < _haveCardList.Count; i++)
+        {
+            handCards[i].SetCardData(_haveCardList[i]);
+        }
         //있는 만큼 켜고 세팅
         ResetSelectCards();
         ResetHandCards();
@@ -92,13 +97,32 @@ public class CardManager : MonoBehaviour
 
     public void ResetHandCards()
     {
-        
         m_arrangeHandCard.ResetList();
-        for (int i = 0; i < m_haveCardList.Count; i++)
+
+        int[] index = new int[handCards.Length];
+        int[] orderIndex = new int[ m_haveCardList.Count];
+        for (int i = 0; i < index.Length; i++)
         {
-            handCards[i].SetCardData(m_haveCardList[i]);
-            m_arrangeHandCard.AddCardObject(handCards[i]);
+            CardData cData = handCards[i].m_cardData;
+            index[i] = m_haveCardList.IndexOf(cData);
+            int findIndex = m_haveCardList.IndexOf(cData); 
+            if(findIndex != -1)
+            {
+                orderIndex[findIndex] = i;
+                handCards[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                handCards[i].gameObject.SetActive(false);
+            }
         }
+
+        for (int i = 0; i < orderIndex.Length; i++)
+        {
+            handCards[orderIndex[i]].m_isCurSelect = false;
+            m_arrangeHandCard.AddCardObject(handCards[orderIndex[i]]);
+        }
+
         ShowGuidText();
     }
 
