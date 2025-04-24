@@ -169,6 +169,13 @@ public class CardManager : MonoBehaviour
 
     private void ShowGuidText()
     {
+        if(m_pClient.isGameStart == false)
+        {
+            //게임 시작전이면 안냇말은 띄어두기
+            m_guideText.SetActive(true);
+            return;
+        }
+
         if(m_pClient.isMyTurn == false)
         {
             //일단 내턴 아니면 끔 
