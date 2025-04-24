@@ -3699,6 +3699,7 @@ MonoBehaviour:
   debugScroll: {fileID: 248495388}
   systemDebug: 0
   msgDebug: 0
+  unityDebug: 0
 --- !u!4 &1233424104
 Transform:
   m_ObjectHideFlags: 0
@@ -4717,7 +4718,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCE74\uB4DC \uB04C\uC5B4\uB2E4 \uB193\uAE30\n"
+  m_text: "\uB0B4 \uCC28\uB840\n1. \uCE74\uB4DC \uB04C\uC5B4\uB2E4 \uB193\uAE30\n2.
+    \uCE74\uB4DC\uC815\uB82C\uB85C \uCD08\uAE30\uD654\n3. \uC81C\uCD9C \uD639\uC740
+    \uD328\uC4F0\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f003c9ca2b261ce42950ed05c6f708e6, type: 2}
   m_sharedMaterial: {fileID: 2096795305419342002, guid: f003c9ca2b261ce42950ed05c6f708e6, type: 2}
@@ -4726,8 +4729,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 1442840575
-  m_fontColor: {r: 1, g: 1, b: 1, a: 0.33333334}
+    rgba: 4278203391
+  m_fontColor: {r: 1, g: 0.20070961, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6044,7 +6047,6 @@ MonoBehaviour:
   m_roomNameText: {fileID: 1101584478}
   m_preCard: {fileID: 366641178}
   m_helpText: {fileID: 1351857071}
-  m_dragGuid: {fileID: 1507417395}
   m_selectzoneColor: {fileID: 968636066}
   m_client: {fileID: 486984122}
 --- !u!1 &1817615428
