@@ -7,7 +7,7 @@ public class InGameData
     public string[] userIds = new string[4]; //최대 4명
 
     public string curTurnId; //현재 유저
-    public string preCard; //전에 낸 카드
+    public string finalCard; //전에 낸 카드
     public int preCardCount;
 
     public string roomName; //방 이름
@@ -37,9 +37,18 @@ public class InGameData
         Enqueue(ReqRoomType.ArrangeTurn);
     }
 
-    public void SetPutDownCardInfo(string _preCard, int _cardCount, string _id)
+    public string preCardId;//패쓰 포함 냈던 사람
+    public EMixtureType preMixtureType; //패쓰 포함 가치
+
+    public void SetPutDownCardInfo(TMixture _cardValue, int _cardCount, string _id)
     {
-        preCard = _preCard;
+        //유요한 
+        preMixtureType = _cardValue.mixture; //마지막과 이전 타입은 다를 수 있음. 
+        preCardId = _id;
+        if (preMixtureType != EMixtureType.None && preMixtureType != EMixtureType.Pass)
+        {
+            finalCard = _cardValue.GetCardShowValue(); //유효한 카드인 경우에만 마지막 카드 값 기록.
+        }
         preCardCount = _cardCount;
         PlayerData pData = GetPlayData(_id); //누가 냈는가
         if(pData != null)
