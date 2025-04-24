@@ -15,7 +15,7 @@ public enum ReqRoomType
     ArrangeTurn,
     StageReady, StageOver, GameOver,
     ReqGameOver, ResRoomJoinFail,
-    Draw
+    Draw, UserOrder
 
 
 }

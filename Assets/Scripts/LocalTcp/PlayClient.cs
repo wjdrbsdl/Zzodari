@@ -413,6 +413,10 @@ public class PlayClient : MonoBehaviour
         {
             ResSelectCard(_validData);
         }
+        else if (_reqType == ReqRoomType.UserOrder)
+        {
+            ResUserOrder(_validData);
+        }
         else if (_reqType == ReqRoomType.PutDownCard)
         {
             ResPutDownCard(_validData);
@@ -646,6 +650,29 @@ public class PlayClient : MonoBehaviour
 
         //본인이 낸거라면 본인 카드에서 제외
         ResetSelectZone(_data[1].ToString(), selectCardList);
+    }
+
+    private void ResUserOrder(byte[] _data)
+    {
+        /*
+          * [0] 코드 - ReqRoomType.UserOrder
+          * [1] 참가 인원수
+          * [2]부터 해당아이디 Length, 아이디값 반복.
+          * [2+ Length+1] ~ 반복
+          */
+        int userCount = _data[1];
+        int idLengthIndex = 2;
+        List<string> idOrderList = new();
+        for (int i = 0; i < userCount; i++)
+        {
+            int idLength = _data[idLengthIndex] ;//아이디 길이 
+            byte[] idByte = new byte[idLength];
+            Buffer.BlockCopy(_data, idLengthIndex + 1, idByte, 0, idLength);
+            string id = Encoding.Unicode.GetString(idByte);
+            idOrderList.Add(id);
+            idLengthIndex = idLengthIndex + idLength + 1;//다음 아이디 길이 인덱스를 가리키고
+        }
+        inGameData.SetUserOrder(idOrderList);
     }
 
     private void ResetSelectZone(string _id, List<CardData> _cardList)
