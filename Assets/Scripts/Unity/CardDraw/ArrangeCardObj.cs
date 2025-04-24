@@ -17,14 +17,6 @@ public class ArrangeCardObj : MonoBehaviour
         arrangeList.Clear();
     }
 
-    public void SetCardObjects(CardObject[] _cardObjects)
-    {
-        for (int i = 0; i < _cardObjects.Length; i++)
-        {
-            AddCardObject(_cardObjects[i]);
-        }
-    }
-
     private void ArrangePosition()
     {
         //가운데 정렬 
