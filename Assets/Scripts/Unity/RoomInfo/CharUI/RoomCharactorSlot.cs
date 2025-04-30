@@ -17,7 +17,12 @@ public class RoomCharactorSlot : MonoBehaviour
     public UserTurnTimer m_userTimer;
 
     public GameObject m_rankGo;
+    public GoOffTimer m_passGo;
     public TMP_Text m_rankText;
+
+    public Image m_iconImage;
+    public Sprite hitSprite;
+    public Sprite passSprite;
 
     // Use this for initialization
     #region 데이터 세팅 및 갱신
@@ -126,4 +131,17 @@ public class RoomCharactorSlot : MonoBehaviour
         m_rankText.text = m_playerData.rank.ToString();
     }
     #endregion
+
+    public void ShowActIcon(EMixtureType _mixtureType)
+    {
+        if (_mixtureType.Equals(EMixtureType.Pass))
+        {
+            m_iconImage.sprite = passSprite;
+        }
+        else
+        {
+            m_iconImage.sprite = hitSprite;
+        }
+        m_passGo.StartTimer();
+    }
 }

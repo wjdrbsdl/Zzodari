@@ -7,7 +7,7 @@ public class InGameData
     public string[] userIds = new string[4]; //최대 4명
 
     public string curTurnId; //현재 유저
-    public string preCard; //전에 낸 카드
+    public string finalCard; //전에 낸 카드
     public int preCardCount;
 
     public string roomName; //방 이름
@@ -37,9 +37,18 @@ public class InGameData
         Enqueue(ReqRoomType.ArrangeTurn);
     }
 
-    public void SetPutDownCardInfo(string _preCard, int _cardCount, string _id)
+    public string preCardId;//패쓰 포함 냈던 사람
+    public EMixtureType preMixtureType; //패쓰 포함 가치
+
+    public void SetPutDownCardInfo(TMixture _cardValue, int _cardCount, string _id)
     {
-        preCard = _preCard;
+        //유요한 
+        preMixtureType = _cardValue.mixture; //마지막과 이전 타입은 다를 수 있음. 
+        preCardId = _id;
+        if (preMixtureType != EMixtureType.None && preMixtureType != EMixtureType.Pass)
+        {
+            finalCard = _cardValue.GetCardShowValue(); //유효한 카드인 경우에만 마지막 카드 값 기록.
+        }
         preCardCount = _cardCount;
         PlayerData pData = GetPlayData(_id); //누가 냈는가
         if(pData != null)
@@ -163,6 +172,29 @@ public class InGameData
     public void StageReady()
     {
         Enqueue(ReqRoomType.StageReady);
+    }
+
+    public void SetUserOrder(List<string> _orderList)
+    {
+        //정해진 순서대로 m_partyList의 순서를 바꾸면됨. 
+        //1. 첫번째는 무조건 자신을 넣고 ,
+        int myIndex = _orderList.IndexOf(myId); //순서에서 내 인덱스 순서를 찾고 
+        List<PlayerData> orderList = new();
+        orderList.Add(m_partyList[0]); 
+        for (int i = 1; i < m_partyList.Count; i++)
+        {
+            //나 다음의 아이디는 
+            int orderIndex = (myIndex + i) % m_partyList.Count; //뒤로 순환하므로 +i를 하고 넘어가면 0으로 돌아가도록 설정
+            PlayerData orderPlayer = GetPlayData(_orderList[orderIndex]); //아이디로 정보를 찾고
+            orderList.Add(orderPlayer);
+        }
+
+        //순서 적용된 orderList대로 내 파티 리스트를 재설정
+        for (int i = 0; i < m_partyList.Count; i++)
+        {
+            m_partyList[i] = orderList[i];
+        }
+
     }
 
     private void Enqueue(ReqRoomType _code)

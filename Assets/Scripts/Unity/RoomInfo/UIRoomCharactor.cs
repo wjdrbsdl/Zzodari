@@ -78,4 +78,20 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
+    public void ShowPutDownIcon(InGameData _gameData)
+    {
+        string preTurnId = _gameData.preCardId;
+        EMixtureType preMixture = _gameData.preMixtureType;
+        
+        List<PlayerData> pDataList = _gameData.m_partyList;
+        for (int i = 0; i < pDataList.Count; i++)
+        {
+            if (pDataList[i].ID == preTurnId)
+            {
+                m_roomCharSlots[i].ShowActIcon(preMixture);
+                break;
+            }
+           
+        }
+    }
 }

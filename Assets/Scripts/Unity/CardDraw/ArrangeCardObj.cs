@@ -17,14 +17,6 @@ public class ArrangeCardObj : MonoBehaviour
         arrangeList.Clear();
     }
 
-    public void SetCardObjects(CardObject[] _cardObjects)
-    {
-        for (int i = 0; i < _cardObjects.Length; i++)
-        {
-            AddCardObject(_cardObjects[i]);
-        }
-    }
-
     private void ArrangePosition()
     {
         //가운데 정렬 
@@ -32,9 +24,11 @@ public class ArrangeCardObj : MonoBehaviour
         int half = arrangeList.Count / 2;
         int rest = arrangeList.Count % 2;
         float startX = half * m_xGap * -1;
-        if(rest == 0)
+        float textX = half * m_xGap * -1;
+        if (rest == 0)
         {
             startX += m_xGap / 2;
+            textX += m_xGap / 2; 
         }
         arrangePos.x += startX;
         for (int i = 0; i < arrangeList.Count; i++)
@@ -43,8 +37,12 @@ public class ArrangeCardObj : MonoBehaviour
             {
                 continue;
             }
-            arrangeList[i].SetArrangePos(arrangePos);
+           // arrangeList[i].SetArrangePos(arrangePos); //고정된 위치 - 이전
             arrangePos.x += m_xGap;
+
+            arrangeList[i].SetBasePos(m_centerTrans); //변경되는 transform 추적용
+            arrangeList[i].SetStartX(textX);
+            textX += m_xGap;
         }
 
     }

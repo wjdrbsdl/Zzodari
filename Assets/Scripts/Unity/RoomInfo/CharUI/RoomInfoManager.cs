@@ -101,12 +101,6 @@ public class RoomInfoManager : MonoBehaviour
                     ShowRank(inGameData);
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
-                case ReqRoomType.Draw:
-                    isShow = true;
-                    helpTextRestTime = helpTextTime;
-                    m_helpText.gameObject.SetActive(true);
-                    m_helpText.text = "턴 넘김";
-                    break;
             }
         }
 
@@ -134,8 +128,9 @@ public class RoomInfoManager : MonoBehaviour
 
     private void ShowPutDownCardInfo(InGameData _gameData)
     {
-        m_preCard.text = InputColor("전 카드 :") + _gameData.preCard; //어떤 카드 냈는지
+        m_preCard.text = InputColor("전 카드 :") + _gameData.finalCard; //어떤 카드 냈는지
         ShowPartyInfo(_gameData);
+        m_roomCharUI.ShowPutDownIcon(_gameData);
     }
 
     private void OffPutDownCardInfo()

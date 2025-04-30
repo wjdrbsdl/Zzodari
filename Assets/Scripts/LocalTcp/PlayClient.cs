@@ -413,6 +413,10 @@ public class PlayClient : MonoBehaviour
         {
             ResSelectCard(_validData);
         }
+        else if (_reqType == ReqRoomType.UserOrder)
+        {
+            ResUserOrder(_validData);
+        }
         else if (_reqType == ReqRoomType.PutDownCard)
         {
             ResPutDownCard(_validData);
@@ -503,7 +507,7 @@ public class PlayClient : MonoBehaviour
     {
         Action action = () =>
         {
-            CardManager.instance.SetHaveCard(haveCardList);
+            CardManager.instance.SetHaveCard(haveCardList); //처음 내카드를 세팅하는곳
         };
         CardManager.instance.callBack.Enqueue(action); // 내 카드리스트 세팅
     }
@@ -648,6 +652,29 @@ public class PlayClient : MonoBehaviour
         ResetSelectZone(_data[1].ToString(), selectCardList);
     }
 
+    private void ResUserOrder(byte[] _data)
+    {
+        /*
+          * [0] 코드 - ReqRoomType.UserOrder
+          * [1] 참가 인원수
+          * [2]부터 해당아이디 Length, 아이디값 반복.
+          * [2+ Length+1] ~ 반복
+          */
+        int userCount = _data[1];
+        int idLengthIndex = 2;
+        List<string> idOrderList = new();
+        for (int i = 0; i < userCount; i++)
+        {
+            int idLength = _data[idLengthIndex] ;//아이디 길이 
+            byte[] idByte = new byte[idLength];
+            Buffer.BlockCopy(_data, idLengthIndex + 1, idByte, 0, idLength);
+            string id = Encoding.Unicode.GetString(idByte);
+            idOrderList.Add(id);
+            idLengthIndex = idLengthIndex + idLength + 1;//다음 아이디 길이 인덱스를 가리키고
+        }
+        inGameData.SetUserOrder(idOrderList);
+    }
+
     private void ResetSelectZone(string _id, List<CardData> _cardList)
     {
         string putPlayerID = _id; //카드 낸사람
@@ -687,7 +714,8 @@ public class PlayClient : MonoBehaviour
         * [2] 낸 카드 숫자
         * [3] 카드 구성
         */
- 
+        CardRule rule = new CardRule();
+        string putPlayerID = _data[1].ToString(); //카드 낸사람
         //본인의 행위였다면
         if (_data[1] == id)
         {
@@ -702,6 +730,8 @@ public class PlayClient : MonoBehaviour
             //본인의 카드 제거나 이전 카드 기록 안함
             ColorConsole.Default("전 사람 패쓰했음");
             ResetTurnCard();//패쓰 했을때 셀렉존 카드 갱신 위해서 
+            rule.CheckValidRule(new List<CardData>(), out TMixture _passMixture);
+            inGameData.SetPutDownCardInfo(_passMixture, 0, putPlayerID);
             return;
         }
         //바닥에 깔린 카드 갱신
@@ -713,11 +743,10 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData(cardClass, num); //카드 생성
             AddPutDownCard(card);
         }
-        CardRule rule = new CardRule();
+       
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-        string putPlayerID = _data[1].ToString(); //카드 낸사람
-        inGameData.SetPutDownCardInfo(_mixture.GetCardShowValue(), _mixture.cardCount, putPlayerID);
+        inGameData.SetPutDownCardInfo(_mixture, _mixture.cardCount, putPlayerID);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == id)
         {
