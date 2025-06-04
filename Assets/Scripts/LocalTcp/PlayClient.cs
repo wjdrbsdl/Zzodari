@@ -413,6 +413,10 @@ public class PlayClient : MonoBehaviour
         {
             ResSelectCard(_validData);
         }
+        else if (_reqType == ReqRoomType.InvalidCard)
+        {
+            ResInvalidCard(_validData);
+        }
         else if (_reqType == ReqRoomType.UserOrder)
         {
             ResUserOrder(_validData);
@@ -492,15 +496,7 @@ public class PlayClient : MonoBehaviour
          * [1] 카드 장수
          * [2] 번부터 2개씩 카드가 생성
          */
-        haveCardList.Clear();
-        for (int i = 2; i < _resDate.Length; i += 2)
-        {
-            //i번째는 카드 무늬, i+1에는 카드 넘버가 있음
-            CardData card = new CardData((CardClass)_resDate[i], _resDate[i + 1]);
-            haveCardList.Add(card);
-        }
-        inGameData.ReSetRestCard();
-        SetMyCardList();
+        MakeMyCard(_resDate, 2);
     }
 
     private void SetMyCardList()
@@ -650,6 +646,34 @@ public class PlayClient : MonoBehaviour
 
         //본인이 낸거라면 본인 카드에서 제외
         ResetSelectZone(_data[1].ToString(), selectCardList);
+    }
+
+    private void ResInvalidCard(byte[] _data)
+    {
+        //유저의 카드 정보가 잘못된 카드 정보인경우, 
+        //서버로부터 다시 유저의 카드데이터를 받아서 카드값을 갱신한다. 
+        //유저가 어떤 카드를 냈는지 전달
+        /*
+        * [0] 요청 코드 putdownCard
+        * [1] 플레이어 id
+        * [2] 보유 카드 숫자
+        * [3] 카드 구성
+        */
+        //자기가 낸 경우엔 응답 없음. 
+        MakeMyCard(_data, 3);
+    }
+
+    private void MakeMyCard(byte[] _cardData, int _startIdx)
+    {
+        haveCardList.Clear();
+        for (_startIdx = 2; _startIdx < _cardData.Length; _startIdx += 2)
+        {
+            //i번째는 카드 무늬, i+1에는 카드 넘버가 있음
+            CardData card = new CardData((CardClass)_cardData[_startIdx], _cardData[_startIdx + 1]);
+            haveCardList.Add(card);
+        }
+        inGameData.ReSetRestCard();
+        SetMyCardList();
     }
 
     private void ResUserOrder(byte[] _data)
