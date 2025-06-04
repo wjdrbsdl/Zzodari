@@ -71,7 +71,7 @@ public class IPParsing : MonoBehaviour
             }
             if (parseData.DbValueList.Count >= 2)
             {
-                TestAgora._token = parseData.DbValueList[1][1];
+                //TestAgora._token = parseData.DbValueList[1][1];
             }
             if (parseData.DbValueList.Count >= 3)
             {
