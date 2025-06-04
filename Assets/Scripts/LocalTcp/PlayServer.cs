@@ -16,7 +16,7 @@ public enum ReqRoomType
     StageReady, StageOver, GameOver,
     ReqGameOver, ResRoomJoinFail,
     Draw, UserOrder,
-    InvalidCard
+    InValidCard
 
 
 }

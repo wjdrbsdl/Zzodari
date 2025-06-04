@@ -413,7 +413,7 @@ public class PlayClient : MonoBehaviour
         {
             ResSelectCard(_validData);
         }
-        else if (_reqType == ReqRoomType.InvalidCard)
+        else if (_reqType == ReqRoomType.InValidCard)
         {
             ResInvalidCard(_validData);
         }
