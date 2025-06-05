@@ -17,7 +17,18 @@ public class PlayerData
 }
 
 
+public enum ReqRoomType
+{
+    Ready, Start, RoomOut, Chat,
+    IDRegister, PartyData, RoomName,
+    ShuffleCard, PutDownCard, SelectCard,
+    ArrangeTurn,
+    StageReady, StageOver, GameOver,
+    ReqGameOver, ResRoomJoinFail,
+    Draw, UserOrder,
+    InValidCard
 
+}
 
 public class PlayClient : MonoBehaviour
 {

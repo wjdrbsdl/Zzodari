@@ -48,7 +48,6 @@ public class UniteLobClient : MonoBehaviour
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = IPAddress.Parse(ip);
         FixedValue.ServerIp = ipAddress; //들어갔던 서버 기록
-        ClientLogIn.ServerIp = ipAddress.GetAddressBytes(); //게임 서버 ip 저장. 
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
         byte[] buff = new byte[100];
         clientSocket.BeginConnect(endPoint, CallBackConnect, buff);
