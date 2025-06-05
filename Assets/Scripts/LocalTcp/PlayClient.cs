@@ -530,6 +530,7 @@ public class PlayClient : MonoBehaviour
     {
         byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)id };
         SendMessege(reqID);
+        inGameData.myNumber = id;
         inGameData.SetMyId(id.ToString());
     }
 
@@ -657,22 +658,28 @@ public class PlayClient : MonoBehaviour
         //서버로부터 다시 유저의 카드데이터를 받아서 카드값을 갱신한다. 
         //유저가 어떤 카드를 냈는지 전달
         /*
-        * [0] 요청 코드 putdownCard
+        * [0] 요청 코드 inValidCard
         * [1] 플레이어 id
-        * [2] 보유 카드 숫자
-        * [3] 카드 구성
-        */
+        * [2] 현재턴 Id
+        * [3] 카드 구성 시작
+         */
         //자기가 낸 경우엔 응답 없음. 
         MakeMyCard(_data, 3); //부정사용자의 카드 리셋
+        int curId = _data[2];
+        if(inGameData.myNumber == curId)
+        {
+            Debug.Log("아직 내 차례라서 내차례로 전환");
+            SetMyTurn(true);
+        }
     }
 
     private void MakeMyCard(byte[] _cardData, int _startIdx)
     {
         haveCardList.Clear();
-        for (_startIdx = 2; _startIdx < _cardData.Length; _startIdx += 2)
+        for (int i = _startIdx; i < _cardData.Length; i += 2)
         {
             //i번째는 카드 무늬, i+1에는 카드 넘버가 있음
-            CardData card = new CardData((CardClass)_cardData[_startIdx], _cardData[_startIdx + 1]);
+            CardData card = new CardData((CardClass)_cardData[i], _cardData[i + 1]);
             haveCardList.Add(card);
         }
        
