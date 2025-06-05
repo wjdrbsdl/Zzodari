@@ -139,7 +139,7 @@ public class PlayClient : MonoBehaviour
         giveCardList.Clear();
         putDownList.Clear();
         gameTurn = 0;
-        isMyTurn = false;
+        SetMyTurn(false);
 
         //스테이지 종료후 다시 시작하는 경우일땐 게임은 진행중임. 
         if (isGameStart == false)
@@ -157,7 +157,7 @@ public class PlayClient : MonoBehaviour
         putDownList.Clear();
         haveCardList.Clear();
         gameTurn = 0;
-        isMyTurn = false;
+        SetMyTurn(false);
         SetMyCardList(); //유니티 -ResetStage에서 보유카드 클리어하고, 그상태로 UI 갱신
     }
 
@@ -415,12 +415,14 @@ public class PlayClient : MonoBehaviour
         }
         else if (_reqType == ReqRoomType.InValidCard)
         {
+            Debug.Log("부정 발견");
             ResInvalidCard(_validData);
         }
         else if (_reqType == ReqRoomType.UserOrder)
         {
             ResUserOrder(_validData);
         }
+
         else if (_reqType == ReqRoomType.PutDownCard)
         {
             ResPutDownCard(_validData);
