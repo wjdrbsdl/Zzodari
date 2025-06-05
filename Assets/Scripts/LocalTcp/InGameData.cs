@@ -12,6 +12,7 @@ public class InGameData
 
     public string roomName; //방 이름
     public string myId;
+    public int myNumber;
     public int badPoint;
     public int myRank;
 
