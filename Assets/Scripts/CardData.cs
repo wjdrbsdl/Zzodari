@@ -11,6 +11,7 @@ public enum CardClass
     Spade, Dia, Heart, Clover
 }
 
+[Serializable]
 public class CardData : IComparable<CardData>
 {
     public static CardClass minClass = CardClass.Clover;
