@@ -415,7 +415,7 @@ public class PlayClient : MonoBehaviour
         }
         else if (_reqType == ReqRoomType.InValidCard)
         {
-            Debug.Log("부정 발견");
+          //  Debug.Log("부정 발견");
             ResInvalidCard(_validData);
         }
         else if (_reqType == ReqRoomType.UserOrder)
