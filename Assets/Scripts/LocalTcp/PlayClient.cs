@@ -499,6 +499,7 @@ public class PlayClient : MonoBehaviour
          * [2] 번부터 2개씩 카드가 생성
          */
         MakeMyCard(_resDate, 2);
+        inGameData.ReStart();
     }
 
     private void SetMyCardList()
@@ -662,7 +663,7 @@ public class PlayClient : MonoBehaviour
         * [3] 카드 구성
         */
         //자기가 낸 경우엔 응답 없음. 
-        MakeMyCard(_data, 3);
+        MakeMyCard(_data, 3); //부정사용자의 카드 리셋
     }
 
     private void MakeMyCard(byte[] _cardData, int _startIdx)
@@ -674,7 +675,7 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData((CardClass)_cardData[_startIdx], _cardData[_startIdx + 1]);
             haveCardList.Add(card);
         }
-        inGameData.ReSetRestCard();
+       
         SetMyCardList();
     }
 

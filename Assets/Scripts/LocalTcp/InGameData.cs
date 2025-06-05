@@ -149,7 +149,7 @@ public class InGameData
 
     }
 
-    public void ReSetRestCard()
+    public void ReStart()
     {
         //남은 카드 숫자 갱신 - 게임 시작할때 
         for (int i = 0; i < m_partyList.Count; i++)
