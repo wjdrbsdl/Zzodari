@@ -37,7 +37,6 @@ public class PlayClient : MonoBehaviour
     public static int port;
     public static byte[] ip;
     public static int id;
-    public MeetState meetState = MeetState.Lobby;
     public string state = "";
     public List<CardData> haveCardList; //내가 들고 있는 카드
     public List<CardData> giveCardList; //전에 내가 냈던 카드

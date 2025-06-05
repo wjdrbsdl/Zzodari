@@ -15,12 +15,6 @@ public enum ReqLobbyType
 }
 
 
-public enum MeetState
-{
-    Lobby, Room, Game
-}
-
-
 public class UniteLobClient : MonoBehaviour
 {
     public Socket clientSocket;
@@ -28,7 +22,6 @@ public class UniteLobClient : MonoBehaviour
     public int port = 5000;
     public string ip;
     public int id;
-    public MeetState meetState = MeetState.Lobby;
     public string RoomName = "";
 
     public UniteLobClient()
@@ -217,7 +210,6 @@ public class UniteLobClient : MonoBehaviour
             SceneManager.LoadScene("PlayScene");
         };
         ClientManager.instance.EnqueAction(makePlayClientCallback);
-        meetState = MeetState.Room;
     }
 
     private void ResRoomJoinFail()
