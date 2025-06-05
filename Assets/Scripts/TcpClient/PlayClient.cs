@@ -37,7 +37,6 @@ public class PlayClient : MonoBehaviour
     public static int port;
     public static byte[] ip;
     public static int id;
-    public string state = "";
     public List<CardData> haveCardList; //내가 들고 있는 카드
     public List<CardData> giveCardList; //전에 내가 냈던 카드
     public List<CardData> putDownList; //바닥에 깔린 카드
@@ -45,6 +44,7 @@ public class PlayClient : MonoBehaviour
     public bool isGameStart = false;
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
     public InGameData inGameData;
+    public NetworkManager networkManager;
     #endregion
 
     public PlayClient(byte[] _ip, int _port, int _id = 0)
@@ -64,7 +64,10 @@ public class PlayClient : MonoBehaviour
         giveCardList = new();
         if (inGameData == null)
             inGameData = new InGameData();
-        Connect();
+
+        networkManager = new NetworkManager();
+        networkManager.Connect(ip, port);
+        networkManager.OnConnected += ReqRegisterClientID;
     }
 
     public InGameData GetInGameData()
@@ -472,6 +475,8 @@ public class PlayClient : MonoBehaviour
 
     private void SendMessege(byte[] _sendData)
     {
+        networkManager.Send(_sendData);
+        return;
         //헤더작업 용량 길이 붙여주기 
         Console.WriteLine("플클에서 요청 보냄 " + (ReqRoomType)_sendData[0]);
         ushort msgLength = (ushort)_sendData.Length;

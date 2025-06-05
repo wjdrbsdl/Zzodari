@@ -4502,9 +4502,9 @@ MonoBehaviour:
   warningText: {fileID: 246868619}
   vertiaclScroll: {fileID: 725900254}
   debugScroll: {fileID: 248495388}
-  systemDebug: 0
-  msgDebug: 0
-  unityDebug: 0
+  systemDebug: 1
+  msgDebug: 1
+  unityDebug: 1
 --- !u!4 &1233424104
 Transform:
   m_ObjectHideFlags: 0
@@ -7184,6 +7184,7 @@ MonoBehaviour:
   otehrCardTransform: {fileID: 188597671}
   m_selectZoneObj: {fileID: 968636063}
   m_guideText: {fileID: 1507417395}
+  m_haveCardList: []
 --- !u!4 &2045521614
 Transform:
   m_ObjectHideFlags: 0
