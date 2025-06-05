@@ -8,11 +8,6 @@ using System.Threading.Tasks;
 using System.IO;
 
 
-public enum MeetState
-{
-    Lobby, Room, Game
-}
-
 
 
 public class LobbyServer

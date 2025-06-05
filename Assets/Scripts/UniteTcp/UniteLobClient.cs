@@ -9,6 +9,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum ReqLobbyType
+{
+    RoomMake = 1, Close, RoomState, RoomUserCount, ClientNumber, RoomMakeFail, RoomList
+}
+
+
+public enum MeetState
+{
+    Lobby, Room, Game
+}
+
+
 public class UniteLobClient : MonoBehaviour
 {
     public Socket clientSocket;
@@ -35,7 +47,7 @@ public class UniteLobClient : MonoBehaviour
     {
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = IPAddress.Parse(ip);
-        UniteServer.ServerIp = ipAddress; //들어갔던 서버 기록
+        FixedValue.ServerIp = ipAddress; //들어갔던 서버 기록
         ClientLogIn.ServerIp = ipAddress.GetAddressBytes(); //게임 서버 ip 저장. 
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
         byte[] buff = new byte[100];
@@ -45,7 +57,7 @@ public class UniteLobClient : MonoBehaviour
     public void ReConnect()
     {
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        IPEndPoint endPoint = new IPEndPoint(UniteServer.ServerIp, port);
+        IPEndPoint endPoint = new IPEndPoint(FixedValue.ServerIp, port);
         byte[] buff = new byte[100];
         clientSocket.BeginConnect(endPoint, CallBackConnect, buff);
     }
@@ -200,7 +212,7 @@ public class UniteLobClient : MonoBehaviour
         ColorConsole.Default("로비에서 플레이어 참가 클라이언트 생성 포트 번호 : " + portNum);
         Action makePlayClientCallback = () =>
         {
-            PlayClient.ip = UniteServer.ServerIp.GetAddressBytes();
+            PlayClient.ip = FixedValue.ServerIp.GetAddressBytes();
             PlayClient.id = id;
             PlayClient.port = portNum;
             SceneManager.LoadScene("PlayScene");
