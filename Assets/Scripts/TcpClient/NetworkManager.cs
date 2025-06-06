@@ -3,8 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 
 
-
-public class NetworkManager
+public class NetworkManager 
 {
     private Socket clientSocket;
     private byte[] ip;
@@ -15,7 +14,7 @@ public class NetworkManager
 
     public void Connect(byte[] ip, int port)
     {
-        DebugManager.instance.EnqueMessege("넷웟 연결시도해보기");
+       // UnityEngine.Debug.Log("넷웟 연결시도해보기");
         this.ip = ip;
         this.port = port;
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -28,7 +27,7 @@ public class NetworkManager
     {
         try
         {
-            DebugManager.instance.EnqueMessege("컨넥콜백");
+           // UnityEngine.Debug.Log("컨넥콜백");
             clientSocket.EndConnect(result);
             OnConnected?.Invoke();
             BeginReceive();
@@ -42,22 +41,41 @@ public class NetworkManager
     private void BeginReceive()
     {
         byte[] headerBuffer = new byte[2];
-        clientSocket.BeginReceive(headerBuffer, 0, 2, 0, ReceiveCallback, headerBuffer);
+        if (clientSocket.Connected)
+        {
+            clientSocket.BeginReceive(headerBuffer, 0, 2, 0, ReceiveCallback, headerBuffer);
+        }
+            
     }
 
     private void ReceiveCallback(IAsyncResult result)
     {
         try
         {
-            byte[] header = (byte[])result.AsyncState;
-            ushort msgLength = EndianChanger.NetToHost(header);
-            byte[] body = new byte[msgLength];
-            int received = clientSocket.Receive(body);
+           // DebugManager.instance.EnqueMessege("매니저에서 받음");
+            byte[] msgLengthBuff = result.AsyncState as byte[]; //받을그릇을 2개로 받기 - 메시지 길이 정의
+            ushort msgLength = EndianChanger.NetToHost(msgLengthBuff);
 
-            if (received > 0)
+            byte[] recvBuffer = new byte[msgLength];
+            byte[] recvData = new byte[msgLength];
+            int recv = 0;
+            int recvIdx = 0;
+            int rest = msgLength;
+            do
             {
-                OnDataReceived?.Invoke(body);
-            }
+                recv = clientSocket.Receive(recvBuffer);
+                Buffer.BlockCopy(recvBuffer, 0, recvData, recvIdx, recv);
+                recvIdx += recv;
+                rest -= recv;
+                recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
+                if (recv == 0)
+                {
+                    //만약 남은게있으면 어떡함?
+                    break;
+                }
+            } while (rest >= 1);
+
+            OnDataReceived?.Invoke(recvData);
             BeginReceive();
         }
         catch
@@ -68,7 +86,7 @@ public class NetworkManager
 
     public void Send(byte[] data)
     {
-        DebugManager.instance.EnqueMessege("매니저에서 샌드");
+       // DebugManager.instance.EnqueMessege("매니저에서 샌드");
         ushort length = (ushort)data.Length;
         byte[] header = EndianChanger.HostToNet(length);
         byte[] packet = new byte[header.Length + data.Length];

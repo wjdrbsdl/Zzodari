@@ -47,16 +47,6 @@ public class PlayClient : MonoBehaviour
     public NetworkManager networkManager;
     #endregion
 
-    public PlayClient(byte[] _ip, int _port, int _id = 0)
-    {
-        ip = _ip;
-        id = _id;
-        port = _port;
-        haveCardList = new();
-        giveCardList = new();
-        putDownList = new();
-    }
-
     private void Start()
     {
         putDownList = new();
@@ -68,6 +58,7 @@ public class PlayClient : MonoBehaviour
         networkManager = new NetworkManager();
         networkManager.Connect(ip, port);
         networkManager.OnConnected += ReqRegisterClientID;
+        networkManager.OnDataReceived += OnCallBackRecieve;
     }
 
     public InGameData GetInGameData()
@@ -79,69 +70,73 @@ public class PlayClient : MonoBehaviour
         return inGameData;
     }
 
-    #region 연결 수신
-    public void Connect()
+    #region 데이터 수신
+    private void OnCallBackRecieve(byte[] recvData)
     {
-        clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        IPAddress ipAddress = new IPAddress(ip);
-        IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-        clientSocket.BeginConnect(endPoint, CallBackConnect, clientSocket);
+        ReqRoomType reqType = (ReqRoomType)recvData[0];
+        ColorConsole.SystemDebug(reqType + "받은 길이 " + recvData.Length.ToString());
+        HandleReceiveData(reqType, recvData);
     }
 
-    private void CallBackConnect(IAsyncResult _result)
+    private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
     {
-        //연결 되었으면 자료 받을 준비, 상태 준비
-        try
+        if (_reqType == ReqRoomType.Chat)
         {
-            ColorConsole.Default("게임 클라 연결 콜백");
-            byte[] buff = new byte[2];
-            clientSocket.BeginReceive(buff, 0, buff.Length, 0, CallBackReceive, buff);
-            ReqRegisterClientID();
+            ResChat(_validData);
+        }
+        else if (_reqType == ReqRoomType.ResRoomJoinFail)
+        {
+            ResRoomJoinFail();
+        }
+        else if (_reqType == ReqRoomType.Start)
+        {
+            SetNewGame();
+            ResGameStart(_validData);
+
+        }
+        else if (_reqType == ReqRoomType.SelectCard)
+        {
+            ResSelectCard(_validData);
+        }
+        else if (_reqType == ReqRoomType.InValidCard)
+        {
+            //  Debug.Log("부정 발견");
+            ResInvalidCard(_validData);
+        }
+        else if (_reqType == ReqRoomType.UserOrder)
+        {
+            ResUserOrder(_validData);
         }
 
-        catch
+        else if (_reqType == ReqRoomType.PutDownCard)
         {
-            ColorConsole.Default("플레이 클라 방 접속 실패 재 접속시도");
-            Connect();
+            ResPutDownCard(_validData);
         }
-    }
-
-    private void CallBackReceive(IAsyncResult _result)
-    {
-        try
+        else if (_reqType == ReqRoomType.ArrangeTurn)
         {
-            byte[] msgLengthBuff = _result.AsyncState as byte[]; //받을그릇을 2개로 받기 - 메시지 길이 정의
-            ushort msgLength = EndianChanger.NetToHost(msgLengthBuff);
-
-            byte[] recvBuffer = new byte[msgLength];
-            byte[] recvData = new byte[msgLength];
-            int recv = 0;
-            int recvIdx = 0;
-            int rest = msgLength;
-            do
-            {
-                recv = clientSocket.Receive(recvBuffer);
-                Buffer.BlockCopy(recvBuffer, 0, recvData, recvIdx, recv);
-                recvIdx += recv;
-                rest -= recv;
-                recvBuffer = new byte[rest];//퍼올 버퍼 크기 수정
-                if (recv == 0)
-                {
-                    //만약 남은게있으면 어떡함?
-                    break;
-                }
-            } while (rest >= 1);
-
-            ReqRoomType reqType = (ReqRoomType)recvData[0];
-            ColorConsole.SystemDebug(reqType + "받은 길이 " + recvData.Length.ToString());
-            HandleReceiveData(reqType, recvData);
-
-            if (clientSocket.Connected)
-                clientSocket.BeginReceive(msgLengthBuff, 0, msgLengthBuff.Length, 0, CallBackReceive, msgLengthBuff);
+            ResTurnPlayer(_validData); //인게임데이터로 내턴인지, 누구턴인지 기록
         }
-        catch
+        else if (_reqType == ReqRoomType.PartyData)
         {
-            ColorConsole.Default("플레이 클라 리십 실패");
+            //idRegister에 반환되는 타입.
+            ResRegisterClientIDToPartyID(_validData);
+        }
+        else if (_reqType == ReqRoomType.StageOver)
+        {
+            ResStageOver(_validData);
+            ResetStage();
+            WaitStageResult();
+
+        }
+        else if (_reqType == ReqRoomType.RoomName)
+        {
+            ResRoomName(_validData);
+        }
+        else if (_reqType == ReqRoomType.GameOver)
+        {
+            ResGameOver(_validData);
+            ResetStage();
+            SetGameOver();
         }
     }
     #endregion
@@ -408,68 +403,7 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
 
-    private void HandleReceiveData(ReqRoomType _reqType, byte[] _validData)
-    {
-        if (_reqType == ReqRoomType.Chat)
-        {
-            ResChat(_validData);
-        }
-        else if (_reqType == ReqRoomType.ResRoomJoinFail)
-        {
-            ResRoomJoinFail();
-        }
-        else if (_reqType == ReqRoomType.Start)
-        {
-            SetNewGame();
-            ResGameStart(_validData);
-
-        }
-        else if (_reqType == ReqRoomType.SelectCard)
-        {
-            ResSelectCard(_validData);
-        }
-        else if (_reqType == ReqRoomType.InValidCard)
-        {
-          //  Debug.Log("부정 발견");
-            ResInvalidCard(_validData);
-        }
-        else if (_reqType == ReqRoomType.UserOrder)
-        {
-            ResUserOrder(_validData);
-        }
-
-        else if (_reqType == ReqRoomType.PutDownCard)
-        {
-            ResPutDownCard(_validData);
-        }
-        else if (_reqType == ReqRoomType.ArrangeTurn)
-        {
-            ResTurnPlayer(_validData); //인게임데이터로 내턴인지, 누구턴인지 기록
-        }
-        else if (_reqType == ReqRoomType.PartyData)
-        {
-            //idRegister에 반환되는 타입.
-            ResRegisterClientIDToPartyID(_validData);
-        }
-        else if (_reqType == ReqRoomType.StageOver)
-        {
-            ResStageOver(_validData);
-            ResetStage();
-            WaitStageResult();
-
-        }
-        else if (_reqType == ReqRoomType.RoomName)
-        {
-            ResRoomName(_validData);
-        }
-        else if (_reqType == ReqRoomType.GameOver)
-        {
-            ResGameOver(_validData);
-            ResetStage();
-            SetGameOver();
-        }
-    }
-
+   
     #region 통신 파트
     #region 게임 시작
 
@@ -545,6 +479,7 @@ public class PlayClient : MonoBehaviour
     #region 플레이 서버에 내 아이디 등록
     public void ReqRegisterClientID()
     {
+        //Debug.Log("아이디 기록 클라이언트 이벤트로 호출");
         byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)id };
         SendMessege(reqID);
         inGameData.myNumber = id;
