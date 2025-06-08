@@ -2,28 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BtnType
+{
+    None, Pass, Ready, Start, Quit
+}
+
 public class BtnPass : MonoBehaviour
 {
+    public BtnType btnType = BtnType.None;
     public PlayClient m_pClient;
+    public bool isBtnOn = true;
+    public float resetTime = 0.2f; //중첩방지 클릭 시간
 
-    public void OnClickPassBtn()
+    public void OnClickBtn()
     {
-        //내가 선택중이던것과 별개로 빠르게 패스를 누를 수있고
-        m_pClient.PutDownPass(); //불 반환을 통해 선택중이던걸 초기화하거나 가능. 
+        if(isBtnOn == false)
+        {
+            return;
+        }
+
+        switch (btnType)
+        {
+            case BtnType.Pass:
+                m_pClient.PutDownPass(); //불 반환을 통해 선택중이던걸 초기화하거나 가능. 
+                break;
+            case BtnType.Ready:
+                m_pClient.ReqGameReady();
+                break;
+            case BtnType.Start:
+                m_pClient.ReqGameStart();
+                break;
+            case BtnType.Quit:
+                m_pClient.ReqRoomOut();
+                break;
+        }
+        StartTimer();
     }
 
-    public void OnClickReadyBtn()
+    private void StartTimer()
     {
-        m_pClient.ReqGameReady();
+        StartCoroutine(CoTimer());
     }
 
-    public void OnClickStartBtn()
+    IEnumerator CoTimer()
     {
-        m_pClient.ReqGameStart();
-    }
-
-    public void OnClickQuitBtn()
-    {
-        m_pClient.ReqRoomOut();
+        isBtnOn = false;
+        yield return new WaitForSeconds(resetTime);
+        isBtnOn = true;
     }
 }
