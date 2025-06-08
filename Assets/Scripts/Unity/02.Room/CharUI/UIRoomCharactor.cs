@@ -29,6 +29,15 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
+    public void SetReadyState(InGameData _gameData)
+    {
+        List<PlayerData> pDataList = _gameData.m_partyList;
+        for (int i = 0; i < pDataList.Count; i++)
+        {
+            m_roomCharSlots[i].ShowReadyState(pDataList[i].isReady);
+        }
+    }
+
     public void SetRoomMaster(InGameData _inGameData)
     {
         List<PlayerData> pDataList = _inGameData.m_partyList;

@@ -16,6 +16,8 @@ public class RoomCharactorSlot : MonoBehaviour
     public TMP_Text m_restCardCount;
     public UserTurnTimer m_userTimer;
 
+    public GameObject m_readyIcon;
+
     public GameObject m_rankGo;
     public GoOffTimer m_passGo;
     public TMP_Text m_rankText;
@@ -52,6 +54,7 @@ public class RoomCharactorSlot : MonoBehaviour
         m_backGround.gameObject.SetActive(true);
         SetColor();
         SetText(m_playerData.ID, m_playerData.restCardCount.ToString());
+        ShowReadyState(m_playerData.isReady);
     }
     #endregion
 
@@ -150,5 +153,10 @@ public class RoomCharactorSlot : MonoBehaviour
             m_iconImage.sprite = hitSprite;
         }
         m_passGo.StartTimer();
+    }
+
+    public void ShowReadyState(bool _isReady)
+    {
+        m_readyIcon.SetActive(_isReady);
     }
 }
