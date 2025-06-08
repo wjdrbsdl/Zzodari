@@ -534,8 +534,7 @@ public class PlayClient : MonoBehaviour
          * [1] 마스터 아이디 
          */
 
-        Debug.Log(_receiveData[1] + "이 방장");
-
+        inGameData.SetRoomMaster(_receiveData[1]);
     }
 
     private void SendOutCallBack()

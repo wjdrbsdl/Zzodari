@@ -6,6 +6,7 @@ public class InGameData
     public int userCount;
     public string[] userIds = new string[4]; //최대 4명
 
+    public int roomMasterId;
     public string curTurnId; //현재 유저
     public string finalCard; //전에 낸 카드
     public int preCardCount;
@@ -163,6 +164,12 @@ public class InGameData
     public void SetAllPass(bool _isPass)
     {
         allPass = _isPass;
+    }
+
+    public void SetRoomMaster(int _id)
+    {
+        roomMasterId = _id;
+        Enqueue(ReqRoomType.ArrangeRoomMaster);
     }
 
     public void PutDown()
