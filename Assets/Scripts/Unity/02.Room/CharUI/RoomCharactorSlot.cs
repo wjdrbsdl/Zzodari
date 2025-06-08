@@ -24,6 +24,8 @@ public class RoomCharactorSlot : MonoBehaviour
     public Sprite hitSprite;
     public Sprite passSprite;
 
+    public GameObject m_roomMaster;
+
     // Use this for initialization
     #region 데이터 세팅 및 갱신
     public void SetPlayerData(PlayerData _pData)
@@ -134,10 +136,7 @@ public class RoomCharactorSlot : MonoBehaviour
 
     public void ShowRoomMaster(bool _isRoomMaster)
     {
-        if(m_playerData. == _roomMasterId)
-        {
-
-        }
+        m_roomMaster.SetActive(_isRoomMaster);
     }
 
     public void ShowActIcon(EMixtureType _mixtureType)
