@@ -37,7 +37,8 @@ public class PlayClient : MonoBehaviour
     public Socket clientSocket;
     public static int port;
     public static byte[] ip;
-    public static int id;
+    public static int pid;
+    public static string id;
     public List<CardData> haveCardList; //내가 들고 있는 카드
     public List<CardData> giveCardList; //전에 내가 냈던 카드
     public List<CardData> putDownList; //바닥에 깔린 카드
@@ -408,7 +409,7 @@ public class PlayClient : MonoBehaviour
     }
     #endregion
 
-   
+
     #region 통신 파트
     #region 게임 시작
 
@@ -467,10 +468,10 @@ public class PlayClient : MonoBehaviour
     public void ReqRegisterClientID()
     {
         //Debug.Log("아이디 기록 클라이언트 이벤트로 호출");
-        byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)id };
+        byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)pid };
         SendMessege(reqID);
-        inGameData.myNumber = id;
-        inGameData.SetMyInfo(id);
+        inGameData.myNumber = pid;
+        inGameData.SetMyInfo(pid, id);
     }
 
     public void ResRoomName(byte[] _data)
@@ -488,22 +489,23 @@ public class PlayClient : MonoBehaviour
         /*
           * [0] 응답코드 PartyIDes,
           * [1] ID를 받은 유효한 파티원 수
-          * [2] 각 파티원 정보 길이 --일단 id만 받음
+          * [2] 각 파티원 정보 길이 -- pid, id (둘다 byte긴 함)
           * [3] 0번 파티원부터 정보 입력
           */
         int userIdx = 0;
         List<string> idList = new List<string>();
+        List<int> pidList = new();
         for (int i = 3; i < _data.Length; i += _data[2])
         {
-            for (int infoIndex = i; infoIndex < i + _data[2]; infoIndex++)
-            {
-                string id = _data[infoIndex].ToString();
-                ColorConsole.Default(id + "번 참가");
-                idList.Add(id);
-                userIdx++;
-            }
+
+            int pid = _data[i];
+            pidList.Add(pid);
+            string id = _data[i + 1].ToString();
+            ColorConsole.Default(id + "번 참가");
+            idList.Add(id);
+            userIdx++;
         }
-        inGameData.RecordIdList(idList);
+        inGameData.RecordIdList(pidList, idList);
     }
     #endregion
 
@@ -511,7 +513,7 @@ public class PlayClient : MonoBehaviour
     public void ReqRoomOut()
     {
         ColorConsole.Default("클라가 나가기 요청");
-        byte[] reqRoomOut = new byte[] { (byte)ReqRoomType.RoomOut, (byte)id };
+        byte[] reqRoomOut = new byte[] { (byte)ReqRoomType.RoomOut, (byte)pid };
         SendMessege(reqRoomOut);
 
         DisConnet();
@@ -562,7 +564,7 @@ public class PlayClient : MonoBehaviour
         ColorConsole.Default("카드 제출 요청");
         List<byte> reqCardList = new();
         reqCardList.Add((byte)ReqRoomType.SelectCard);
-        reqCardList.Add((byte)id);
+        reqCardList.Add((byte)pid);
         reqCardList.Add((byte)_cardDataList.Count);
         for (int i = 0; i < _cardDataList.Count; i++)
         {
@@ -612,7 +614,7 @@ public class PlayClient : MonoBehaviour
         //자기가 낸 경우엔 응답 없음. 
         MakeMyCard(_data, 3); //부정사용자의 카드 리셋
         int curId = _data[2];
-        if(inGameData.myNumber == curId)
+        if (inGameData.myNumber == curId)
         {
             Debug.Log("아직 내 차례라서 내차례로 전환");
             SetMyTurn(true);
@@ -628,7 +630,7 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData((CardClass)_cardData[i], _cardData[i + 1]);
             haveCardList.Add(card);
         }
-       
+
         SetMyCardList();
     }
 
@@ -645,7 +647,7 @@ public class PlayClient : MonoBehaviour
         List<string> idOrderList = new();
         for (int i = 0; i < userCount; i++)
         {
-            int idLength = _data[idLengthIndex] ;//아이디 길이 
+            int idLength = _data[idLengthIndex];//아이디 길이 
             byte[] idByte = new byte[idLength];
             Buffer.BlockCopy(_data, idLengthIndex + 1, idByte, 0, idLength);
             string id = Encoding.Unicode.GetString(idByte);
@@ -673,7 +675,7 @@ public class PlayClient : MonoBehaviour
         ColorConsole.Default("카드 제출 요청");
         List<byte> reqCardList = new();
         reqCardList.Add((byte)ReqRoomType.PutDownCard);
-        reqCardList.Add((byte)id);
+        reqCardList.Add((byte)pid);
         reqCardList.Add((byte)_cardDataList.Count);
         for (int i = 0; i < _cardDataList.Count; i++)
         {
@@ -697,7 +699,7 @@ public class PlayClient : MonoBehaviour
         CardRule rule = new CardRule();
         string putPlayerID = _data[1].ToString(); //카드 낸사람
         //본인의 행위였다면
-        if (_data[1] == id)
+        if (_data[1] == pid)
         {
             //이전에 냈던건 초기화
             ResetGiveCard();
@@ -723,12 +725,12 @@ public class PlayClient : MonoBehaviour
             CardData card = new CardData(cardClass, num); //카드 생성
             AddPutDownCard(card);
         }
-       
+
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
         inGameData.SetPutDownCardInfo(_mixture, _mixture.cardCount, putPlayerID);
         //본인이 낸거라면 본인 카드에서 제외
-        if (_data[1] == id)
+        if (_data[1] == pid)
         {
             //내가 카드를 낸경우
             RemoveHaveCard(putDownList);
@@ -746,7 +748,7 @@ public class PlayClient : MonoBehaviour
          * [1] 차례 ID
          */
         ColorConsole.Default("턴 지정 들어옴 " + _data[1] + " 내 아이디 " + id);
-        isMyTurn = id == _data[1];
+        isMyTurn = pid == _data[1];
         if (isMyTurn)
         {
             ColorConsole.Default("내 차례");
@@ -795,7 +797,7 @@ public class PlayClient : MonoBehaviour
          * [0] 요구코드 stageReady
          * [1] 내 아이디
          */
-        byte[] stageReadyDate = new byte[] { (byte)ReqRoomType.StageReady, (byte)id };
+        byte[] stageReadyDate = new byte[] { (byte)ReqRoomType.StageReady, (byte)pid };
         SendMessege(stageReadyDate);
     }
 

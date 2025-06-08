@@ -205,7 +205,8 @@ public class UniteLobClient : MonoBehaviour
         Action makePlayClientCallback = () =>
         {
             NetworkManager.ip = FixedValue.ServerIp.GetAddressBytes();
-            PlayClient.id = id;
+            PlayClient.pid = id;
+            PlayClient.id = id.ToString();
             NetworkManager.port = portNum;
             SceneManager.LoadScene("PlayScene");
         };

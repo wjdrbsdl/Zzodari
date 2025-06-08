@@ -61,17 +61,17 @@ public class InGameData
     }
 
     #region 플레이 데이터 생성 : 아이디 기록
-    public void SetMyInfo(int _myId)
+    public void SetMyInfo(int _myPId, string _id)
     {
-        myId = _myId.ToString(); //인게임에 별도로 내아이디 저장
-        myNumber = _myId;
-        RecordId(myId); //인게임 관리 플레이어 데이터에 아이디 등록
+        myId = _id; //인게임에 별도로 내아이디 저장
+        myNumber = _myPId;
+        RecordId(myNumber, myId); //인게임 관리 플레이어 데이터에 아이디 등록
         RecordNumber(myId, myNumber);
         GetMyData().isMe = true; //내아이디로 찾아온다음 그 데이터에 나란걸 표시.
         Enqueue(ReqRoomType.IDRegister);
     }
 
-    private void RecordId(string _id)
+    private void RecordId(int _pid, string _id)
     { 
         //추가하려는 아이디가 플레이 데이터 리스트에 없으면 새롭게 데이터를 만들어서 넣는 부분. 
         PlayerData idData = GetPlayData(_id);
@@ -79,6 +79,7 @@ public class InGameData
         {
             PlayerData data = new PlayerData();
             data.ID = _id;
+            data.number = _pid;
             m_partyList.Add(data);
         }
     }
@@ -107,14 +108,14 @@ public class InGameData
         m_partyList.Remove(_pData);
     }
 
-    public void RecordIdList(List<string> _idList)
+    public void RecordIdList(List<int> _pidList, List<string> _idList)
     {
         //없으면 추가하고, 있던것 중에 없어진거있으면 제거 하고 
         //다중 쓰레드로 변화가 들어오는데 괜찮을까
         for (int i = 0; i < _idList.Count; i++)
         {
             //넘겨온 아이디대로 추가
-            RecordId(_idList[i]);
+            RecordId(_pidList[i], _idList[i]);
         }
 
         for (int i = 0; i < m_partyList.Count; i++)
