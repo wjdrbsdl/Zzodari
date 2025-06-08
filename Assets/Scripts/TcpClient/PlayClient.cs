@@ -90,7 +90,7 @@ public class PlayClient : MonoBehaviour
         }
         else if (_reqType == ReqRoomType.ArrangeRoomMaster)
         {
-
+            ResArrangeRoomMaster(_validData);
         }
         else if (_reqType == ReqRoomType.Start)
         {
@@ -513,8 +513,7 @@ public class PlayClient : MonoBehaviour
         byte[] reqRoomOut = new byte[] { (byte)ReqRoomType.RoomOut, (byte)id };
         SendMessege(reqRoomOut);
 
-        clientSocket.Close();
-        clientSocket.Dispose();
+        DisConnet();
 
         SendOutCallBack();
     }
@@ -523,18 +522,19 @@ public class PlayClient : MonoBehaviour
     {
         ColorConsole.Default("플레이 클라가 방 입장 못했음");
 
-        clientSocket.Close();
-        clientSocket.Dispose();
+        DisConnet();
 
         SendOutCallBack();
     }
 
-    public void ResArrangeRoomMaster()
+    public void ResArrangeRoomMaster(byte[] _receiveData)
     {
         /*
          * [0] 응답 코드 룸마스터
          * [1] 마스터 아이디 
          */
+
+        Debug.Log(_receiveData[1] + "이 방장");
 
     }
 
@@ -851,8 +851,12 @@ public class PlayClient : MonoBehaviour
     private void OnDisable()
     {
         //  Debug.Log("유니티에서 끌때 소켓 종료");
-        clientSocket.Close();
-        clientSocket.Dispose();
+        DisConnet();
+    }
+
+    private void DisConnet()
+    {
+        networkManager.Disconnect();
     }
 }
 
