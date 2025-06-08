@@ -47,6 +47,7 @@ public class RoomInfoManager : MonoBehaviour
                     m_roomNameText.text = InputColor("πÊ¿Ã∏ß ") + inGameData.roomName;
                     break;
                 case ReqRoomType.ArrangeRoomMaster:
+                    ShowPartyInfo(inGameData);
                     ShowRoomMaster(inGameData);
                     break;
                 case ReqRoomType.PartyData:
