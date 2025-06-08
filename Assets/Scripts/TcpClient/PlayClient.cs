@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class PlayerData
 {
     public string ID;
+    public int number; //식별번호
     public int restCardCount;
     public int badPoint;
     public int rank;
@@ -469,7 +470,7 @@ public class PlayClient : MonoBehaviour
         byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)id };
         SendMessege(reqID);
         inGameData.myNumber = id;
-        inGameData.SetMyId(id.ToString());
+        inGameData.SetMyInfo(id);
     }
 
     public void ResRoomName(byte[] _data)

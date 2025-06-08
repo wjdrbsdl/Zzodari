@@ -61,10 +61,12 @@ public class InGameData
     }
 
     #region 플레이 데이터 생성 : 아이디 기록
-    public void SetMyId(string _myId)
+    public void SetMyInfo(int _myId)
     {
-        myId = _myId; //인게임에 별도로 내아이디 저장
-        RecordId(_myId); //인게임 관리 플레이어 데이터에 아이디 등록
+        myId = _myId.ToString(); //인게임에 별도로 내아이디 저장
+        myNumber = _myId;
+        RecordId(myId); //인게임 관리 플레이어 데이터에 아이디 등록
+        RecordNumber(myId, myNumber);
         GetMyData().isMe = true; //내아이디로 찾아온다음 그 데이터에 나란걸 표시.
         Enqueue(ReqRoomType.IDRegister);
     }
@@ -78,6 +80,15 @@ public class InGameData
             PlayerData data = new PlayerData();
             data.ID = _id;
             m_partyList.Add(data);
+        }
+    }
+
+    private void RecordNumber(string _id, int _number)
+    {
+        PlayerData idData = GetPlayData(_id);
+        if (idData != null)
+        {
+            idData.number = _number;
         }
     }
 
