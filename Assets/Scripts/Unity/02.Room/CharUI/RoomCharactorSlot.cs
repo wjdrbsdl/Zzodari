@@ -136,7 +136,7 @@ public class RoomCharactorSlot : MonoBehaviour
 
     public void ShowRoomMaster(int _isRoomMaster)
     {
-        m_roomMaster.SetActive(m_playerData.number == _isRoomMaster);
+        m_roomMaster.SetActive(m_playerData.PID == _isRoomMaster);
     }
 
     public void ShowActIcon(EMixtureType _mixtureType)

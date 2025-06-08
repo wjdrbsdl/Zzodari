@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class PlayerData
 {
     public string ID;
-    public int number; //식별번호
+    public int PID; //식별번호
     public int restCardCount;
     public int badPoint;
     public int rank;
@@ -502,7 +502,7 @@ public class PlayClient : MonoBehaviour
         //Debug.Log("아이디 기록 클라이언트 이벤트로 호출");
         byte[] reqID = new byte[] { (byte)ReqRoomType.IDRegister, (byte)pid };
         SendMessege(reqID);
-        inGameData.myNumber = pid;
+        inGameData.myPid = pid;
         inGameData.SetMyInfo(pid, id);
     }
 
@@ -646,7 +646,7 @@ public class PlayClient : MonoBehaviour
         //자기가 낸 경우엔 응답 없음. 
         MakeMyCard(_data, 3); //부정사용자의 카드 리셋
         int curId = _data[2];
-        if (inGameData.myNumber == curId)
+        if (inGameData.myPid == curId)
         {
             Debug.Log("아직 내 차례라서 내차례로 전환");
             SetMyTurn(true);
@@ -676,14 +676,14 @@ public class PlayClient : MonoBehaviour
           */
         int userCount = _data[1];
         int idLengthIndex = 2;
-        List<string> idOrderList = new();
+        List<int> idOrderList = new();
         for (int i = 0; i < userCount; i++)
         {
             int idLength = _data[idLengthIndex];//아이디 길이 
             byte[] idByte = new byte[idLength];
             Buffer.BlockCopy(_data, idLengthIndex + 1, idByte, 0, idLength);
             string id = Encoding.Unicode.GetString(idByte);
-            idOrderList.Add(id);
+            idOrderList.Add(int.Parse( id));
             idLengthIndex = idLengthIndex + idLength + 1;//다음 아이디 길이 인덱스를 가리키고
         }
         inGameData.SetUserOrder(idOrderList);
@@ -724,12 +724,12 @@ public class PlayClient : MonoBehaviour
         //유저가 어떤 카드를 냈는지 전달
         /*
         * [0] 요청 코드 putdownCard
-        * [1] 플레이어 id
+        * [1] 플레이어 pid
         * [2] 낸 카드 숫자
         * [3] 카드 구성
         */
         CardRule rule = new CardRule();
-        string putPlayerID = _data[1].ToString(); //카드 낸사람
+        int putPlayerPID = _data[1]; //카드 낸사람
         //본인의 행위였다면
         if (_data[1] == pid)
         {
@@ -745,7 +745,7 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default("전 사람 패쓰했음");
             ResetTurnCard();//패쓰 했을때 셀렉존 카드 갱신 위해서 
             rule.CheckValidRule(new List<CardData>(), out TMixture _passMixture);
-            inGameData.SetPutDownCardInfo(_passMixture, 0, putPlayerID);
+            inGameData.SetPutDownCardInfo(_passMixture, 0, putPlayerPID);
             return;
         }
         //바닥에 깔린 카드 갱신
@@ -760,7 +760,7 @@ public class PlayClient : MonoBehaviour
 
         rule.CheckValidRule(putDownList, out TMixture _mixture);
         ColorConsole.Default($"{_data[1]}유저가 제출한 카드 {_mixture.mixture}:{_mixture.mainCardClass}:{_mixture.mainRealValue}");
-        inGameData.SetPutDownCardInfo(_mixture, _mixture.cardCount, putPlayerID);
+        inGameData.SetPutDownCardInfo(_mixture, _mixture.cardCount, putPlayerPID);
         //본인이 낸거라면 본인 카드에서 제외
         if (_data[1] == pid)
         {
@@ -779,7 +779,7 @@ public class PlayClient : MonoBehaviour
          * [0] 응답코드 ArrangeTurn
          * [1] 차례 ID
          */
-        ColorConsole.Default("턴 지정 들어옴 " + _data[1] + " 내 아이디 " + id);
+        ColorConsole.Default("턴 지정 들어옴 " + _data[1] + " 내 피아이디 " + pid);
         isMyTurn = pid == _data[1];
         if (isMyTurn)
         {
@@ -788,7 +788,7 @@ public class PlayClient : MonoBehaviour
         }
 
         CountTurn(); //턴을 지정하는건 새로운 턴이 된거
-        inGameData.SetCurTurnInfo(_data[1].ToString(), gameTurn, isMyTurn);
+        inGameData.SetCurTurnInfo(_data[1], gameTurn, isMyTurn);
     }
     #endregion
 
@@ -804,8 +804,8 @@ public class PlayClient : MonoBehaviour
 
         for (int i = 2; i < _data.Length; i += 2)
         {
-            string playerId = _data[i].ToString();
-            inGameData.PlusBadPoints(playerId, _data[i + 1]);
+            int playerPid = _data[i];
+            inGameData.PlusBadPoints(playerPid, _data[i + 1]);
         }
 
     }
@@ -851,7 +851,7 @@ public class PlayClient : MonoBehaviour
             ColorConsole.Default($"{_data[i]}의 벌점 :{_data[i + 1]}");
             (int, int) idWithScore = (_data[i], _data[i + 1]);
             scoreList.Add(idWithScore);
-            inGameData.FinalScore(_data[i].ToString(), _data[i + 1], rank);
+            inGameData.FinalScore(_data[i], _data[i + 1], rank);
             rank++;
         }
 

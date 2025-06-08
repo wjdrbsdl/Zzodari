@@ -6,14 +6,15 @@ public class InGameData
     public int userCount;
     public string[] userIds = new string[4]; //최대 4명
 
-    public int roomMasterId;
+    public int roomMasterPid;
+    public int curTurnPid; //현재 유저 pid
     public string curTurnId; //현재 유저
     public string finalCard; //전에 낸 카드
     public int preCardCount;
 
     public string roomName; //방 이름
     public string myId;
-    public int myNumber;
+    public int myPid;
     public int badPoint;
     public int myRank;
 
@@ -31,22 +32,23 @@ public class InGameData
         Enqueue(ReqRoomType.RoomName);
     }
 
-    public void SetCurTurnInfo(string _curId, int _curTurn, bool _isMyTurn)
+    public void SetCurTurnInfo(int _curPid, int _curTurn, bool _isMyTurn)
     {
-        curTurnId = _curId;
+        curTurnPid = _curPid;
+        curTurnId = _curPid.ToString();
         curTurn = _curTurn;
         isMyTurn = _isMyTurn;
         Enqueue(ReqRoomType.ArrangeTurn);
     }
 
-    public string preCardId;//패쓰 포함 냈던 사람
+    public int preCardPid;//패쓰 포함 냈던 사람
     public EMixtureType preMixtureType; //패쓰 포함 가치
 
-    public void SetPutDownCardInfo(TMixture _cardValue, int _cardCount, string _id)
+    public void SetPutDownCardInfo(TMixture _cardValue, int _cardCount, int _id)
     {
         //유요한 
         preMixtureType = _cardValue.mixture; //마지막과 이전 타입은 다를 수 있음. 
-        preCardId = _id;
+        preCardPid = _id;
         if (preMixtureType != EMixtureType.None && preMixtureType != EMixtureType.Pass)
         {
             finalCard = _cardValue.GetCardShowValue(); //유효한 카드인 경우에만 마지막 카드 값 기록.
@@ -64,9 +66,8 @@ public class InGameData
     public void SetMyInfo(int _myPId, string _id)
     {
         myId = _id; //인게임에 별도로 내아이디 저장
-        myNumber = _myPId;
-        RecordId(myNumber, myId); //인게임 관리 플레이어 데이터에 아이디 등록
-        RecordNumber(myId, myNumber);
+        myPid = _myPId;
+        RecordId(myPid, myId); //인게임 관리 플레이어 데이터에 아이디 등록
         GetMyData().isMe = true; //내아이디로 찾아온다음 그 데이터에 나란걸 표시.
         Enqueue(ReqRoomType.IDRegister);
     }
@@ -74,22 +75,13 @@ public class InGameData
     private void RecordId(int _pid, string _id)
     { 
         //추가하려는 아이디가 플레이 데이터 리스트에 없으면 새롭게 데이터를 만들어서 넣는 부분. 
-        PlayerData idData = GetPlayData(_id);
+        PlayerData idData = GetPlayData(_pid);
         if (idData == null)
         {
             PlayerData data = new PlayerData();
+            data.PID = _pid;
             data.ID = _id;
-            data.number = _pid;
             m_partyList.Add(data);
-        }
-    }
-
-    private void RecordNumber(string _id, int _number)
-    {
-        PlayerData idData = GetPlayData(_id);
-        if (idData != null)
-        {
-            idData.number = _number;
         }
     }
 
@@ -127,11 +119,9 @@ public class InGameData
     }
     #endregion
 
- 
-
-    public void PlusBadPoints(string _id, int _point)
+    public void PlusBadPoints(int _pid, int _point)
     {
-        PlayerData idData = GetPlayData(_id);
+        PlayerData idData = GetPlayData(_pid);
         if(idData != null)
         {
             idData.badPoint += _point;
@@ -139,10 +129,10 @@ public class InGameData
         Enqueue(ReqRoomType.StageOver);
     }
 
-    public void FinalScore(string _id, int _point, int _rank)
+    public void FinalScore(int _pid, int _point, int _rank)
     {
 
-        PlayerData idData = GetPlayData(_id);
+        PlayerData idData = GetPlayData(_pid);
         if (idData != null)
         {
             //최종 결산된 점수가 들어와서 = 로 대입만하면됨.
@@ -180,7 +170,7 @@ public class InGameData
 
     public void SetRoomMaster(int _id)
     {
-        roomMasterId = _id;
+        roomMasterPid = _id;
         Enqueue(ReqRoomType.ArrangeRoomMaster);
     }
 
@@ -194,11 +184,11 @@ public class InGameData
         Enqueue(ReqRoomType.StageReady);
     }
 
-    public void SetUserOrder(List<string> _orderList)
+    public void SetUserOrder(List<int> _orderList)
     {
         //정해진 순서대로 m_partyList의 순서를 바꾸면됨. 
         //1. 첫번째는 무조건 자신을 넣고 ,
-        int myIndex = _orderList.IndexOf(myId); //순서에서 내 인덱스 순서를 찾고 
+        int myIndex = _orderList.IndexOf(myPid); //순서에서 내 인덱스 순서를 찾고 
         List<PlayerData> orderList = new();
         orderList.Add(m_partyList[0]); 
         for (int i = 1; i < m_partyList.Count; i++)
@@ -222,12 +212,12 @@ public class InGameData
         RoomInfoManager.instance.EnqueueCode(_code);
     }
 
-    private PlayerData GetPlayData(string _id)
+    private PlayerData GetPlayData(int _pid)
     {
 
         for (int i = 0; i < m_partyList.Count; i++)
         {
-            if (m_partyList[i].ID == _id)
+            if (m_partyList[i].PID == _pid)
             {
                 return m_partyList[i];
             }
@@ -237,6 +227,6 @@ public class InGameData
 
     public PlayerData GetMyData()
     {
-        return GetPlayData(myId);
+        return GetPlayData(myPid);
     }
 }

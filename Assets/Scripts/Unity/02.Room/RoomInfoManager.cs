@@ -157,7 +157,7 @@ public class RoomInfoManager : MonoBehaviour
     {
         //
         m_roomCharUI.SetRoomMaster(_gameData);
-        bool isRoomMaster = _gameData.roomMasterId == _gameData.myNumber;
+        bool isRoomMaster = _gameData.roomMasterPid == _gameData.myPid;
         ReadyBtn.SetActive (isRoomMaster == false);
         StartBtn.SetActive(isRoomMaster == true);
     }
