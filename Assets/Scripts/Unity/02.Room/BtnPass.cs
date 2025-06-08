@@ -12,6 +12,11 @@ public class BtnPass : MonoBehaviour
         m_pClient.PutDownPass(); //불 반환을 통해 선택중이던걸 초기화하거나 가능. 
     }
 
+    public void OnClickReadyBtn()
+    {
+
+    }
+
     public void OnClickStartBtn()
     {
         m_pClient.ReqGameStart();

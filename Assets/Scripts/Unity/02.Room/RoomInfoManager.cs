@@ -7,6 +7,9 @@ public class RoomInfoManager : MonoBehaviour
 {
     public static RoomInfoManager instance;
 
+    public GameObject ReadyBtn;
+    public GameObject StartBtn;
+
     public UIRoomCharactor m_roomCharUI;
     public TMP_Text m_roomNameText; //방 제목
     public TMP_Text m_preCard; //지금 놓여있는 카드
@@ -20,6 +23,8 @@ public class RoomInfoManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        ReadyBtn.SetActive(false);
+        ReadyBtn.SetActive(false);
     }
 
     public void EnqueueCode(ReqRoomType _code)
@@ -152,6 +157,9 @@ public class RoomInfoManager : MonoBehaviour
     {
         //
         m_roomCharUI.SetRoomMaster(_gameData);
+        bool isRoomMaster = _gameData.roomMasterId == _gameData.myNumber;
+        ReadyBtn.SetActive (isRoomMaster == false);
+        StartBtn.SetActive(isRoomMaster == true);
     }
 
     #region 스테이지 중간 정비시간
