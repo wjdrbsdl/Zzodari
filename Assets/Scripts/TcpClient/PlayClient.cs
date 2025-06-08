@@ -428,7 +428,7 @@ public class PlayClient : MonoBehaviour
         if (isGameStart)
             return;
 
-        byte[] reqStart = { (byte)ReqRoomType.Start };
+        byte[] reqStart = { (byte)ReqRoomType.Start, (byte) pid};
         SendMessege(reqStart);
     }
 
