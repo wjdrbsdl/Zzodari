@@ -168,6 +168,16 @@ public class InGameData
         allPass = _isPass;
     }
 
+    public void SetReadyState(int _pid, bool _isReady)
+    {
+        GetPlayData(_pid).isReady = _isReady;
+    }
+
+    public void UpdateReadyUI()
+    {
+        Enqueue(ReqRoomType.Ready);
+    }
+
     public void SetRoomMaster(int _id)
     {
         roomMasterPid = _id;

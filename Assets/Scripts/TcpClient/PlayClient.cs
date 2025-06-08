@@ -14,6 +14,7 @@ public class PlayerData
     public int restCardCount;
     public int badPoint;
     public int rank;
+    public bool isReady = false;
     public bool isMe = false;
 }
 
@@ -457,8 +458,10 @@ public class PlayClient : MonoBehaviour
          */
         for (int i = 1; i < _resData.Length; i+=2 )
         {
-            Debug.Log($"{_resData[i]}번 유저 레뒤 상태 {_resData[i+1]}"); 
+            //Debug.Log($"{_resData[i]}번 유저 레뒤 상태 {_resData[i+1]}");
+            inGameData.SetReadyState(_resData[i], _resData[i + 1] != 0);
         }
+        inGameData.UpdateReadyUI();
     }
 
     private void ResGameStart(byte[] _resDate)
