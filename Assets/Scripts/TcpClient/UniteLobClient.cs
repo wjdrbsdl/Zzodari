@@ -204,9 +204,9 @@ public class UniteLobClient : MonoBehaviour
         ColorConsole.Default("로비에서 플레이어 참가 클라이언트 생성 포트 번호 : " + portNum);
         Action makePlayClientCallback = () =>
         {
-            PlayClient.ip = FixedValue.ServerIp.GetAddressBytes();
+            NetworkManager.ip = FixedValue.ServerIp.GetAddressBytes();
             PlayClient.id = id;
-            PlayClient.port = portNum;
+            NetworkManager.port = portNum;
             SceneManager.LoadScene("PlayScene");
         };
         ClientManager.instance.EnqueAction(makePlayClientCallback);

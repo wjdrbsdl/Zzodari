@@ -56,7 +56,7 @@ public class PlayClient : MonoBehaviour
             inGameData = new InGameData();
 
         networkManager = new NetworkManager();
-        networkManager.Connect(ip, port);
+        networkManager.Connect();
         networkManager.OnConnected += ReqRegisterClientID;
         networkManager.OnDataReceived += OnCallBackRecieve;
     }
@@ -415,24 +415,6 @@ public class PlayClient : MonoBehaviour
     {
         networkManager.Send(_sendData);
         return;
-        //헤더작업 용량 길이 붙여주기 
-        Console.WriteLine("플클에서 요청 보냄 " + (ReqRoomType)_sendData[0]);
-        ushort msgLength = (ushort)_sendData.Length;
-        byte[] msgLengthBuff = EndianChanger.HostToNet(msgLength);
-
-        byte[] originPacket = new byte[msgLengthBuff.Length + msgLength];
-        Buffer.BlockCopy(msgLengthBuff, 0, originPacket, 0, msgLengthBuff.Length); //패킷 0부터 메시지 길이 버퍼 만큼 복사
-        Buffer.BlockCopy(_sendData, 0, originPacket, msgLengthBuff.Length, msgLength); //패킷 메시지길이 버퍼 길이 부터, 메시지 복사
-
-        int rest = (msgLength + msgLengthBuff.Length);
-        int send = 0;
-        do
-        {
-            byte[] sendPacket = new byte[rest];
-            Buffer.BlockCopy(originPacket, originPacket.Length - rest, sendPacket, 0, rest);
-            send = clientSocket.Send(sendPacket);
-            rest -= send;
-        } while (rest >= 1);
     }
 
     public void ReqGameStart()
@@ -843,15 +825,6 @@ public class PlayClient : MonoBehaviour
     #endregion
 
     #region 채팅 
-    private void ReqChat(string msg)
-    {
-        byte[] chatByte = Encoding.Unicode.GetBytes(msg);
-        byte[] chatCode = new byte[] { (byte)ReqRoomType.Chat };
-        byte[] reqByte = chatCode.Concat(chatByte).ToArray();
-        //  Console.WriteLine("클라 센드" + mainSock.Connected);
-        if (clientSocket.Connected == true)
-            SendMessege(reqByte);
-    }
 
     private void ResChat(byte[] _receiveData)
     {

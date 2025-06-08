@@ -5,18 +5,17 @@ using System.Net.Sockets;
 
 public class NetworkManager 
 {
-    private Socket clientSocket;
-    private byte[] ip;
-    private int port;
+    public static Socket clientSocket;
+    public static byte[] ip;
+    public static int port;
 
     public event Action<byte[]> OnDataReceived;
     public event Action OnConnected;
 
-    public void Connect(byte[] ip, int port)
+    public void Connect()
     {
        // UnityEngine.Debug.Log("넷웟 연결시도해보기");
-        this.ip = ip;
-        this.port = port;
+
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = new IPAddress(ip);
         IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
@@ -34,7 +33,7 @@ public class NetworkManager
         }
         catch
         {
-            Connect(ip, port); // retry
+            Connect(); // retry
         }
     }
 
