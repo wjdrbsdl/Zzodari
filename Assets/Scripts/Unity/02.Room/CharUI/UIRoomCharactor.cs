@@ -34,7 +34,7 @@ public class UIRoomCharactor : MonoBehaviour
         List<PlayerData> pDataList = _inGameData.m_partyList;
         for (int i = 0; i < pDataList.Count; i++)
         {
-            m_roomCharSlots[i].ShowRoomMaster(_inGameData.roomMasterId);
+            m_roomCharSlots[i].ShowRoomMaster(_inGameData.myNumber == _inGameData.roomMasterId);
         }
     }
 

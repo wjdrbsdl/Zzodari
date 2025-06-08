@@ -132,9 +132,12 @@ public class RoomCharactorSlot : MonoBehaviour
     }
     #endregion
 
-    public void ShowRoomMaster(int _roomMasterId)
+    public void ShowRoomMaster(bool _isRoomMaster)
     {
+        if(m_playerData. == _roomMasterId)
+        {
 
+        }
     }
 
     public void ShowActIcon(EMixtureType _mixtureType)
