@@ -134,9 +134,9 @@ public class RoomCharactorSlot : MonoBehaviour
     }
     #endregion
 
-    public void ShowRoomMaster(bool _isRoomMaster)
+    public void ShowRoomMaster(int _isRoomMaster)
     {
-        m_roomMaster.SetActive(_isRoomMaster);
+        m_roomMaster.SetActive(m_playerData.number == _isRoomMaster);
     }
 
     public void ShowActIcon(EMixtureType _mixtureType)
