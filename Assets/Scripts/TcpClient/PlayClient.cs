@@ -26,7 +26,7 @@ public enum ReqRoomType
     StageReady, StageOver, GameOver,
     ReqGameOver, ResRoomJoinFail,
     Draw, UserOrder,
-    InValidCard
+    InValidCard, ArrangeRoomMaster
 
 }
 
@@ -87,6 +87,10 @@ public class PlayClient : MonoBehaviour
         else if (_reqType == ReqRoomType.ResRoomJoinFail)
         {
             ResRoomJoinFail();
+        }
+        else if (_reqType == ReqRoomType.ArrangeRoomMaster)
+        {
+
         }
         else if (_reqType == ReqRoomType.Start)
         {
@@ -543,6 +547,14 @@ public class PlayClient : MonoBehaviour
         SendOutCallBack();
     }
 
+    public void ResArrangeRoomMaster()
+    {
+        /*
+         * [0] 응답 코드 룸마스터
+         * [1] 마스터 아이디 
+         */
+
+    }
 
     private void SendOutCallBack()
     {
