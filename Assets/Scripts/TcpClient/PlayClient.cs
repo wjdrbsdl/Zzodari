@@ -429,6 +429,16 @@ public class PlayClient : MonoBehaviour
         SendMessege(reqStart);
     }
 
+    public void ReqGameReady()
+    {
+        //시작한 상태면 못하게
+        if (isGameStart)
+            return;
+
+        byte[] reqReady = { (byte)ReqRoomType.Ready };
+        SendMessege(reqReady);
+    }
+
     private void ResGameStart(byte[] _resDate)
     {
         /*

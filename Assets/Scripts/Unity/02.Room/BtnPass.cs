@@ -14,7 +14,7 @@ public class BtnPass : MonoBehaviour
 
     public void OnClickReadyBtn()
     {
-
+        m_pClient.ReqGameReady();
     }
 
     public void OnClickStartBtn()
