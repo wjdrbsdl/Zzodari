@@ -4502,9 +4502,9 @@ MonoBehaviour:
   warningText: {fileID: 246868619}
   vertiaclScroll: {fileID: 725900254}
   debugScroll: {fileID: 248495388}
-  systemDebug: 1
-  msgDebug: 1
-  unityDebug: 1
+  systemDebug: 0
+  msgDebug: 0
+  unityDebug: 0
 --- !u!4 &1233424104
 Transform:
   m_ObjectHideFlags: 0
