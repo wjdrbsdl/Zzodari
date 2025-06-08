@@ -34,9 +34,6 @@ public enum ReqRoomType
 public class PlayClient : MonoBehaviour
 {
     #region 변수
-    public Socket clientSocket;
-    public static int port;
-    public static byte[] ip;
     public static int pid;
     public static string id;
     public List<CardData> haveCardList; //내가 들고 있는 카드
@@ -44,6 +41,7 @@ public class PlayClient : MonoBehaviour
     public List<CardData> putDownList; //바닥에 깔린 카드
     public bool isMyTurn = false;
     public bool isGameStart = false;
+    public bool isReady = false; //손님인경우 게임 레뒤했는가 
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
     public InGameData inGameData;
     public NetworkManager networkManager;
@@ -93,6 +91,10 @@ public class PlayClient : MonoBehaviour
         else if (_reqType == ReqRoomType.ArrangeRoomMaster)
         {
             ResArrangeRoomMaster(_validData);
+        }
+        else if(_reqType == ReqRoomType.Ready)
+        {
+            ResGameReady(_validData);
         }
         else if (_reqType == ReqRoomType.Start)
         {
@@ -431,12 +433,32 @@ public class PlayClient : MonoBehaviour
 
     public void ReqGameReady()
     {
+
+        /*레디 데이터
+              * [0] 요구코드 ready
+              * [1] 요구한 pid
+              */
+
         //시작한 상태면 못하게
         if (isGameStart)
             return;
 
-        byte[] reqReady = { (byte)ReqRoomType.Ready };
+        byte[] reqReady = { (byte)ReqRoomType.Ready, (byte)pid };
         SendMessege(reqReady);
+    }
+
+    public void ResGameReady(byte[] _resData)
+    {
+        //플레이어 준비 상태 전달하기
+        /*
+         * [0] 코드
+         * [pid]
+         * [state = 0이면 false]
+         */
+        for (int i = 1; i < _resData.Length; i+=2 )
+        {
+            Debug.Log($"{_resData[i]}번 유저 레뒤 상태 {_resData[i+1]}"); 
+        }
     }
 
     private void ResGameStart(byte[] _resDate)
