@@ -29,6 +29,15 @@ public class UIRoomCharactor : MonoBehaviour
         }
     }
 
+    public void SetRoomMaster(InGameData _inGameData)
+    {
+        List<PlayerData> pDataList = _inGameData.m_partyList;
+        for (int i = 0; i < pDataList.Count; i++)
+        {
+            m_roomCharSlots[i].ShowRoomMaster(_inGameData.roomMasterId);
+        }
+    }
+
     #region 타이머 조절하기
     public void ReTimer(InGameData _gameData)
     {

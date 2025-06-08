@@ -132,6 +132,11 @@ public class RoomCharactorSlot : MonoBehaviour
     }
     #endregion
 
+    public void ShowRoomMaster(int _roomMasterId)
+    {
+
+    }
+
     public void ShowActIcon(EMixtureType _mixtureType)
     {
         if (_mixtureType.Equals(EMixtureType.Pass))

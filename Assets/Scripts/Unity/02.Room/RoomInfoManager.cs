@@ -46,6 +46,9 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.RoomName:
                     m_roomNameText.text = InputColor("방이름 ") + inGameData.roomName;
                     break;
+                case ReqRoomType.ArrangeRoomMaster:
+                    ShowRoomMaster(inGameData);
+                    break;
                 case ReqRoomType.PartyData:
                 case ReqRoomType.Start:
                     OffPutDownCardInfo();
@@ -142,6 +145,12 @@ public class RoomInfoManager : MonoBehaviour
     {
         //
         m_roomCharUI.ReScore(_gameData);
+    }
+
+    private void ShowRoomMaster(InGameData _gameData)
+    {
+        //
+        m_roomCharUI.SetRoomMaster(_gameData);
     }
 
     #region 스테이지 중간 정비시간
