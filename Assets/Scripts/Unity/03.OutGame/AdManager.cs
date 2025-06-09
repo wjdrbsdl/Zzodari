@@ -2,7 +2,7 @@ using GoogleMobileAds.Api;
 using System;
 using UnityEngine;
 
-public class AdManager
+public class AdManager : MonoBehaviour
 {
     private RewardedAd rewardedAd;
     public Action OnShowAd;
