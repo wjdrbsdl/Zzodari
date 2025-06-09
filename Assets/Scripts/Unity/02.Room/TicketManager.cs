@@ -19,7 +19,7 @@ public class TicketManager : MonoBehaviour
     private int _curChance = 0;
     private int _chargeCount = 3;
 
-
+#if CHEAT
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
@@ -27,6 +27,7 @@ public class TicketManager : MonoBehaviour
             ChargeTicket(_chargeCount);
         }
     }
+#endif
 
     public bool HaveTicket()
     {
