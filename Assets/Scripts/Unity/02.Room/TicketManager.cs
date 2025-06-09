@@ -14,7 +14,7 @@ using UnityEngine;
 /// </summary>
 public class TicketManager : MonoBehaviour
 {
-    private static TicketManager Instance;
+    public static TicketManager Instance;
     private float _chargeTime = 180f;
     [SerializeField] private int _maxChance = 3;
     [SerializeField] private int _curChance = 0;
