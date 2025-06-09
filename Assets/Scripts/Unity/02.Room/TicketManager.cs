@@ -16,9 +16,14 @@ public class TicketManager : MonoBehaviour
 {
     public static TicketManager Instance;
     private float _chargeTime = 180f;
-    [SerializeField] private int _maxChance = 3;
-    [SerializeField] private int _curChance = 0;
-    [SerializeField] private int _chargeCount = 3;
+    public int MaxChance = 3;
+    public int CurChance = 0;
+    public int ChargeCount = 3;
+    public float RestTime = 0f;
+
+    public Action<float> OnChangeRestTime;
+
+    public Action<int> OnChangeTicketAmount;
 
     private void Awake()
     {
@@ -43,26 +48,27 @@ public class TicketManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            ChargeTicket(_chargeCount);
+            ChargeTicket(ChargeCount);
         }
     }
 #endif
 
     public bool HaveTicket()
     {
-        return _curChance > 0;
+        return CurChance > 0;
     }
 
     public void UseTicket()
     {
-        if (_curChance <= 0)
+        if (CurChance <= 0)
         {
             //문제있다.
             return;
         }
 
-        _curChance -= 1;
-        if(_curChance == 0)
+        CurChance -= 1;
+        OnChangeTicketAmount?.Invoke(CurChance);
+        if(CurChance == 0)
         {
             StartCharge(); //남은티켓이 0이면 저절로 시작하기
         }
@@ -70,8 +76,9 @@ public class TicketManager : MonoBehaviour
 
     public void ChargeTicket(int amount)
     {
-        _curChance += amount;
-        _curChance = Math.Min(_maxChance, _curChance);
+        CurChance += amount;
+        CurChance = Math.Min(MaxChance, CurChance);
+        OnChangeTicketAmount?.Invoke(CurChance);
         StopCharge(); //충전 했으면 기존 충전중이던건 취소 
     }
 
@@ -93,14 +100,25 @@ public class TicketManager : MonoBehaviour
             //이미 진행중인 충전이 있으면 안함
             return;
         }
+        RestTime = _chargeTime;
         chargeCorutine = CoChargeTicket();
         StartCoroutine(chargeCorutine);
     }
 
     private IEnumerator CoChargeTicket()
     {
-        yield return new WaitForSeconds(_chargeTime);
-        ChargeTicket(_chargeCount);
+        float alarmTime = 1f; //1초마다 변화 알리기
+        while (RestTime > 0)
+        {
+            RestTime -= Time.deltaTime;
+            alarmTime -= Time.deltaTime;
+            if (alarmTime <= 0)
+            {
+                OnChangeRestTime?.Invoke(RestTime);
+            }
+            yield return null;
+        }
+        ChargeTicket(ChargeCount);
         chargeCorutine = null;
     }
 
