@@ -61,14 +61,6 @@ public class PlayClient : MonoBehaviour
         networkManager.Connect();
         networkManager.OnConnected += ReqRegisterClientID;
         networkManager.OnDataReceived += OnCallBackRecieve;
-
-        adManager = new AdManager();
-        adManager.OnShowAd += RewardAd;
-    }
-
-    private void RewardAd()
-    {
-        Debug.Log("광고 다봤다.");
     }
 
     public InGameData GetInGameData()
