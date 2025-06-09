@@ -27,10 +27,27 @@ public class BtnPass : MonoBehaviour
                 m_pClient.PutDownPass(); //불 반환을 통해 선택중이던걸 초기화하거나 가능. 
                 break;
             case BtnType.Ready:
+                if(TicketManager.Instance.HaveTicket() == false)
+                {
+#if CHEAT
+                    Debug.Log("티켓 없는데 레디");
+                    m_pClient.ReqGameReady(); //치트버전에선 없어도 진행
+#endif
+                    return;
+                }
                 m_pClient.ReqGameReady();
                 break;
             case BtnType.Start:
+                if (TicketManager.Instance.HaveTicket() == false)
+                {
+#if CHEAT
+                    Debug.Log("티켓 없는데 시작");
+                    m_pClient.ReqGameStart(); //치트버전에선 없어도 진행
+#endif
+                    return;
+                }
                 m_pClient.ReqGameStart();
+
                 break;
             case BtnType.Quit:
                 m_pClient.ReqRoomOut();
