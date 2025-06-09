@@ -46,6 +46,7 @@ public class PlayClient : MonoBehaviour
     public int gameTurn = 0; //카드 제출이 진행된 턴 1번부터
     public InGameData inGameData;
     public NetworkManager networkManager;
+    public AdManager adManager;
     #endregion
 
     private void Start()
@@ -60,6 +61,14 @@ public class PlayClient : MonoBehaviour
         networkManager.Connect();
         networkManager.OnConnected += ReqRegisterClientID;
         networkManager.OnDataReceived += OnCallBackRecieve;
+
+        adManager = new AdManager();
+        adManager.OnShowAd += RewardAd;
+    }
+
+    private void RewardAd()
+    {
+        Debug.Log("광고 다봤다.");
     }
 
     public InGameData GetInGameData()

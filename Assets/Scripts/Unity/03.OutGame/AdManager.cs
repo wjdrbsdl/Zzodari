@@ -1,9 +1,11 @@
 using GoogleMobileAds.Api;
+using System;
 using UnityEngine;
 
 public class AdManager
 {
     private RewardedAd rewardedAd;
+    public Action OnShowAd;
     public void Initi()
     {
         MobileAds.Initialize(initStatus => {
@@ -41,6 +43,7 @@ public class AdManager
             {
                 Debug.Log($"보상 획득: {reward.Amount} {reward.Type}");
                 // 서버에 보상 정보 전송 등 추가 로직 처리
+                OnShowAd?.Invoke();
             });
         }
         else
