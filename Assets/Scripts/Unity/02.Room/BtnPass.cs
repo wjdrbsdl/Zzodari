@@ -29,10 +29,6 @@ public class BtnPass : MonoBehaviour
             case BtnType.Ready:
                 if(TicketManager.Instance.HaveTicket() == false)
                 {
-#if CHEAT
-                    Debug.Log("티켓 없는데 레디");
-                    m_pClient.ReqGameReady(); //치트버전에선 없어도 진행
-#endif
                     return;
                 }
                 m_pClient.ReqGameReady();
@@ -40,10 +36,6 @@ public class BtnPass : MonoBehaviour
             case BtnType.Start:
                 if (TicketManager.Instance.HaveTicket() == false)
                 {
-#if CHEAT
-                    Debug.Log("티켓 없는데 시작");
-                    m_pClient.ReqGameStart(); //치트버전에선 없어도 진행
-#endif
                     return;
                 }
                 m_pClient.ReqGameStart();
