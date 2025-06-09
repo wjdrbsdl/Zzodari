@@ -52,7 +52,11 @@ public class TicketManager : MonoBehaviour
 
     private void UpdateUI(Scene _scene, LoadSceneMode _mode)
     {
-       // Debug.Log("씬 변화에 따라 호출");
+        // Debug.Log("씬 변화에 따라 호출");
+        if (HaveTicket() == false)
+        {
+            StartCharge();
+        } 
         StartCoroutine(CoUpdateUI());
     }
 
@@ -77,6 +81,14 @@ public class TicketManager : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+        //충전은 게임 오버 되고 나서
+        if (HaveTicket() == false)
+        {
+            StartCharge();
+        }
+    }
 
     public bool HaveTicket()
     {
@@ -101,10 +113,6 @@ public class TicketManager : MonoBehaviour
 
         CurChance -= 1;
         OnChangeTicketAmount?.Invoke(CurChance);
-        if(CurChance == 0)
-        {
-            StartCharge(); //남은티켓이 0이면 저절로 시작하기
-        }
     }
 
     public void ChargeTicket(int amount)

@@ -116,6 +116,7 @@ public class RoomInfoManager : MonoBehaviour
                     OffPutDownCardInfo();
                     ShowRank(inGameData);
                     ShowAdBtn(inGameData);
+                    TicketManager.Instance.GameOver(); //게임종료됐으니 타이머 돌려라
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
             }
