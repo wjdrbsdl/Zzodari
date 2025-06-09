@@ -108,9 +108,10 @@ public class PlayClient : MonoBehaviour
         }
         else if (_reqType == ReqRoomType.Start)
         {
-            SetNewGame();
-            ResGameStart(_validData);
-
+            SetNewGame(); //새 시작이냐, 리스타트냐 여기서 일단 갈굼
+            //
+            ResGameStart(_validData); // 서버에서 카드를 나눠주는게 새 시작으로 해놔서 Restart 단계를 넣기는 애매
+            
         }
         else if (_reqType == ReqRoomType.SelectCard)
         {
@@ -174,6 +175,7 @@ public class PlayClient : MonoBehaviour
         {
             isGameStart = true;
             inGameData.ResetBadPoint();
+            TicketManager.Instance.UseTicket(); //티켓 소모
         }
 
     }
