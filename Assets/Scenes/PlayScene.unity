@@ -809,7 +809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &256720693
 RectTransform:
   m_ObjectHideFlags: 0
@@ -823,12 +823,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 557704202}
-  m_Father: {fileID: 1053497009}
-  m_RootOrder: 15
+  m_Father: {fileID: 327111514}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -104.3999, y: 123}
+  m_AnchoredPosition: {x: 245.60013, y: 123}
   m_SizeDelta: {x: 99.5635, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &256720694
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1166507556}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TestAgora, Assembly-CSharp
         m_MethodName: Leave
         m_Mode: 1
@@ -941,6 +941,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256720692}
   m_CullTransparentMesh: 1
+--- !u!1 &327111513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 327111514}
+  m_Layer: 5
+  m_Name: DontUse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &327111514
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327111513}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1331462527}
+  - {fileID: 256720693}
+  m_Father: {fileID: 1053497009}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &328172851
 GameObject:
   m_ObjectHideFlags: 0
@@ -3757,10 +3795,9 @@ RectTransform:
   - {fileID: 1756461710}
   - {fileID: 1485667996}
   - {fileID: 1507417396}
-  - {fileID: 1166507555}
-  - {fileID: 1331462527}
-  - {fileID: 256720693}
+  - {fileID: 1640356815}
   - {fileID: 2114121375}
+  - {fileID: 327111514}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4397,55 +4434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75cfc98e7f1b20540a390b534116709e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1166507554
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1166507555}
-  - component: {fileID: 1166507556}
-  m_Layer: 5
-  m_Name: Agora
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1166507555
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166507554}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1053497009}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1166507556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166507554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cec8fa1bdfe7d5745b0b3399419dc440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1179901269
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4970,7 +4958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1331462527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4978,18 +4966,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331462526}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 31871280}
-  m_Father: {fileID: 1053497009}
-  m_RootOrder: 14
+  m_Father: {fileID: 327111514}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -104.130005, y: 82.1}
+  m_AnchoredPosition: {x: 245.87003, y: 82.1}
   m_SizeDelta: {x: 99.5635, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1331462528
@@ -5052,7 +5040,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1166507556}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TestAgora, Assembly-CSharp
         m_MethodName: Join
         m_Mode: 1
@@ -6112,7 +6100,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 2114121375}
+    m_TransformParent: {fileID: 1053497009}
     m_Modifications:
     - target: {fileID: 5514853502504925988, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
       propertyPath: m_Name
@@ -6128,7 +6116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7056402672432319967, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7056402672432319967, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6184,11 +6172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7056402672432319967, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 243.80002
       objectReference: {fileID: 0}
     - target: {fileID: 7056402672432319967, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 499.99988
       objectReference: {fileID: 0}
     - target: {fileID: 7056402672432319967, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6204,6 +6192,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
+--- !u!224 &1640356815 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7056402672432319967, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
+  m_PrefabInstance: {fileID: 1640356814}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1640356816 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5514853502504925988, guid: 2e65296f140d0ce468c7a6161c7d6dc3, type: 3}
+  m_PrefabInstance: {fileID: 1640356814}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1683168552
 GameObject:
   m_ObjectHideFlags: 0
@@ -6745,6 +6743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d02b0ad44df0294ba5ae9f815eac705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  adBtn: {fileID: 1640356816}
   ReadyBtn: {fileID: 455630876}
   StartBtn: {fileID: 487104096}
   m_roomCharUI: {fileID: 8615532}
@@ -7687,7 +7686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4681810888736803483, guid: abc0d55cf16c34b4fad96315119fa72b, type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4681810888736803483, guid: abc0d55cf16c34b4fad96315119fa72b, type: 3}
       propertyPath: m_AnchorMax.x

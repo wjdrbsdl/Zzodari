@@ -55,6 +55,7 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.Ready:
                     ShowReadyState(inGameData);
+                    ShowAdBtn(inGameData);
                     break;
                 case ReqRoomType.ArrangeRoomMaster:
                     ShowPartyInfo(inGameData);
@@ -62,6 +63,7 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PartyData:
                 case ReqRoomType.Start:
+                    ShowAdBtn(inGameData);
                     OffPutDownCardInfo();
                     ShowPartyInfo(inGameData);
                     StopUserTimer(inGameData);
@@ -113,6 +115,7 @@ public class RoomInfoManager : MonoBehaviour
                     SetBadPoint(inGameData); //게임종료후
                     OffPutDownCardInfo();
                     ShowRank(inGameData);
+                    ShowAdBtn(inGameData);
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
             }
@@ -171,7 +174,19 @@ public class RoomInfoManager : MonoBehaviour
     {
         m_roomCharUI.SetReadyState(_gameData);
 
-        adBtn.SetActive(_gameData.GetMyData().isReady == false);
+        
+    }
+
+    private void ShowAdBtn(InGameData inGameData)
+    {
+        if(m_client.isGameStart == true)
+        {
+            //게임 중일땐 광고 끄기
+            adBtn.SetActive(false);
+            return;
+        }
+
+        adBtn.SetActive(inGameData.GetMyData().isReady == false);
     }
 
     #region 스테이지 중간 정비시간
