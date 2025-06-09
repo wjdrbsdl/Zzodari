@@ -14,10 +14,29 @@ using UnityEngine;
 /// </summary>
 public class TicketManager : MonoBehaviour
 {
+    private static TicketManager Instance;
     private float _chargeTime = 180f;
-    private int _maxChance = 3;
-    private int _curChance = 0;
-    private int _chargeCount = 3;
+    [SerializeField] private int _maxChance = 3;
+    [SerializeField] private int _curChance = 0;
+    [SerializeField] private int _chargeCount = 3;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        if(HaveTicket() == false)
+        {
+            StartCharge();
+        }
+    }
 
 #if CHEAT
     public void Update()
