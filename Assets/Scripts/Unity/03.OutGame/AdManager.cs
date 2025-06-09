@@ -15,7 +15,7 @@ public class AdManager : MonoBehaviour
     public void Initi()
     {
         MobileAds.Initialize(initStatus => {
-            Debug.Log("AdMob Initialized");
+          //  Debug.Log("AdMob Initialized");
             LoadRewardedAd();
         });
     }
@@ -30,12 +30,12 @@ public class AdManager : MonoBehaviour
         {
             if (error != null)
             {
-                Debug.LogError("광고 로드 실패: " + error.GetMessage());
+              //  Debug.LogError("광고 로드 실패: " + error.GetMessage());
                 return;
             }
 
             rewardedAd = ad;
-            Debug.Log("광고 로드 성공");
+          //  Debug.Log("광고 로드 성공");
         });
     }
 
@@ -54,7 +54,7 @@ public class AdManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("광고를 아직 사용할 수 없습니다.");
+            //Debug.Log("광고를 아직 사용할 수 없습니다.");
         }
     }
 }

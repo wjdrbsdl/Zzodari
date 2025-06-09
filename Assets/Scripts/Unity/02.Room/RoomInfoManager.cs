@@ -7,6 +7,7 @@ public class RoomInfoManager : MonoBehaviour
 {
     public static RoomInfoManager instance;
 
+    public GameObject adBtn; //광고 버튼
     public GameObject ReadyBtn;
     public GameObject StartBtn;
 
@@ -25,6 +26,7 @@ public class RoomInfoManager : MonoBehaviour
         instance = this;
         ReadyBtn.SetActive(false);
         ReadyBtn.SetActive(false);
+        adBtn.SetActive(true);
     }
 
     public void EnqueueCode(ReqRoomType _code)
@@ -168,6 +170,8 @@ public class RoomInfoManager : MonoBehaviour
     private void ShowReadyState(InGameData _gameData)
     {
         m_roomCharUI.SetReadyState(_gameData);
+
+        adBtn.SetActive(_gameData.GetMyData().isReady == false);
     }
 
     #region 스테이지 중간 정비시간
