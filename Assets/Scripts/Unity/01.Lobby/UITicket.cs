@@ -5,20 +5,26 @@ public class UITicket : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_ticketState;
 
-    private void Start()
+    private void OnEnable()
     {
-        
+        TicketManager.Instance.OnChangeRestTime += SetTimerInfo;
+        TicketManager.Instance.OnChangeTicketAmount += SetTicketInfo;
     }
 
-    private void SetInfo()
+    private void OnDisable()
     {
-        if(TicketManager.Instance.CurChance >= 0)
-        {
-            m_ticketState.text = TicketManager.Instance.CurChance + " / " + TicketManager.Instance.MaxChance;
-            return;
-        }
+        TicketManager.Instance.OnChangeRestTime -= SetTimerInfo;
+        TicketManager.Instance.OnChangeTicketAmount -= SetTicketInfo;
+    }
 
-        m_ticketState.text = FloatToMinuteSecond(TicketManager.Instance.RestTime);
+    private void SetTicketInfo(int curChance)
+    {
+        m_ticketState.text = curChance + " / " + TicketManager.Instance.MaxChance;
+    }
+
+    private void SetTimerInfo(float restTime)
+    {
+        m_ticketState.text = FloatToMinuteSecond(restTime);
     }
 
     private string FloatToMinuteSecond(float timeInSeconds)
