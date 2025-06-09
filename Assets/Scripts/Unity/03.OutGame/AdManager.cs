@@ -5,15 +5,19 @@ using UnityEngine;
 public class AdManager : MonoBehaviour
 {
     private RewardedAd rewardedAd;
-    public Action OnShowAd;
+    public static Action OnShowAd;
+
+    private void Start()
+    {
+        Initi();
+    }
+
     public void Initi()
     {
         MobileAds.Initialize(initStatus => {
             Debug.Log("AdMob Initialized");
             LoadRewardedAd();
         });
-
-        ShowRewardedAd();
     }
 
     public void LoadRewardedAd()
@@ -41,9 +45,11 @@ public class AdManager : MonoBehaviour
         {
             rewardedAd.Show((Reward reward) =>
             {
-                Debug.Log($"보상 획득: {reward.Amount} {reward.Type}");
+               // Debug.Log($"보상 획득: {reward.Amount} {reward.Type}");
                 // 서버에 보상 정보 전송 등 추가 로직 처리
                 OnShowAd?.Invoke();
+
+                LoadRewardedAd();
             });
         }
         else

@@ -31,6 +31,7 @@ public class TicketManager : MonoBehaviour
             DontDestroyOnLoad(this);
 
             SceneManager.sceneLoaded += UpdateUI;
+            AdManager.OnShowAd += OnShowAd;
         }
         else
         {
@@ -42,6 +43,11 @@ public class TicketManager : MonoBehaviour
             StartCharge();
         }
 
+    }
+
+    private void OnShowAd()
+    {
+        ChargeTicket(MaxChance);
     }
 
     private void UpdateUI(Scene _scene, LoadSceneMode _mode)
