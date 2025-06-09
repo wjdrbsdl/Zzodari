@@ -2,6 +2,7 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
@@ -28,6 +29,8 @@ public class TicketManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
+
+            SceneManager.sceneLoaded += UpdateUI;
         }
         else
         {
@@ -38,8 +41,20 @@ public class TicketManager : MonoBehaviour
         {
             StartCharge();
         }
+
     }
 
+    private void UpdateUI(Scene _scene, LoadSceneMode _mode)
+    {
+       // Debug.Log("씬 변화에 따라 호출");
+        StartCoroutine(CoUpdateUI());
+    }
+
+    IEnumerator CoUpdateUI()
+    {
+        yield return new WaitUntil(() => OnChangeTicketAmount != null);
+        OnChangeTicketAmount?.Invoke(CurChance);
+    }
 
     public void Update()
     {
