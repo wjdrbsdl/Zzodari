@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using UnityEngine;
 
 
@@ -43,19 +40,34 @@ public class TicketManager : MonoBehaviour
         }
     }
 
-#if CHEAT
+
     public void Update()
     {
+#if CHEAT
         if (Input.GetKeyDown(KeyCode.F5))
         {
             ChargeTicket(ChargeCount);
         }
-    }
 #endif
+        if(isUseResrvate == true)
+        {
+            UseTicket();
+            isUseResrvate = false;
+        }
+    }
+
 
     public bool HaveTicket()
     {
         return CurChance > 0;
+    }
+
+
+    bool isUseResrvate = false;
+    public void ResUseTicket()
+    {
+        //서버로부터 유즈 티켓을 받은경우
+        isUseResrvate = true;
     }
 
     public void UseTicket()

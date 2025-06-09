@@ -175,6 +175,7 @@ public class PlayClient : MonoBehaviour
         {
             isGameStart = true;
             inGameData.ResetBadPoint();
+            TicketManager.Instance.ResUseTicket();
         }
 
     }
