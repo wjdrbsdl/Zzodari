@@ -46,4 +46,10 @@ public class Container
     {
         return (T)_registration[typeof(T)];
     }
+
+    public object Resolve(Type type)
+    {
+        //없으면 널반환 예외처리 필요
+        return  _registration[type];
+    }
 }
