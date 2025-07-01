@@ -12,6 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/PlayScene.unity
     guid: 3456d98267e18824684ab8593fcfd2db
   - enabled: 0
-    path: Assets/API-Example/Examples/Basic/JoinChannelAudio/BasicAudioCallScene.unity
-    guid: 1af6c3e08db844534ad959cdf0127444
+    path: Assets/Scenes/SampleScene.unity
+    guid: 903162f339eb76c4fb08aec4e5679994
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
