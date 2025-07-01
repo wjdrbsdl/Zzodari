@@ -8,7 +8,7 @@ public class AdManager : MonoBehaviour
     private RewardedAd rewardedAd;
 
     // 네가 쓰던 static 이벤트 유지
-    public static event Action OnShowAd;
+    public static event Action OnAdRewardEarned;
 
     void Start()
     {
@@ -66,7 +66,7 @@ public class AdManager : MonoBehaviour
         if (isShow)
         {
             //광고 집행 - 다른 쓰레드, UI 갱신이 필요한 메인 쓰레드를 건드리게 되면 펑
-            OnShowAd?.Invoke();
+            OnAdRewardEarned?.Invoke();
             isShow = false;
         }
     }
@@ -75,22 +75,18 @@ public class AdManager : MonoBehaviour
 
     private void HandleAdOpened()
     {
-       // OnDebug?.Invoke("광고가 표시되었습니다.");
     }
 
     private void HandleAdClosed()
     {
-       // OnDebug?.Invoke("광고가 닫혔습니다. 새 광고를 로드합니다.");
         LoadRewardedAd();
     }
 
     private void HandleAdFailedToShow(AdError error)
     {
-      //  OnDebug?.Invoke($"광고 표시 실패: {error.GetMessage()}");
     }
 
     private void HandleAdPaid(AdValue adValue)
     {
-      //  OnDebug?.Invoke($"광고 수익 발생: {adValue.Value} {adValue.CurrencyCode}");
     }
 }

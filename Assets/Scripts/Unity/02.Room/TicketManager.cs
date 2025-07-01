@@ -31,7 +31,7 @@ public class TicketManager : MonoBehaviour
             DontDestroyOnLoad(this);
 
             SceneManager.sceneLoaded += UpdateUI;
-            AdManager.OnShowAd += OnShowAd;
+            AdManager.OnAdRewardEarned += OnShowAd;
         }
         else
         {
