@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,13 +17,13 @@ public class ClientManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        ControlPanel(EPanelType.ConnectUI);
     }
 
     private void Start()
     {
-       // Debug.Log(UniteServer.ServerIp);
-        if(IsRoomOut && FixedValue.ServerIp != null)
+        ControlPanel(EPanelType.ConnectUI);
+
+        if (IsRoomOut && FixedValue.ServerIp != null)
         {
             //이미 접속했었던 상태에서 돌아왔다면
             lobClient = Instantiate(PrefabManager.instance.uniteLobClient);
