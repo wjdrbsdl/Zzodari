@@ -10,9 +10,8 @@ using UnityEngine.SceneManagement;
 /// 0이 되면 타이머 돌기 시작
 /// 타이머 다 되면 x만큼 충전
 /// </summary>
-public class TicketManager : MonoBehaviour
+public class TicketManager : Singleton<TicketManager>
 {
-    public static TicketManager Instance;
     private float _chargeTime = 180f;
     public int MaxChance = 3;
     public int CurChance = 0;
@@ -23,28 +22,15 @@ public class TicketManager : MonoBehaviour
 
     public Action<int> OnChangeTicketAmount;
 
-    private void Awake()
+    public override void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this);
-
-            SceneManager.sceneLoaded += UpdateUI;
-            AdManager.OnAdRewardEarned += OnShowAd;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        if(HaveTicket() == false)
+        base.Awake();
+        if (HaveTicket() == false)
         {
             StartCharge();
         }
-
     }
-
+    
     private void OnShowAd()
     {
         ChargeTicket(MaxChance);
