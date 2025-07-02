@@ -16,20 +16,21 @@ public class RoomListMaker : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    public void EnqueData(List<RoomData> roomDataList)
     {
-        ShowRoomList();
+      //  roomDataQueue.Enqueue(roomDataList);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(roomDataQueue.TryDequeue(out List<RoomData> _result))
-        {
-            curRoomDataList = _result;
-            ShowRoomList();
-        }
-    }
+    //방리스트 안보여주기
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    if(roomDataQueue.TryDequeue(out List<RoomData> _result))
+    //    {
+    //        curRoomDataList = _result;
+    //        ShowRoomList();
+    //    }
+    //}
 
     private void ShowRoomList()
     {

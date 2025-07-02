@@ -244,7 +244,7 @@ public class UniteLobClient : MonoBehaviour
 
         if (roomCount == 0)
         {
-            RoomListMaker.instance.roomDataQueue.Enqueue(new List<RoomData>());
+            RoomListMaker.instance.EnqueData(new List<RoomData>());
             return;
         }
 
@@ -261,7 +261,7 @@ public class UniteLobClient : MonoBehaviour
         }
 
         //유니티
-        RoomListMaker.instance.roomDataQueue.Enqueue(roomList);
+        RoomListMaker.instance.EnqueData(roomList);
     }
     #endregion
 
