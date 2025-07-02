@@ -70,6 +70,7 @@ public class UniteLobClient : MonoBehaviour
     {
         try
         {
+            clientSocket.EndConnect(_result); //
             ColorConsole.Default("로비 클라 연결 콜백");
             byte[] buff = new byte[2];
             clientSocket.BeginReceive(buff, 0, buff.Length, 0, CallBackReceive, buff);
