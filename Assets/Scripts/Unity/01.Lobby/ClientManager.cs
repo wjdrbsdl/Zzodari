@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,17 +23,40 @@ public class ClientManager : MonoBehaviour
 
     private void Start()
     {
-        ControlPanel(EPanelType.ConnectUI);
-
+        //룸에서 로비로 돌아온 경우
         if (IsRoomOut && FixedValue.ServerIp != null)
         {
-            //이미 접속했었던 상태에서 돌아왔다면
             lobClient = Instantiate(PrefabManager.instance.uniteLobClient);
             lobClient.ip = FixedValue.ServerIp.ToString();
             lobClient.id = 1;
             lobClient.Connect();
             IsRoomOut = false;
+            return;
         }
+        ControlPanel(EPanelType.ConnectUI);
+        StartCoroutine(CoConnect());
+
+    }
+
+    IEnumerator CoConnect()
+    {
+        while (true)
+        {
+            if(FixedValue.ServerIp == null)
+            {
+                yield return null;
+            }
+            ConnectLobby(FixedValue.ServerIp);
+            break;
+        }
+    }
+
+    private void ConnectLobby(IPAddress ip)
+    {
+        lobClient = Instantiate(PrefabManager.instance.uniteLobClient);
+        lobClient.ip = ip.ToString();
+        lobClient.id = 1;
+        lobClient.Connect();
     }
 
     public void OnClickConnect()
@@ -48,12 +73,10 @@ public class ClientManager : MonoBehaviour
                 GameObject gameObject = new GameObject();
                 gameObject.name = "테스트";
             };
-            //lobClient = Instantiate(PrefabManager.instance.lobClient);
             lobClient = Instantiate(PrefabManager.instance.uniteLobClient);
             lobClient.ip = ip;
             lobClient.id = 1;
             lobClient.Connect();
-         
         }
     }
 

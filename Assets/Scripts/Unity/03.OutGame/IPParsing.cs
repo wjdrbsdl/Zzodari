@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -67,7 +68,11 @@ public class IPParsing : MonoBehaviour
 
             if(parseData.DbValueList.Count>=1)
             {
-                InputManager.instance.SetInputTest(parseData.DbValueList[0][1]);
+               // InputManager.instance.SetInputTest(parseData.DbValueList[0][1]);
+
+                //접속할 아이피 파싱해서 등록
+                IPAddress ipAddress = IPAddress.Parse(parseData.DbValueList[0][1]);
+                FixedValue.ServerIp = ipAddress;
             }
             if (parseData.DbValueList.Count >= 2)
             {
