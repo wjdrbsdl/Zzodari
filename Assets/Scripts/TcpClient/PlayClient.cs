@@ -431,6 +431,11 @@ public class PlayClient : MonoBehaviour
         if (isGameStart)
             return;
 
+        if(inGameData.GetUserCount() <= 1)
+        {
+            return;
+        }
+
         byte[] reqStart = { (byte)ReqRoomType.Start, (byte) pid};
         SendMessege(reqStart);
     }

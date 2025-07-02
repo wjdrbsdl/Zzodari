@@ -217,6 +217,11 @@ public class InGameData
 
     }
 
+    public int GetUserCount()
+    {
+        return m_partyList.Count;
+    }
+
     private void Enqueue(ReqRoomType _code)
     {
         RoomInfoManager.instance.EnqueueCode(_code);
