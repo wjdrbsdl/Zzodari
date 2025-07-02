@@ -4,7 +4,8 @@ using UnityEngine;
 public class UITicket : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_ticketState;
-
+    private string m_guideText = "티켓 획득까지 ";
+    private string m_ticketText = "남은 티켓 ";
     private void OnEnable()
     {
         TicketManager.Instance.OnChangeRestTime += SetTimerInfo;
@@ -19,12 +20,12 @@ public class UITicket : MonoBehaviour
 
     private void SetTicketInfo(int curChance)
     {
-        m_ticketState.text = curChance + " / " + TicketManager.Instance.MaxChance;
+        m_ticketState.text = m_ticketText + curChance + " / " + TicketManager.Instance.MaxChance;
     }
 
     private void SetTimerInfo(float restTime)
     {
-        m_ticketState.text = FloatToMinuteSecond(restTime);
+        m_ticketState.text = m_guideText + FloatToMinuteSecond(restTime);
     }
 
     private string FloatToMinuteSecond(float timeInSeconds)
