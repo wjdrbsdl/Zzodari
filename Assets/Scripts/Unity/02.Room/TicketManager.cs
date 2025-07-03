@@ -25,12 +25,24 @@ public class TicketManager : Singleton<TicketManager>
     public override void Awake()
     {
         base.Awake();
+
         if (HaveTicket() == false)
         {
             StartCharge();
         }
     }
-    
+
+    protected override void NewMake()
+    {
+        SceneManager.sceneLoaded += UpdateUI;
+        AdManager.OnAdRewardEarned += OnShowAd;
+    }
+
+    private void Start()
+    {
+        
+    }
+
     private void OnShowAd()
     {
         ChargeTicket(MaxChance);
