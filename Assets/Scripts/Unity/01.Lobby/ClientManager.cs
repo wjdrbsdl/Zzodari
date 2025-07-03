@@ -42,12 +42,20 @@ public class ClientManager : MonoBehaviour
     {
         while (true)
         {
+            //2초마다 
             if(FixedValue.ServerIp == null)
             {
-                yield return null;
+                //2초마다 
+                PopUpManager.Instance.SendPopMessege("아이피 파싱중");
+                yield return new WaitForSeconds(1f); 
             }
-            ConnectLobby(FixedValue.ServerIp);
-            break;
+            else
+            {
+                PopUpManager.Instance.SendPopMessege("콘넥트 시작"+FixedValue.ServerIp);
+                ConnectLobby(FixedValue.ServerIp);
+                break;
+            }
+            
         }
     }
 

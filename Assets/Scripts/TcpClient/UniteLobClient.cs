@@ -38,6 +38,7 @@ public class UniteLobClient : MonoBehaviour
 
     public void Connect()
     {
+        PopUpManager.Instance.SendPopMessege("로비클라이언트에서 소켓 생성 시작");
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         IPAddress ipAddress = IPAddress.Parse(ip);
         FixedValue.ServerIp = ipAddress; //들어갔던 서버 기록
@@ -71,7 +72,7 @@ public class UniteLobClient : MonoBehaviour
         try
         {
             clientSocket.EndConnect(_result); //
-            ColorConsole.Default("로비 클라 연결 콜백");
+            PopUpManager.Instance.SendPopMessege("로비 클라 연결 콜백");
             byte[] buff = new byte[2];
             clientSocket.BeginReceive(buff, 0, buff.Length, 0, CallBackReceive, buff);
             //접속했으면 접속한 넘버링 요구
@@ -85,7 +86,7 @@ public class UniteLobClient : MonoBehaviour
         catch
         {
             ClientManager.instance.EnqueAction(() => ClientManager.instance.ConnectResult(false));
-            ColorConsole.Default("컨넥 콜백 실패");
+            PopUpManager.Instance.SendPopMessege("컨넥 콜백 실패");
             clientSocket.Close();
         }
     }
@@ -158,7 +159,7 @@ public class UniteLobClient : MonoBehaviour
         }
         catch
         {
-            ColorConsole.Default("리십 콜백 실패");
+            PopUpManager.Instance.SendPopMessege("리십 콜백 실패");
             //  Connect();
         }
     }

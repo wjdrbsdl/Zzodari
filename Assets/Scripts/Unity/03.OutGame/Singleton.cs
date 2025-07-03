@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : Component
 {
-    private static T s_instance;
+    protected static T s_instance;
 
     public static T Instance
     {
@@ -28,11 +28,17 @@ public class Singleton<T> : MonoBehaviour where T : Component
         if (s_instance == null)
         {
             s_instance = this as T;
+            NewMake();
             DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    protected virtual void NewMake()
+    {
+
     }
 }

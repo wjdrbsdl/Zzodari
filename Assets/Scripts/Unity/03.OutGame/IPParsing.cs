@@ -90,6 +90,7 @@ public class IPParsing : MonoBehaviour
             }
             yield return null;
         }
+        PopUpManager.Instance.SendPopMessege($"ÆÄ½Ì ¿©ºÎ {isFind}");
     }
 
 
