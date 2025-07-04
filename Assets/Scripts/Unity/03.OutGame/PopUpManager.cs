@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +9,10 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private Queue<string> messegeQueue = new();
 
+    private void Start()
+    {
+        NetworkManager.OnDetectDisConnect += () => SendPopMessege("ip 변환 감지");
+    }
 
     private void Update()
     {

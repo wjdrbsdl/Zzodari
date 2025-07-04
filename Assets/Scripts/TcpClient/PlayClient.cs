@@ -61,6 +61,16 @@ public class PlayClient : MonoBehaviour
         networkManager.Connect();
         networkManager.OnConnected += ReqRegisterClientID;
         networkManager.OnDataReceived += OnCallBackRecieve;
+        
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            Debug.Log("연결 종료 요청");
+            networkManager.InvalidDisConnect();
+        }
     }
 
     public InGameData GetInGameData()
@@ -566,7 +576,7 @@ public class PlayClient : MonoBehaviour
 
     public void ResRoomJoinFail()
     {
-        ColorConsole.Default("플레이 클라가 방 입장 못했음");
+       Debug.Log("플레이 클라가 방 입장 못했음");
 
         DisConnet();
 
