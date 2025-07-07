@@ -11,7 +11,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void Start()
     {
-        NetworkManager.OnDetectDisConnect += () => SendPopMessege("ip 변환 감지");
+        NetworkManager.OnDetectDisConnect += SendPopMessege;
     }
 
     private void Update()

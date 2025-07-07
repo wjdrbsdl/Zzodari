@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-
 public class NetworkManager
 {
     public static Socket clientSocket;
@@ -13,7 +12,7 @@ public class NetworkManager
 
     public event Action<byte[]> OnDataReceived;
     public event Action OnConnected;
-    public static Action OnDetectDisConnect;
+    public static Action<string> OnDetectDisConnect;
 
     public void Connect()
     {
@@ -112,13 +111,13 @@ public class NetworkManager
     private bool clearDis = false;
     public void Disconnect()
     {
-       // UnityEngine.Debug.Log("깔끔한 종료");
+        // UnityEngine.Debug.Log("깔끔한 종료");
         //클라의 요청으로 인해 종료된 경우
         clearDis = true;
         clientSocket?.Close();
         clientSocket?.Dispose();
         clientSocket = null;
-
+        OnDetectDisConnect?.Invoke("연결 잘 끊김");
     }
 
     public void InvalidDisConnect()
@@ -135,26 +134,54 @@ public class NetworkManager
         disconnectCheckCts = new CancellationTokenSource();
         var token = disconnectCheckCts.Token;
 
+      
         while (!token.IsCancellationRequested)
         {
-            await Task.Delay(500); // 0.5초마다 확인
-            if (clearDis == false && (clientSocket == null || !clientSocket.Connected))
+                    
+            await Task.Delay(3000); //3초마다 확인
+            OnDetectDisConnect?.Invoke("핑퐁 보내기 확인");
+            //try
+            //{
+            //    if (UnityEngine.Application.internetReachability == UnityEngine.NetworkReachability.NotReachable)
+            //    {
+            //        UnityEngine.Debug.Log("인터넷 되는지 확인");
+            //        //OnDetectDisConnect?.Invoke();
+            //    }
+            //}
+            //catch
+            //{
+            //    UnityEngine.Debug.Log("이벤트 인터넷 되는지 캐치");
+            //}
+
+
+            if (clearDis == true)
             {
-                //UnityEngine.Debug.Log("소켓 끊긴거 확인 재연결");
-                OnDetectDisConnect?.Invoke();
+                OnDetectDisConnect?.Invoke("잘 끊겨서 해당 테스크는 종료");
+                break;
+            }
+
+            try
+            {
+                int sendVlaue = clientSocket.Send(new byte[] { 213 }); //핑퐁용
+                if (sendVlaue == 0)
+                {
+                    //UnityEngine.Debug.Log("소켓 끊긴거 확인 재연결");
+                    OnDetectDisConnect?.Invoke("보낼게 없어");
+                    Connect(); //연결했던 소켓에 재연결 시도
+                    break;
+                }
+                OnDetectDisConnect?.Invoke("핑퐁 보내기 보낸 수 " + sendVlaue);
+            }
+            catch
+            {
+                OnDetectDisConnect?.Invoke("소켓이 망했음");
                 Connect(); //연결했던 소켓에 재연결 시도
                 break;
             }
 
-            //// 추가: 실제로 소켓 상태가 정상인지 확인하려면 아래 코드로 체크
-            //bool isSocketAlive = !(clientSocket.Poll(1, SelectMode.SelectRead) && clientSocket.Available == 0);
 
-            //if (!isSocketAlive)
-            //{
-            //    Debug.LogWarning("소켓 Poll 검사에서 끊김 감지됨");
-            //    OnDisconnected?.Invoke();
-            //    break;
-            //}
+
+
         }
     }
 }
