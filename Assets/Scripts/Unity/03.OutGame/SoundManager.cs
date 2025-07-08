@@ -13,7 +13,7 @@ public enum SFXType
     CardDraw, CradPut
 }
 
-public class SoundManager : SingleManager<SoundManager>
+public class SoundManager : Singleton<SoundManager>
 {
     public AudioSource bgmSorce;
     public AudioSource sfxSource; //효과음 재생용 AudioSource
