@@ -28,7 +28,9 @@ public enum ReqRoomType
     StageReady, StageOver, GameOver,
     ReqGameOver, ResRoomJoinFail,
     Draw, UserOrder,
-    InValidCard, ArrangeRoomMaster
+    InValidCard, ArrangeRoomMaster,
+    GameReadyState
+
 
 }
 
@@ -62,6 +64,18 @@ public class PlayClient : MonoBehaviour
         networkManager.OnConnected += ReqRegisterClientID;
         networkManager.OnDataReceived += OnCallBackRecieve;
         
+    }
+
+    void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+           networkManager.StopPingPong();
+        }
+        else
+        {
+           networkManager.StartPingPong();
+        }
     }
 
     private void Update()
@@ -103,6 +117,10 @@ public class PlayClient : MonoBehaviour
         else if (_reqType == ReqRoomType.ArrangeRoomMaster)
         {
             ResArrangeRoomMaster(_validData);
+        }
+        else if(_reqType == ReqRoomType.GameReadyState)
+        {
+            ResGameReadyState();
         }
         else if(_reqType == ReqRoomType.Ready)
         {
@@ -464,6 +482,11 @@ public class PlayClient : MonoBehaviour
 
         byte[] reqReady = { (byte)ReqRoomType.Ready, (byte)pid };
         SendMessege(reqReady);
+    }
+
+    public void ResGameReadyState()
+    {
+        Debug.Log("게임 준비 상태로 UI 세팅하기");
     }
 
     public void ResGameReady(byte[] _resData)

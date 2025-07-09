@@ -139,50 +139,64 @@ public class NetworkManager
         clientSocket = null;
     }
 
+    public void StartPingPong()
+    {
+        StopPingPong(); // 중복 방지
+        StartDetectSocketClose();
+    }
+
+    public void StopPingPong()
+    {
+        disconnectCheckCts?.Cancel();
+        disconnectCheckCts = null;
+    }
+
     private CancellationTokenSource disconnectCheckCts;
     private async void StartDetectSocketClose()
     {
         disconnectCheckCts = new CancellationTokenSource();
         var token = disconnectCheckCts.Token;
 
-      
-        while (!token.IsCancellationRequested)
+        try
         {
-                    
-            await Task.Delay(3000); //3초마다 확인
-            OnDetectDisConnect?.Invoke("핑퐁 보내기 확인");
-     
-
-            if (clearDis == true)
+            while (!token.IsCancellationRequested)
             {
-                OnDetectDisConnect?.Invoke("잘 끊겨서 해당 테스크는 종료");
-                break;
-            }
 
-            try
-            {
-                byte[] pong = new byte[] { 213 };
-                byte[] packet = Packing(pong);
-                int sendValue = clientSocket.Send(packet);
-                if (sendValue == 0)
+                await Task.Delay(3000, token); //3초마다 확인
+                OnDetectDisConnect?.Invoke("핑퐁 보내기 확인");
+
+
+                if (clearDis == true)
                 {
-                    //UnityEngine.Debug.Log("소켓 끊긴거 확인 재연결");
-                    OnDetectDisConnect?.Invoke("보낼게 없어");
+                    OnDetectDisConnect?.Invoke("잘 끊겨서 해당 테스크는 종료");
+                    break;
+                }
+
+                try
+                {
+                    byte[] pong = new byte[] { 213 };
+                    byte[] packet = Packing(pong);
+                    int sendValue = clientSocket.Send(packet);
+                    if (sendValue == 0)
+                    {
+                        //UnityEngine.Debug.Log("소켓 끊긴거 확인 재연결");
+                        OnDetectDisConnect?.Invoke("보낼게 없어");
+                        Connect(); //연결했던 소켓에 재연결 시도
+                        break;
+                    }
+                }
+                catch
+                {
+                    InvalidDisConnect();
+                    OnDetectDisConnect?.Invoke("소켓이 망했음");
                     Connect(); //연결했던 소켓에 재연결 시도
                     break;
                 }
-           }
-            catch
-            {
-                InvalidDisConnect();
-                OnDetectDisConnect?.Invoke("소켓이 망했음");
-                Connect(); //연결했던 소켓에 재연결 시도
-                break;
             }
-
-
-
-
+        }
+        catch (OperationCanceledException)
+        {
+            OnDetectDisConnect?.Invoke("핑퐁 Task가 취소됨");
         }
     }
 }
