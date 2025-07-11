@@ -161,5 +161,9 @@ public class TicketManager : Singleton<TicketManager>
         chargeCorutine = null;
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
 
 }
