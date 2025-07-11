@@ -62,6 +62,7 @@ public class PlayClient : MonoBehaviour
         networkManager = new NetworkManager();
         networkManager.Connect();
         networkManager.OnConnected += ReqRegisterClientID;
+        networkManager.OnConnectFailed += SendOutCallBack;
         networkManager.OnDataReceived += OnCallBackRecieve;
         
     }
@@ -70,7 +71,10 @@ public class PlayClient : MonoBehaviour
     {
         if (pause)
         {
-           networkManager.StopPingPong();
+           if(AdManager.isShowAd == false)
+            {
+                networkManager.StopPingPong();
+            }
         }
         else
         {

@@ -12,6 +12,7 @@ public class NetworkManager
 
     public event Action<byte[]> OnDataReceived;
     public event Action OnConnected;
+    public event Action OnConnectFailed;
     public static Action<string> OnDetectDisConnect;
 
     public void Connect()
@@ -36,7 +37,7 @@ public class NetworkManager
         }
         catch
         {
-            Connect(); // retry
+            OnConnectFailed?.Invoke();
         }
     }
 
