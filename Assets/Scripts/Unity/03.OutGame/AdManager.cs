@@ -9,6 +9,7 @@ public class AdManager : MonoBehaviour
 
     // ³×°¡ ¾²´ø static ÀÌº¥Æ® À¯Áö
     public static event Action OnAdRewardEarned;
+    public static bool isShowAd = false;
 
     void Start()
     {
@@ -49,6 +50,7 @@ public class AdManager : MonoBehaviour
         Debug.Log("º¸¿©Áà");
         if (rewardedAd != null)
         {
+            isShowAd = true;
             rewardedAd.Show((Reward reward) =>
             {
                 //  OnDebug?.Invoke($"º¸»ó È¹µæ: {reward.Amount} {reward.Type}");
@@ -75,15 +77,18 @@ public class AdManager : MonoBehaviour
 
     private void HandleAdOpened()
     {
+     
     }
 
     private void HandleAdClosed()
     {
+        isShowAd = false;
         LoadRewardedAd();
     }
 
     private void HandleAdFailedToShow(AdError error)
     {
+        isShowAd = false;
     }
 
     private void HandleAdPaid(AdValue adValue)
