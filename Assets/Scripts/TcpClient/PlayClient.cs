@@ -29,7 +29,7 @@ public enum ReqRoomType
     ReqGameOver, ResRoomJoinFail,
     Draw, UserOrder,
     InValidCard, ArrangeRoomMaster,
-    GameReadyState
+    GameReadyState, AdStart, AdDone
 
 
 }
@@ -490,7 +490,8 @@ public class PlayClient : MonoBehaviour
 
     public void ResGameReadyState()
     {
-        Debug.Log("게임 준비 상태로 UI 세팅하기");
+        PopUpManager.Instance.SendPopMessege("게임 준비 상태로 UI 세팅하기");
+        ResetStage();
     }
 
     public void ResGameReady(byte[] _resData)
@@ -928,6 +929,21 @@ public class PlayClient : MonoBehaviour
 
     }
     #endregion
+
+    #region 광고 본다 끝났다
+    public void StartAdTime()
+    {
+        byte[] packet = new byte[] { (byte)ReqRoomType.AdStart };
+        networkManager.Send(packet);
+    }
+
+    public void EndAdTime()
+    {
+        byte[] packet = new byte[] { (byte)ReqRoomType.AdDone };
+        networkManager.Send(packet);
+    }
+    #endregion
+
     #endregion
 
     private void OnDisable()

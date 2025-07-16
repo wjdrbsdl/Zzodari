@@ -14,20 +14,20 @@ public class PopUpManager : Singleton<PopUpManager>
       //  NetworkManager.OnDetectDisConnect += SendPopMessege;
     }
 
-    //private void Update()
-    //{
-    //    if(messegeQueue.TryDequeue(out string result))
-    //    {
-    //        PopMessege(result);
-    //    }
-    //}
+    private void Update()
+    {
+        if (messegeQueue.TryDequeue(out string result))
+        {
+            PopMessege(result);
+        }
+    }
 
     public void SendPopMessege(string messegeStr)
     {
-       // messegeQueue.Enqueue(messegeStr);
+        messegeQueue.Enqueue(messegeStr);
     }
 
-    public void PopMessege(string messegeStr)
+    private void PopMessege(string messegeStr)
     {
         PopMessege messege = Instantiate(_messegePrefab, transform);
 

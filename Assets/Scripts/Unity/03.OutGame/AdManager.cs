@@ -10,9 +10,11 @@ public class AdManager : MonoBehaviour
     // 네가 쓰던 static 이벤트 유지
     public static event Action OnAdRewardEarned;
     public static bool isShowAd = false;
+    [SerializeField] private PlayClient pClient;
 
     void Start()
     {
+        pClient = FindAnyObjectByType<PlayClient>();
         MobileAds.Initialize(initStatus =>
         {
             LoadRewardedAd();
@@ -51,6 +53,10 @@ public class AdManager : MonoBehaviour
         if (rewardedAd != null)
         {
             isShowAd = true;
+            if(pClient != null)
+            {
+                pClient.StartAdTime();
+            }
             rewardedAd.Show((Reward reward) =>
             {
                 //  OnDebug?.Invoke($"보상 획득: {reward.Amount} {reward.Type}");
@@ -82,6 +88,10 @@ public class AdManager : MonoBehaviour
 
     private void HandleAdClosed()
     {
+        if (pClient != null)
+        {
+            pClient.EndAdTime();
+        }
         isShowAd = false;
         LoadRewardedAd();
     }
