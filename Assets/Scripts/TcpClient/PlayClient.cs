@@ -607,7 +607,7 @@ public class PlayClient : MonoBehaviour
     public void ResRoomJoinFail()
     {
        Debug.Log("플레이 클라가 방 입장 못했음");
-
+        PopUpManager.Instance.SendGuideMessege("방에 접속하지 못 했습니다.");
         DisConnet();
 
         SendOutCallBack();

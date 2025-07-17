@@ -24,6 +24,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void SendPopMessege(string messegeStr)
     {
+        //개발 디버그를 위한 메시지
+        messegeQueue.Enqueue(messegeStr);
+    }
+
+    public void SendGuideMessege(string messegeStr)
+    {
+        //게임 플레이 안내를 위한 메시지
         messegeQueue.Enqueue(messegeStr);
     }
 

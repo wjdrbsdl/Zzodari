@@ -120,7 +120,7 @@ public class UniteLobClient : MonoBehaviour
         catch
         {
             ClientManager.instance.EnqueAction(() => ClientManager.instance.ConnectResult(false));
-            PopUpManager.Instance.SendPopMessege("컨넥 콜백 실패");
+            PopUpManager.Instance.SendGuideMessege("로비에 접속 실패 하였습니다.");
             clientSocket.Close();
         }
     }
@@ -193,7 +193,7 @@ public class UniteLobClient : MonoBehaviour
         }
         catch
         {
-            PopUpManager.Instance.SendPopMessege("리십 콜백 실패");
+            PopUpManager.Instance.SendGuideMessege("로비와 연결이 끊겼습니다.");
             //  Connect();
         }
     }
@@ -260,7 +260,7 @@ public class UniteLobClient : MonoBehaviour
     private void ResRoomJoinFail()
     {
         //현재 인원수 쪽에 패일 코드를 넣어서 불가 체크
-        ColorConsole.Default("방에 참가 못했음");
+        PopUpManager.Instance.SendGuideMessege("방에 접속하지 못 했습니다.");
         return;
     }
 
