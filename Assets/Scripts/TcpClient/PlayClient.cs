@@ -492,6 +492,8 @@ public class PlayClient : MonoBehaviour
     {
         PopUpManager.Instance.SendPopMessege("게임 준비 상태로 UI 세팅하기");
         ResetStage();
+        SetGameOver();
+
     }
 
     public void ResGameReady(byte[] _resData)
