@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public enum ReqLobbyType
 {
-    RoomMake = 1, Close, RoomState, RoomUserCount, ClientNumber, RoomMakeFail, RoomList
+    RoomMake = 1, Close, RoomState, RoomUserCount, ClientNumber, RoomMakeFail, RoomList, RoomQuickMake
 }
 
 
@@ -56,15 +56,49 @@ public class UniteLobClient : MonoBehaviour
     }
 
     int testCount = 10;
+
+    string quickJoinCode = "Quick";
     public void OnClickReqRoomJoin()
     {
-        string name = InputManager.instance.GetRoomName();
-        if(name == "")
+        string name = FilterRoomName( InputManager.instance.GetRoomName());
+
+        if(name == quickJoinCode)
         {
-            name = "Test" + testCount.ToString();
-            testCount++;
+            ReqQuickJoin();
+            return;
         }
         ReqRoomJoin(name);
+    }
+
+    private string FilterRoomName(string inputStr, int maxLength = 10)
+    {
+        if (string.IsNullOrEmpty(inputStr))
+            return quickJoinCode;
+
+        StringBuilder builder = new StringBuilder();
+        int count = 0;
+
+        // 문자열을 문자 단위로 순회
+        foreach (var ch in inputStr)
+        {
+            if (char.IsSurrogate(ch))
+                continue; // 이모지나 특수 확장 문자 제거
+
+            builder.Append(ch);
+            count++;
+
+            if (count >= maxLength)
+                break;
+        }
+        string result = builder.ToString();
+
+        // quickJoinCode가 앞에 포함되어 있다면 금지
+        if (result.StartsWith(quickJoinCode, StringComparison.OrdinalIgnoreCase))
+        {
+            return quickJoinCode; // 금지어로 시작하면 퀵참가로 전환
+        }
+
+        return result.ToString();
     }
 
     private void CallBackConnect(IAsyncResult _result)
@@ -165,6 +199,14 @@ public class UniteLobClient : MonoBehaviour
     }
 
     #region 방 생성 진입
+
+
+    private void ReqQuickJoin()
+    {
+        byte[] packetData = { (byte)ReqLobbyType.RoomQuickMake };
+        SendMessege(packetData);
+    }
+
     public void ReqRoomJoin(string _roomName = "테스트 방 이름")
     {
         
