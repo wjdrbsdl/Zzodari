@@ -11,6 +11,9 @@ public class RoomInfoManager : MonoBehaviour
     public GameObject ReadyBtn;
     public GameObject StartBtn;
 
+    public GameObject ReadyPanel;
+    public GameObject CardControlPanel;
+
     public UIRoomCharactor m_roomCharUI;
     public TMP_Text m_roomNameText; //방 제목
     public TMP_Text m_preCard; //지금 놓여있는 카드
@@ -56,6 +59,7 @@ public class RoomInfoManager : MonoBehaviour
                 case ReqRoomType.Ready:
                     ShowReadyState(inGameData);
                     ShowAdBtn(inGameData);
+                    SwitchButtonPanel();
                     break;
                 case ReqRoomType.ArrangeRoomMaster:
                     ShowPartyInfo(inGameData);
@@ -63,6 +67,7 @@ public class RoomInfoManager : MonoBehaviour
                     break;
                 case ReqRoomType.PartyData:
                 case ReqRoomType.Start:
+                    SwitchButtonPanel();
                     ShowAdBtn(inGameData);
                     OffPutDownCardInfo();
                     ShowPartyInfo(inGameData);
@@ -117,6 +122,7 @@ public class RoomInfoManager : MonoBehaviour
                     ShowRank(inGameData);
                     ShowAdBtn(inGameData);
                     TicketManager.Instance.GameOver(); //게임종료됐으니 타이머 돌려라
+                    SwitchButtonPanel();
                     //m_badPoint.text += InputColor(" 순위 : ") + inGameData.myRank.ToString();
                     break;
             }
@@ -188,6 +194,12 @@ public class RoomInfoManager : MonoBehaviour
         }
 
         adBtn.SetActive(inGameData.GetMyData().isReady == false);
+    }
+
+    private void SwitchButtonPanel()
+    {
+        ReadyPanel.SetActive(m_client.isGameStart == false);
+        CardControlPanel.SetActive(m_client.isGameStart == true);
     }
 
     #region 스테이지 중간 정비시간

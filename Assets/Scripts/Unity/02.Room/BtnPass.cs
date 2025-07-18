@@ -59,4 +59,16 @@ public class BtnPass : MonoBehaviour
         yield return new WaitForSeconds(resetTime);
         isBtnOn = true;
     }
+
+    private void OnEnable()
+    {
+        StopAllCoroutines();
+        isBtnOn = true;
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        isBtnOn = false;
+    }
 }
