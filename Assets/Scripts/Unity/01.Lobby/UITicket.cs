@@ -4,7 +4,7 @@ using UnityEngine;
 public class UITicket : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_ticketState;
-    private string m_guideText = "티켓 획득까지 ";
+    private string m_guideText = "티켓 충전 시간 ";
     private string m_ticketText = "남은 티켓 ";
     private void OnEnable()
     {
