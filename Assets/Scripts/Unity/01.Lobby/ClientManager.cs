@@ -23,6 +23,7 @@ public class ClientManager : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.PlayBgm(BGMType.BgmLobby);
         //룸에서 로비로 돌아온 경우
         if (IsRoomOut && FixedValue.ServerIp != null)
         {
@@ -35,7 +36,6 @@ public class ClientManager : MonoBehaviour
         }
         ControlPanel(EPanelType.ConnectUI);
         StartCoroutine(CoConnect());
-        SoundManager.Instance.PlayBgm(BGMType.BgmLobby);
     }
 
     IEnumerator CoConnect()
