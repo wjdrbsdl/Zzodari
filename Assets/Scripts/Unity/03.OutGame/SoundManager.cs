@@ -10,7 +10,7 @@ public enum BGMType
 
 public enum SFXType
 {
-    CardDraw, CradPut
+   SfxButton, SfxButtonHigh, SfxButtonLow, SfxClose, SfxLose, SfxWin, CardDraw, CradPut
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -21,8 +21,26 @@ public class SoundManager : Singleton<SoundManager>
     public Dictionary<BGMType, AudioClip> bgmDic;
     public Dictionary<SFXType, AudioClip> sfxDic;
 
-    private void Start()
+    public void PlayBgm(BGMType bgm)
     {
+        if(bgmDic.ContainsKey(bgm) == true)
+        {
+            bgmSorce.clip = bgmDic[bgm];
+            bgmSorce.Play();
+        }
+    }
+
+    public void PlaySfx(SFXType sfx)
+    {
+        if(sfxDic.ContainsKey(sfx) == true)
+        {
+            sfxSource.PlayOneShot(sfxDic[sfx]);
+        }
+    }
+
+    protected override void NewMake()
+    {
+        base.NewMake();
         SetAudioSource();
         SetAudioClip();
     }
