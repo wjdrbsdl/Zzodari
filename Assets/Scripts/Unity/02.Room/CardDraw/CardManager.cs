@@ -182,7 +182,12 @@ public class CardManager : MonoBehaviour
     #region 버튼
     public void OnClickPutDown()
     {
-       bool put = m_pClient.PutDownCards(m_arrangeSelectCard.GetCardDataList());
+        if(m_arrangeSelectCard.GetCardDataList().Count == 0)
+        {
+            //아무것도 내지 않은 상태로 카드 제출시 - 패쓰 방지
+            return; 
+        }
+       m_pClient.PutDownCards(m_arrangeSelectCard.GetCardDataList());
     }
 
     public void OnClickSort()
