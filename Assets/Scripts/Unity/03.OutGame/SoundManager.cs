@@ -21,6 +21,11 @@ public class SoundManager : Singleton<SoundManager>
     public Dictionary<BGMType, AudioClip> bgmDic;
     public Dictionary<SFXType, AudioClip> sfxDic;
 
+    public void StopBgm()
+    {
+        bgmSorce.Stop();
+    }
+
     public void PlayBgm(BGMType bgm)
     {
         if(bgmDic.ContainsKey(bgm) == true)

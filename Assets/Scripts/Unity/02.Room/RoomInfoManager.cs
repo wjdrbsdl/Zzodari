@@ -29,6 +29,11 @@ public class RoomInfoManager : MonoBehaviour
         adBtn.SetActive(true);
     }
 
+    private void Start()
+    {
+        SoundManager.Instance.StopBgm();
+    }
+
     public void EnqueueCode(ReqRoomType _code)
     {
         reqTypeQueue.Enqueue(_code);
