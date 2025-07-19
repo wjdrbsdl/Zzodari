@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class RoomInfoManager : MonoBehaviour
 {
-    public static RoomInfoManager instance;
-
     public GameObject adBtn; //±¤°í ¹öÆ°
     public GameObject ReadyBtn;
     public GameObject StartBtn;
@@ -26,7 +24,6 @@ public class RoomInfoManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
         ReadyBtn.SetActive(false);
         ReadyBtn.SetActive(false);
         adBtn.SetActive(true);

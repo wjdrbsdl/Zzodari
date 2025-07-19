@@ -22,8 +22,14 @@ public class InGameData
     public bool isMyTurn = false;
 
     public int curTurn;
+    public RoomInfoManager roomManager;
 
     public List<PlayerData> m_partyList = new List<PlayerData>();
+
+    public InGameData(RoomInfoManager manager)
+    {
+        roomManager = manager;
+    }
 
     public void SetRoomName(string _name)
     {
@@ -224,7 +230,7 @@ public class InGameData
 
     private void Enqueue(ReqRoomType _code)
     {
-        RoomInfoManager.instance.EnqueueCode(_code);
+        roomManager.EnqueueCode(_code);
     }
 
     private PlayerData GetPlayData(int _pid)

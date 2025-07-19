@@ -49,15 +49,20 @@ public class PlayClient : MonoBehaviour
     public InGameData inGameData;
     public NetworkManager networkManager;
     public AdManager adManager;
+    public RoomInfoManager roomManager;
     #endregion
 
     private void Start()
     {
+        roomManager = FindAnyObjectByType<RoomInfoManager>();
         putDownList = new();
         haveCardList = new();
         giveCardList = new();
         if (inGameData == null)
-            inGameData = new InGameData();
+        {
+            inGameData = new InGameData(roomManager);
+         }
+            
 
         networkManager = new NetworkManager();
         networkManager.Connect();
@@ -95,7 +100,7 @@ public class PlayClient : MonoBehaviour
     {
         if (inGameData == null)
         {
-            inGameData = new InGameData();
+            inGameData = new InGameData(roomManager);
         }
         return inGameData;
     }
