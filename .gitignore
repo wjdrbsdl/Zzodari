@@ -10,6 +10,10 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Ignore keystore and other sensitive files
+*.keystore
+*.jks
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -46,6 +50,8 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.utmp
+*.utmp/
 
 # Unity3D generated meta files
 *.pidb.meta
